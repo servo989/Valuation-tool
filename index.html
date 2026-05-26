@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEP Contractor Valuation Tool</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .header {
+      max-width: 860px;
+      margin: 0 auto 32px;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #1a365d;
+      letter-spacing: -0.02em;
+    }
+    .header p {
+      margin-top: 8px;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+    .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: #ebf4ff;
+      color: #2b6cb0;
+      border: 1px solid #bee3f8;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .grid {
+      max-width: 860px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 24px;
+    }
+    .card.full { grid-column: 1 / -1; }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #718096;
+      margin-bottom: 16px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 6px;
+    }
+    .field .hint {
+      font-size: 0.74rem;
+      color: #718096;
+      font-weight: 400;
+      margin-left: 4px;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap .prefix {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #718096;
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    .input-wrap input {
+      width: 100%;
+      padding: 9px 12px 9px 26px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      color: #1a202c;
+      transition: border-color 0.15s;
+      background: #fafafa;
+    }
+    .input-wrap input:focus {
+      outline: none;
+      border-color: #4299e1;
+      background: #fff;
+    }
+
+    /* SDE breakdown */
+    .sde-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid #f7fafc;
+      font-size: 0.87rem;
+    }
+    .sde-line:last-child { border-bottom: none; }
+    .sde-line .label { color: #4a5568; }
+    .sde-line .val { font-weight: 600; color: #2d3748; }
+    .sde-line.total {
+      margin-top: 8px;
+      padding-top: 12px;
+      border-top: 2px solid #e2e8f0;
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .sde-line.total .label { color: #1a365d; }
+    .sde-line.total .val { color: #2b6cb0; font-size: 1rem; }
+
+    /* Method cards */
+    .method-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 480px) {
+      .method-grid { grid-template-columns: 1fr; }
+    }
+    .method-box {
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .method-box.sde-box { background: #ebf4ff; border: 1.5px solid #bee3f8; }
+    .method-box.rev-box { background: #f0fff4; border: 1.5px solid #9ae6b4; }
+    .method-box .method-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 4px;
+    }
+    .method-box.sde-box .method-label { color: #2b6cb0; }
+    .method-box.rev-box .method-label { color: #276749; }
+    .method-box .method-formula {
+      font-size: 0.78rem;
+      color: #718096;
+      margin-bottom: 10px;
+    }
+    .method-box .method-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .method-box.sde-box .method-value { color: #2b6cb0; }
+    .method-box.rev-box .method-value { color: #276749; }
+    .method-box .method-weight {
+      margin-top: 6px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .method-box.sde-box .method-weight { background: #bee3f8; color: #2b6cb0; }
+    .method-box.rev-box .method-weight { background: #9ae6b4; color: #276749; }
+
+    /* Final valuation */
+    .valuation-result {
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+      border-radius: 12px;
+      padding: 24px;
+      color: #fff;
+      text-align: center;
+    }
+    .valuation-result .result-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.75;
+      margin-bottom: 6px;
+    }
+    .valuation-result .result-value {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .valuation-result .result-range {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+    .valuation-result .result-formula {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      opacity: 0.65;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: inline-block;
+    }
+
+    /* Range bar */
+    .range-bar-wrap { margin-top: 20px; }
+    .range-bar-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #718096;
+      margin-bottom: 6px;
+    }
+    .range-bar-track {
+      position: relative;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 5px;
+      overflow: visible;
+    }
+    .range-bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #bee3f8, #4299e1);
+      transition: width 0.35s ease;
+    }
+    .range-bar-marker {
+      position: absolute;
+      top: -4px;
+      width: 18px;
+      height: 18px;
+      background: #2b6cb0;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      transform: translateX(-50%);
+      transition: left 0.35s ease;
+    }
+
+    /* Multiples note */
+    .multiples-note {
+      margin-top: 18px;
+      padding: 12px 16px;
+      background: #fffbeb;
+      border: 1px solid #f6e05e;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #744210;
+      line-height: 1.6;
+    }
+    .multiples-note strong { color: #92400e; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 32px 0;
+      color: #a0aec0;
+      font-size: 0.9rem;
+    }
+
+    /* Adjustments toggle */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #4299e1;
+    }
+    .toggle-row span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4a5568;
+    }
+
+    .footer {
+      max-width: 860px;
+      margin: 28px auto 0;
+      text-align: center;
+      font-size: 0.72rem;
+      color: #a0aec0;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MEP Contractor Valuation Tool</h1>
+  <p>Blended business valuation for mechanical, electrical &amp; plumbing contractors</p>
+  <div class="badge-row">
+    <span class="badge">2.0× SDE &nbsp;·&nbsp; 50% weight</span>
+    <span class="badge">0.5× Revenue &nbsp;·&nbsp; 50% weight</span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- ── Financials Input ── -->
+  <div class="card">
+    <div class="card-title">Annual Financials</div>
+
+    <div class="field">
+      <label>Annual Revenue</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="revenue" placeholder="0" min="0" step="1000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Net Income <span class="hint">(after all expenses, pre-owner comp)</span></label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="netIncome" placeholder="0" step="1000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Owner Total Compensation <span class="hint">(salary + benefits + perks)</span></label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="ownerComp" placeholder="0" min="0" step="1000" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Add-backs ── -->
+  <div class="card">
+    <div class="card-title">Add-backs &amp; Adjustments</div>
+
+    <div class="field">
+      <label>Depreciation &amp; Amortization</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="da" placeholder="0" min="0" step="1000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Interest Expense</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="interest" placeholder="0" min="0" step="1000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>One-time / Non-recurring Expenses</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="oneTime" placeholder="0" min="0" step="1000" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Other Add-backs</label>
+      <div class="input-wrap">
+        <span class="prefix">$</span>
+        <input type="number" id="otherAddbacks" placeholder="0" step="1000" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SDE Breakdown ── -->
+  <div class="card">
+    <div class="card-title">SDE Calculation</div>
+    <div id="sdeBreakdown" class="empty-state">Enter financials above to calculate SDE.</div>
+  </div>
+
+  <!-- ── Valuation Result ── -->
+  <div class="card">
+    <div class="card-title">Valuation Result</div>
+    <div id="valuationResult" class="empty-state">Enter financials above to see valuation.</div>
+  </div>
+
+  <!-- ── Full-width summary ── -->
+  <div class="card full" id="summaryCard" style="display:none;">
+    <div class="card-title">Valuation Summary</div>
+
+    <div class="method-grid">
+      <div class="method-box sde-box">
+        <div class="method-label">SDE Method</div>
+        <div class="method-formula">2.0× Seller's Discretionary Earnings</div>
+        <div class="method-value" id="sdeMethodValue">—</div>
+        <div class="method-weight">50% weight</div>
+      </div>
+      <div class="method-box rev-box">
+        <div class="method-label">Revenue Method</div>
+        <div class="method-formula">0.5× Annual Revenue</div>
+        <div class="method-value" id="revMethodValue">—</div>
+        <div class="method-weight">50% weight</div>
+      </div>
+    </div>
+
+    <div class="valuation-result">
+      <div class="result-label">Blended Business Valuation</div>
+      <div class="result-value" id="blendedValue">—</div>
+      <div class="result-range" id="valuationRange"></div>
+      <div class="result-formula">
+        (2.0 × SDE × 50%) + (0.5 × Revenue × 50%)
+      </div>
+    </div>
+
+    <div class="range-bar-wrap" id="rangeBarWrap" style="display:none;">
+      <div class="range-bar-labels">
+        <span id="rangeMin"></span>
+        <span style="color:#2b6cb0;font-weight:700;">Blended Value</span>
+        <span id="rangeMax"></span>
+      </div>
+      <div class="range-bar-track">
+        <div class="range-bar-fill" id="rangeBarFill" style="width:50%"></div>
+        <div class="range-bar-marker" id="rangeBarMarker" style="left:50%"></div>
+      </div>
+    </div>
+
+    <div class="multiples-note">
+      <strong>Methodology:</strong> This blended valuation equally weights (50%/50%) the
+      <strong>SDE method</strong> (2.0× — standard for profitable MEP contractors with strong
+      owner involvement) and the <strong>Revenue method</strong> (0.5× — benchmarks the business
+      against industry revenue norms). Final value is the average of both methods.
+      Actual market value varies based on customer concentration, backlog, technician bench
+      strength, geographic market, and current M&amp;A conditions.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  For informational purposes only. Not financial, legal, or tax advice.<br/>
+  Consult a qualified M&amp;A advisor or business broker for a formal valuation.
+</div>
+
+<script>
+  const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
+  ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
+
+  function fmt(n) {
+    if (n === null || isNaN(n)) return '—';
+    const abs = Math.abs(n);
+    let s;
+    if (abs >= 1_000_000) s = '$' + (n / 1_000_000).toFixed(2) + 'M';
+    else if (abs >= 1_000) s = '$' + (n / 1_000).toFixed(1) + 'K';
+    else s = '$' + n.toFixed(0);
+    return n < 0 ? '−' + s.slice(1) : s;
+  }
+
+  function fmtFull(n) {
+    if (n === null || isNaN(n)) return '—';
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(Math.round(n)).toLocaleString();
+  }
+
+  function val(id) {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function calc() {
+    const revenue      = val('revenue');
+    const netIncome    = val('netIncome');
+    const ownerComp    = val('ownerComp');
+    const da           = val('da');
+    const interest     = val('interest');
+    const oneTime      = val('oneTime');
+    const other        = val('otherAddbacks');
+
+    const hasData = revenue > 0 || netIncome !== 0 || ownerComp > 0;
+
+    if (!hasData) {
+      document.getElementById('sdeBreakdown').innerHTML = '<div class="empty-state">Enter financials above to calculate SDE.</div>';
+      document.getElementById('valuationResult').innerHTML = '<div class="empty-state">Enter financials above to see valuation.</div>';
+      document.getElementById('summaryCard').style.display = 'none';
+      return;
+    }
+
+    const totalAddbacks = ownerComp + da + interest + oneTime + other;
+    const sde = netIncome + totalAddbacks;
+
+    const sdeMethod = 2.0 * sde;
+    const revMethod = 0.5 * revenue;
+    const blended   = (sdeMethod * 0.5) + (revMethod * 0.5);
+
+    const rangeLow  = blended * 0.85;
+    const rangeHigh = blended * 1.15;
+
+    // SDE Breakdown
+    const sdeRows = [
+      ['Net Income',               netIncome],
+      ['+ Owner Compensation',     ownerComp],
+      ['+ D&A',                    da],
+      ['+ Interest Expense',       interest],
+      ['+ One-time Expenses',      oneTime],
+      ['+ Other Add-backs',        other],
+    ];
+    let html = '';
+    sdeRows.forEach(([label, v]) => {
+      if (v !== 0) {
+        html += `<div class="sde-line">
+          <span class="label">${label}</span>
+          <span class="val">${fmtFull(v)}</span>
+        </div>`;
+      }
+    });
+    html += `<div class="sde-line total">
+      <span class="label">Seller's Discretionary Earnings</span>
+      <span class="val">${fmtFull(sde)}</span>
+    </div>`;
+    document.getElementById('sdeBreakdown').innerHTML = html;
+
+    // Valuation mini-result
+    const sdeMargin = revenue > 0 ? ((sde / revenue) * 100).toFixed(1) : null;
+    let valHtml = `
+      <div class="sde-line"><span class="label">SDE</span><span class="val">${fmtFull(sde)}</span></div>
+      <div class="sde-line"><span class="label">Revenue</span><span class="val">${fmtFull(revenue)}</span></div>
+      ${sdeMargin !== null ? `<div class="sde-line"><span class="label">SDE Margin</span><span class="val">${sdeMargin}%</span></div>` : ''}
+      <div class="sde-line"><span class="label">SDE Method (2.0×)</span><span class="val">${fmtFull(sdeMethod)}</span></div>
+      <div class="sde-line"><span class="label">Revenue Method (0.5×)</span><span class="val">${fmtFull(revMethod)}</span></div>
+      <div class="sde-line total">
+        <span class="label">Blended Valuation</span>
+        <span class="val" style="color:#2b6cb0;">${fmtFull(blended)}</span>
+      </div>
+    `;
+    document.getElementById('valuationResult').innerHTML = valHtml;
+
+    // Summary card
+    document.getElementById('summaryCard').style.display = '';
+    document.getElementById('sdeMethodValue').textContent = fmtFull(sdeMethod);
+    document.getElementById('revMethodValue').textContent = fmtFull(revMethod);
+    document.getElementById('blendedValue').textContent = fmtFull(blended);
+    document.getElementById('valuationRange').textContent =
+      `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
+
+    // Range bar: position blended between sde and rev method
+    const lo = Math.min(sdeMethod, revMethod) * 0.8;
+    const hi = Math.max(sdeMethod, revMethod) * 1.2;
+    const pct = hi > lo ? Math.min(100, Math.max(0, ((blended - lo) / (hi - lo)) * 100)) : 50;
+    document.getElementById('rangeBarWrap').style.display = '';
+    document.getElementById('rangeMin').textContent = fmt(lo);
+    document.getElementById('rangeMax').textContent = fmt(hi);
+    document.getElementById('rangeBarFill').style.width = pct + '%';
+    document.getElementById('rangeBarMarker').style.left = pct + '%';
+  }
+</script>
+</body>
+</html>
