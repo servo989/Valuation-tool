@@ -397,6 +397,34 @@
     </div>
   </div>
 
+  <!-- ── Valuation Multiples ── -->
+  <div class="card full">
+    <div class="card-title">Valuation Multiples</div>
+    <div class="method-grid">
+      <div class="field" style="margin:0;">
+        <label>SDE Multiple <span class="hint">(× SDE)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="sdeMultiple" value="2.0" min="0" step="0.1" style="padding-left:12px;" />
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+        </div>
+      </div>
+      <div class="field" style="margin:0;">
+        <label>Revenue Multiple <span class="hint">(× Revenue)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="revMultiple" value="0.5" min="0" step="0.1" style="padding-left:12px;" />
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+        </div>
+      </div>
+      <div class="field" style="margin:0;">
+        <label>Net Income Multiple <span class="hint">(× Net Income)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="niMultiple" value="5.0" min="0" step="0.1" style="padding-left:12px;" />
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── SDE Breakdown ── -->
   <div class="card">
     <div class="card-title">SDE Calculation</div>
@@ -416,19 +444,19 @@
     <div class="method-grid">
       <div class="method-box sde-box">
         <div class="method-label">SDE Method</div>
-        <div class="method-formula">2.0× Seller's Discretionary Earnings</div>
+        <div class="method-formula" id="sdeMethodFormula">2.0× Seller's Discretionary Earnings</div>
         <div class="method-value" id="sdeMethodValue">—</div>
         <div class="method-weight">⅓ weight</div>
       </div>
       <div class="method-box rev-box">
         <div class="method-label">Revenue Method</div>
-        <div class="method-formula">0.5× Annual Revenue</div>
+        <div class="method-formula" id="revMethodFormula">0.5× Annual Revenue</div>
         <div class="method-value" id="revMethodValue">—</div>
         <div class="method-weight">⅓ weight</div>
       </div>
       <div class="method-box ni-box">
         <div class="method-label">Net Income Method</div>
-        <div class="method-formula">5.0× Net Income</div>
+        <div class="method-formula" id="niMethodFormula">5.0× Net Income</div>
         <div class="method-value" id="niMethodValue">—</div>
         <div class="method-weight">⅓ weight</div>
       </div>
@@ -475,6 +503,8 @@
 
 <script>
   const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
+  const multipleIds = ['sdeMultiple','revMultiple','niMultiple'];
+  multipleIds.forEach(id => document.getElementById(id).addEventListener('input', calc));
 
   function stripFmt(s) { return s.replace(/[^0-9.\-]/g, ''); }
   function addCommas(s) {
@@ -533,9 +563,13 @@
     const totalAddbacks = ownerComp + da + interest + oneTime + other;
     const sde = netIncome + totalAddbacks;
 
-    const sdeMethod = 2.0 * sde;
-    const revMethod = 0.5 * revenue;
-    const niMethod  = 5.0 * netIncome;
+    const sdeMult = parseFloat(document.getElementById('sdeMultiple').value) || 2.0;
+    const revMult = parseFloat(document.getElementById('revMultiple').value) || 0.5;
+    const niMult  = parseFloat(document.getElementById('niMultiple').value)  || 5.0;
+
+    const sdeMethod = sdeMult * sde;
+    const revMethod = revMult * revenue;
+    const niMethod  = niMult  * netIncome;
     const blended   = (sdeMethod + revMethod + niMethod) / 3;
 
     const rangeLow  = blended * 0.85;
@@ -571,9 +605,9 @@
       <div class="sde-line"><span class="label">SDE</span><span class="val">${fmtFull(sde)}</span></div>
       <div class="sde-line"><span class="label">Revenue</span><span class="val">${fmtFull(revenue)}</span></div>
       ${sdeMargin !== null ? `<div class="sde-line"><span class="label">SDE Margin</span><span class="val">${sdeMargin}%</span></div>` : ''}
-      <div class="sde-line"><span class="label">SDE Method (2.0×)</span><span class="val">${fmtFull(sdeMethod)}</span></div>
-      <div class="sde-line"><span class="label">Revenue Method (0.5×)</span><span class="val">${fmtFull(revMethod)}</span></div>
-      <div class="sde-line"><span class="label">Net Income Method (5.0×)</span><span class="val">${fmtFull(niMethod)}</span></div>
+      <div class="sde-line"><span class="label">SDE Method (${sdeMult.toFixed(1)}×)</span><span class="val">${fmtFull(sdeMethod)}</span></div>
+      <div class="sde-line"><span class="label">Revenue Method (${revMult.toFixed(1)}×)</span><span class="val">${fmtFull(revMethod)}</span></div>
+      <div class="sde-line"><span class="label">Net Income Method (${niMult.toFixed(1)}×)</span><span class="val">${fmtFull(niMethod)}</span></div>
       <div class="sde-line total">
         <span class="label">Blended Valuation</span>
         <span class="val" style="color:#2b6cb0;">${fmtFull(blended)}</span>
@@ -583,9 +617,12 @@
 
     // Summary card
     document.getElementById('summaryCard').style.display = '';
-    document.getElementById('sdeMethodValue').textContent = fmtFull(sdeMethod);
-    document.getElementById('revMethodValue').textContent = fmtFull(revMethod);
-    document.getElementById('niMethodValue').textContent  = fmtFull(niMethod);
+    document.getElementById('sdeMethodValue').textContent  = fmtFull(sdeMethod);
+    document.getElementById('revMethodValue').textContent  = fmtFull(revMethod);
+    document.getElementById('niMethodValue').textContent   = fmtFull(niMethod);
+    document.getElementById('sdeMethodFormula').textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
+    document.getElementById('revMethodFormula').textContent = revMult.toFixed(1) + '× Annual Revenue';
+    document.getElementById('niMethodFormula').textContent  = niMult.toFixed(1)  + '× Net Income';
     document.getElementById('blendedValue').textContent = fmtFull(blended);
     document.getElementById('valuationRange').textContent =
       `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
