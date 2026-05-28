@@ -339,7 +339,7 @@
       <label>Annual Revenue</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="revenue" placeholder="0" min="0" step="1000" />
+        <input type="number" id="revenue" placeholder="0" min="0" step="1000" value="800000" />
       </div>
     </div>
 
@@ -347,7 +347,7 @@
       <label>Net Income <span class="hint">(after all expenses, pre-owner comp)</span></label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="netIncome" placeholder="0" step="1000" />
+        <input type="number" id="netIncome" placeholder="0" step="1000" value="250000" />
       </div>
     </div>
 
@@ -476,6 +476,7 @@
 <script>
   const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
   ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
+  calc();
 
   function fmt(n) {
     if (n === null || isNaN(n)) return '—';
