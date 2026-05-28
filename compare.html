@@ -596,6 +596,20 @@
     const pctB = total > 0 ? (b / total) * 100 : 50;
     document.getElementById('compBarA').style.width = pctA.toFixed(1) + '%';
     document.getElementById('compBarB').style.width = pctB.toFixed(1) + '%';
+
+    // Keep single scenario page in sync with Scenario A
+    const mapBack = {
+      revenue_a: 'revenue', netIncome_a: 'netIncome', ownerComp_a: 'ownerComp',
+      da_a: 'da', interest_a: 'interest', oneTime_a: 'oneTime', other_a: 'otherAddbacks',
+      sdeMult_a: 'sdeMultiple', revMult_a: 'revMultiple', niMult_a: 'niMultiple',
+      sdeWt_a: 'sdeWeight', revWt_a: 'revWeight', niWt_a: 'niWeight'
+    };
+    const snapshot = {};
+    Object.entries(mapBack).forEach(([src, dest]) => {
+      const el = document.getElementById(src);
+      if (el) snapshot[dest] = el.value;
+    });
+    localStorage.setItem('singleScenario', JSON.stringify(snapshot));
   }
 
   // Load single scenario data into Scenario A if available

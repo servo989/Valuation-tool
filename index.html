@@ -590,6 +590,17 @@
     el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
     el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
   });
+
+  // Load from localStorage if available (keeps in sync with compare page)
+  const saved = localStorage.getItem('singleScenario');
+  if (saved) {
+    try {
+      const data = JSON.parse(saved);
+      ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+      multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+    } catch(e) {}
+  }
+
   calc();
 
   function fmt(n) {
