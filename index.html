@@ -407,7 +407,7 @@
         <div class="field" style="margin:0;">
           <label>SDE Weight <span class="hint">(%)</span></label>
           <div class="input-wrap">
-            <input type="number" id="sdeWeight" value="33.3" min="0" max="100" step="0.1" style="padding-left:12px;" />
+            <input type="number" id="sdeWeight" value="40" min="0" max="100" step="0.1" style="padding-left:12px;" />
             <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
           </div>
         </div>
@@ -423,7 +423,7 @@
         <div class="field" style="margin:0;">
           <label>Revenue Weight <span class="hint">(%)</span></label>
           <div class="input-wrap">
-            <input type="number" id="revWeight" value="33.3" min="0" max="100" step="0.1" style="padding-left:12px;" />
+            <input type="number" id="revWeight" value="40" min="0" max="100" step="0.1" style="padding-left:12px;" />
             <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
           </div>
         </div>
@@ -439,7 +439,7 @@
         <div class="field" style="margin:0;">
           <label>Net Income Weight <span class="hint">(%)</span></label>
           <div class="input-wrap">
-            <input type="number" id="niWeight" value="33.4" min="0" max="100" step="0.1" style="padding-left:12px;" />
+            <input type="number" id="niWeight" value="20" min="0" max="100" step="0.1" style="padding-left:12px;" />
             <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
           </div>
         </div>
@@ -468,19 +468,19 @@
         <div class="method-label">SDE Method</div>
         <div class="method-formula" id="sdeMethodFormula">2.0× Seller's Discretionary Earnings</div>
         <div class="method-value" id="sdeMethodValue">—</div>
-        <div class="method-weight" id="sdeMethodWeight">33.3% weight</div>
+        <div class="method-weight" id="sdeMethodWeight">40% weight</div>
       </div>
       <div class="method-box rev-box">
         <div class="method-label">Revenue Method</div>
         <div class="method-formula" id="revMethodFormula">0.5× Annual Revenue</div>
         <div class="method-value" id="revMethodValue">—</div>
-        <div class="method-weight" id="revMethodWeight">33.3% weight</div>
+        <div class="method-weight" id="revMethodWeight">40% weight</div>
       </div>
       <div class="method-box ni-box">
         <div class="method-label">Net Income Method</div>
         <div class="method-formula" id="niMethodFormula">7.0× Net Income</div>
         <div class="method-value" id="niMethodValue">—</div>
-        <div class="method-weight" id="niMethodWeight">33.4% weight</div>
+        <div class="method-weight" id="niMethodWeight">20% weight</div>
       </div>
     </div>
 
@@ -489,7 +489,7 @@
       <div class="result-value" id="blendedValue">—</div>
       <div class="result-range" id="valuationRange"></div>
       <div class="result-formula" id="resultFormula">
-        (3.0 × SDE × 33.3%) + (0.5 × Revenue × 33.3%) + (7.0 × Net Income × 33.4%)
+        (3.0 × SDE × 40%) + (0.5 × Revenue × 40%) + (7.0 × Net Income × 20%)
       </div>
     </div>
 
@@ -577,9 +577,9 @@
     const sdeMult   = parseFloat(document.getElementById('sdeMultiple').value) || 2.5;
     const revMult   = parseFloat(document.getElementById('revMultiple').value) || 0.5;
     const niMult    = parseFloat(document.getElementById('niMultiple').value)  || 7.0;
-    const sdeWeight = parseFloat(document.getElementById('sdeWeight').value)   || 33.3;
-    const revWeight = parseFloat(document.getElementById('revWeight').value)   || 33.3;
-    const niWeight  = parseFloat(document.getElementById('niWeight').value)    || 33.4;
+    const sdeWeight = parseFloat(document.getElementById('sdeWeight').value)   || 40;
+    const revWeight = parseFloat(document.getElementById('revWeight').value)   || 40;
+    const niWeight  = parseFloat(document.getElementById('niWeight').value)    || 20;
     const totalWeight = sdeWeight + revWeight + niWeight;
 
     const warn = document.getElementById('weightWarning');
