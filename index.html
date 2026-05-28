@@ -628,8 +628,8 @@
       `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
 
     // Range bar: position blended across all three methods
-    const lo = Math.min(sdeMethod, revMethod, niMethod) * 0.8;
-    const hi = Math.max(sdeMethod, revMethod, niMethod) * 1.2;
+    const lo = Math.min(sdeMethod, revMethod, niMethod);
+    const hi = Math.max(sdeMethod, revMethod, niMethod);
     const pct = hi > lo ? Math.min(100, Math.max(0, ((blended - lo) / (hi - lo)) * 100)) : 50;
     document.getElementById('rangeBarWrap').style.display = '';
     document.getElementById('rangeMin').textContent = fmt(lo);
