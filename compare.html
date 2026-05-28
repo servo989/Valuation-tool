@@ -598,6 +598,24 @@
     document.getElementById('compBarB').style.width = pctB.toFixed(1) + '%';
   }
 
+  // Load single scenario data into Scenario A if available
+  const saved = localStorage.getItem('singleScenario');
+  if (saved) {
+    try {
+      const map = {
+        revenue: 'revenue_a', netIncome: 'netIncome_a', ownerComp: 'ownerComp_a',
+        da: 'da_a', interest: 'interest_a', oneTime: 'oneTime_a', otherAddbacks: 'other_a',
+        sdeMultiple: 'sdeMult_a', revMultiple: 'revMult_a', niMultiple: 'niMult_a',
+        sdeWeight: 'sdeWt_a', revWeight: 'revWt_a', niWeight: 'niWt_a'
+      };
+      const data = JSON.parse(saved);
+      Object.entries(map).forEach(([src, dest]) => {
+        const el = document.getElementById(dest);
+        if (el && data[src] !== undefined) el.value = data[src];
+      });
+    } catch(e) {}
+  }
+
   calc();
 </script>
 </body>

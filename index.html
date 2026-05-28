@@ -652,6 +652,13 @@
     document.getElementById('valuationRange').textContent =
       `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
 
+
+    // Save to localStorage for compare tool sync
+    const snapshot = {};
+    [...ids, ...multipleIds].forEach(id => {
+      snapshot[id] = document.getElementById(id).value;
+    });
+    localStorage.setItem('singleScenario', JSON.stringify(snapshot));
   }
 </script>
 </body>
