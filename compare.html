@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEP Contractor Valuation — Compare</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+    }
+
+    .header {
+      max-width: 1200px;
+      margin: 0 auto 28px;
+      text-align: center;
+    }
+    .header h1 { font-size: 1.7rem; font-weight: 700; color: #1a365d; letter-spacing: -0.02em; }
+    .header p  { margin-top: 6px; color: #4a5568; font-size: 0.9rem; }
+    .nav-link {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #4299e1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .nav-link:hover { text-decoration: underline; }
+
+    /* Two-column compare grid */
+    .compare-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 800px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+
+    .scenario {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .scenario-header {
+      padding: 16px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scenario-a .scenario-header { background: #ebf4ff; border-bottom: 2px solid #bee3f8; }
+    .scenario-b .scenario-header { background: #f0fff4; border-bottom: 2px solid #9ae6b4; }
+
+    .scenario-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .scenario-a .scenario-label { color: #2b6cb0; }
+    .scenario-b .scenario-label { color: #276749; }
+
+    .scenario-name-input {
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a202c;
+      outline: none;
+      width: 100%;
+    }
+    .scenario-a .scenario-name-input::placeholder { color: #90cdf4; }
+    .scenario-b .scenario-name-input::placeholder { color: #9ae6b4; }
+
+    .scenario-body { padding: 20px; }
+
+    /* Section titles */
+    .section-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #718096;
+      margin-bottom: 12px;
+      margin-top: 18px;
+    }
+    .section-title:first-child { margin-top: 0; }
+
+    /* Fields */
+    .field { margin-bottom: 10px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+    .field .hint { font-size: 0.7rem; color: #718096; font-weight: 400; margin-left: 3px; }
+    .input-wrap { position: relative; }
+    .input-wrap .prefix {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: #718096; font-size: 0.85rem; pointer-events: none;
+    }
+    .input-wrap input[type="text"] {
+      width: 100%; padding: 7px 10px 7px 22px;
+      border: 1.5px solid #e2e8f0; border-radius: 7px;
+      font-size: 0.88rem; color: #1a202c; background: #fafafa;
+      transition: border-color 0.15s;
+    }
+    .input-wrap input[type="text"]:focus { outline: none; border-color: #4299e1; background: #fff; }
+    .input-wrap input[type="number"] {
+      width: 100%; padding: 7px 28px 7px 10px;
+      border: 1.5px solid #e2e8f0; border-radius: 7px;
+      font-size: 0.88rem; color: #1a202c; background: #fafafa;
+      transition: border-color 0.15s;
+    }
+    .input-wrap input[type="number"]:focus { outline: none; border-color: #4299e1; background: #fff; }
+    .input-wrap .suffix {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      color: #718096; font-size: 0.85rem; pointer-events: none;
+    }
+
+    /* Multiples row — 3 columns */
+    .mult-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    /* Results */
+    .results-section { margin-top: 18px; border-top: 2px solid #e2e8f0; padding-top: 16px; }
+
+    .result-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid #f7fafc; font-size: 0.83rem;
+    }
+    .result-line:last-child { border-bottom: none; }
+    .result-line .rl { color: #4a5568; }
+    .result-line .rv { font-weight: 600; color: #2d3748; }
+
+    .result-total {
+      margin-top: 10px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .scenario-a .result-total { background: linear-gradient(135deg, #1a365d, #2b6cb0); }
+    .scenario-b .result-total { background: linear-gradient(135deg, #1c4532, #276749); }
+    .result-total .rt-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.7); margin-bottom: 4px;
+    }
+    .result-total .rt-value {
+      font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;
+    }
+    .result-total .rt-range {
+      font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 4px;
+    }
+
+    /* Comparison bar */
+    .comparison-wrap {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 24px 28px;
+    }
+    .comp-title {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #718096; margin-bottom: 18px;
+    }
+    .comp-values {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .comp-val-box { text-align: center; }
+    .comp-val-box .cvl { font-size: 0.75rem; font-weight: 700; color: #718096; margin-bottom: 2px; }
+    .comp-val-box .cvv { font-size: 1.5rem; font-weight: 800; }
+    .comp-val-box.a .cvv { color: #2b6cb0; }
+    .comp-val-box.b .cvv { color: #276749; }
+    .comp-val-box .cvd {
+      font-size: 0.72rem; font-weight: 600; margin-top: 3px;
+      padding: 2px 8px; border-radius: 10px; display: inline-block;
+    }
+    .comp-val-box.a .cvd { background: #ebf4ff; color: #2b6cb0; }
+    .comp-val-box.b .cvd { background: #f0fff4; color: #276749; }
+
+    .comp-diff-box {
+      text-align: center;
+      padding: 10px 20px;
+      background: #f7fafc;
+      border-radius: 10px;
+    }
+    .comp-diff-box .cdl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #718096; }
+    .comp-diff-box .cdv { font-size: 1.1rem; font-weight: 800; color: #1a202c; margin-top: 2px; }
+    .comp-diff-box .cdp { font-size: 0.78rem; color: #718096; margin-top: 1px; }
+
+    .comp-bar-track {
+      position: relative; height: 14px; background: #e2e8f0;
+      border-radius: 7px; overflow: hidden; margin-top: 10px;
+    }
+    .comp-bar-a {
+      position: absolute; left: 0; top: 0; height: 100%;
+      background: #4299e1; border-radius: 7px 0 0 7px;
+      transition: width 0.4s ease;
+    }
+    .comp-bar-b {
+      position: absolute; right: 0; top: 0; height: 100%;
+      background: #48bb78; border-radius: 0 7px 7px 0;
+      transition: width 0.4s ease;
+    }
+    .comp-bar-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.72rem; color: #718096; margin-top: 6px;
+    }
+
+    .empty-state { text-align: center; padding: 20px 0; color: #a0aec0; font-size: 0.85rem; }
+
+    .footer {
+      max-width: 1200px; margin: 24px auto 0; text-align: center;
+      font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>MEP Contractor Valuation — Compare</h1>
+  <p>Side-by-side comparison of two valuation scenarios</p>
+  <a class="nav-link" href="index.html">← Single valuation</a>
+</div>
+
+<!-- ── Two scenario columns ── -->
+<div class="compare-grid">
+
+  <!-- SCENARIO A -->
+  <div class="scenario scenario-a">
+    <div class="scenario-header">
+      <span class="scenario-label">A</span>
+      <input class="scenario-name-input" id="nameA" type="text" placeholder="Scenario A name…" value="Scenario A" />
+    </div>
+    <div class="scenario-body">
+
+      <div class="section-title">Annual Financials</div>
+      <div class="field">
+        <label>Annual Revenue</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="revenue_a" value="1,000,000" /></div>
+      </div>
+      <div class="field">
+        <label>Net Income <span class="hint">(pre-owner comp)</span></label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="netIncome_a" value="100,000" /></div>
+      </div>
+      <div class="field">
+        <label>Owner Total Compensation</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="ownerComp_a" value="220,000" /></div>
+      </div>
+
+      <div class="section-title">Add-backs</div>
+      <div class="field">
+        <label>Depreciation &amp; Amortization</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="da_a" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>Interest Expense</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="interest_a" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>One-time Expenses</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="oneTime_a" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>Other Add-backs</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="other_a" value="10,000" /></div>
+      </div>
+
+      <div class="section-title">Multiples &amp; Weights</div>
+      <div class="mult-grid">
+        <div class="field" style="margin:0;">
+          <label>SDE ×</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeMult_a" value="3.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev ×</label>
+          <div class="input-wrap">
+            <input type="number" id="revMult_a" value="0.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI ×</label>
+          <div class="input-wrap">
+            <input type="number" id="niMult_a" value="7.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>SDE %</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeWt_a" value="33.3" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev %</label>
+          <div class="input-wrap">
+            <input type="number" id="revWt_a" value="33.3" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI %</label>
+          <div class="input-wrap">
+            <input type="number" id="niWt_a" value="33.4" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <div class="result-line"><span class="rl">SDE</span><span class="rv" id="sde_a">—</span></div>
+        <div class="result-line"><span class="rl">SDE Method</span><span class="rv" id="sdeVal_a">—</span></div>
+        <div class="result-line"><span class="rl">Revenue Method</span><span class="rv" id="revVal_a">—</span></div>
+        <div class="result-line"><span class="rl">Net Income Method</span><span class="rv" id="niVal_a">—</span></div>
+        <div class="result-total">
+          <div class="rt-label">Blended Valuation</div>
+          <div class="rt-value" id="blended_a">—</div>
+          <div class="rt-range" id="range_a"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCENARIO B -->
+  <div class="scenario scenario-b">
+    <div class="scenario-header">
+      <span class="scenario-label">B</span>
+      <input class="scenario-name-input" id="nameB" type="text" placeholder="Scenario B name…" value="Scenario B" />
+    </div>
+    <div class="scenario-body">
+
+      <div class="section-title">Annual Financials</div>
+      <div class="field">
+        <label>Annual Revenue</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="revenue_b" value="1,000,000" /></div>
+      </div>
+      <div class="field">
+        <label>Net Income <span class="hint">(pre-owner comp)</span></label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="netIncome_b" value="100,000" /></div>
+      </div>
+      <div class="field">
+        <label>Owner Total Compensation</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="ownerComp_b" value="220,000" /></div>
+      </div>
+
+      <div class="section-title">Add-backs</div>
+      <div class="field">
+        <label>Depreciation &amp; Amortization</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="da_b" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>Interest Expense</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="interest_b" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>One-time Expenses</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="oneTime_b" value="10,000" /></div>
+      </div>
+      <div class="field">
+        <label>Other Add-backs</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="other_b" value="10,000" /></div>
+      </div>
+
+      <div class="section-title">Multiples &amp; Weights</div>
+      <div class="mult-grid">
+        <div class="field" style="margin:0;">
+          <label>SDE ×</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeMult_b" value="3.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev ×</label>
+          <div class="input-wrap">
+            <input type="number" id="revMult_b" value="0.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI ×</label>
+          <div class="input-wrap">
+            <input type="number" id="niMult_b" value="7.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>SDE %</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeWt_b" value="33.3" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev %</label>
+          <div class="input-wrap">
+            <input type="number" id="revWt_b" value="33.3" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI %</label>
+          <div class="input-wrap">
+            <input type="number" id="niWt_b" value="33.4" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <div class="result-line"><span class="rl">SDE</span><span class="rv" id="sde_b">—</span></div>
+        <div class="result-line"><span class="rl">SDE Method</span><span class="rv" id="sdeVal_b">—</span></div>
+        <div class="result-line"><span class="rl">Revenue Method</span><span class="rv" id="revVal_b">—</span></div>
+        <div class="result-line"><span class="rl">Net Income Method</span><span class="rv" id="niVal_b">—</span></div>
+        <div class="result-total">
+          <div class="rt-label">Blended Valuation</div>
+          <div class="rt-value" id="blended_b">—</div>
+          <div class="rt-range" id="range_b"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── Comparison summary ── -->
+<div class="comparison-wrap">
+  <div class="comp-title">Side-by-Side Comparison</div>
+  <div class="comp-values">
+    <div class="comp-val-box a">
+      <div class="cvl" id="compLabelA">Scenario A</div>
+      <div class="cvv" id="compValA">—</div>
+      <div class="cvd" id="compBadgeA"></div>
+    </div>
+    <div class="comp-diff-box">
+      <div class="cdl">Difference</div>
+      <div class="cdv" id="compDiffVal">—</div>
+      <div class="cdp" id="compDiffPct"></div>
+    </div>
+    <div class="comp-val-box b">
+      <div class="cvl" id="compLabelB">Scenario B</div>
+      <div class="cvv" id="compValB">—</div>
+      <div class="cvd" id="compBadgeB"></div>
+    </div>
+  </div>
+  <div class="comp-bar-track">
+    <div class="comp-bar-a" id="compBarA" style="width:50%"></div>
+    <div class="comp-bar-b" id="compBarB" style="width:50%"></div>
+  </div>
+  <div class="comp-bar-labels">
+    <span id="compBarLabelA">Scenario A</span>
+    <span id="compBarLabelB">Scenario B</span>
+  </div>
+</div>
+
+<div class="footer">
+  For informational purposes only. Not financial, legal, or tax advice.<br/>
+  Consult a qualified M&amp;A advisor or business broker for a formal valuation.
+</div>
+
+<script>
+  function stripFmt(s) { return String(s).replace(/[^0-9.\-]/g, ''); }
+  function addCommas(s) {
+    const n = parseFloat(stripFmt(s));
+    if (isNaN(n)) return s;
+    return Math.round(n).toLocaleString('en-US');
+  }
+  function fmtFull(n) {
+    if (n === null || isNaN(n)) return '—';
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.abs(Math.round(n)).toLocaleString();
+  }
+  function valT(id) {
+    const v = parseFloat(stripFmt(document.getElementById(id).value));
+    return isNaN(v) ? 0 : v;
+  }
+  function valN(id, def) {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? def : v;
+  }
+
+  const textIds = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
+  ['a','b'].forEach(s => {
+    textIds.forEach(base => {
+      const el = document.getElementById(base + '_' + s);
+      if (!el) return;
+      el.addEventListener('input', calc);
+      el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
+      el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
+    });
+    ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'].forEach(base => {
+      const el = document.getElementById(base + '_' + s);
+      if (el) el.addEventListener('input', calc);
+    });
+  });
+
+  document.getElementById('nameA').addEventListener('input', calc);
+  document.getElementById('nameB').addEventListener('input', calc);
+
+  function calcScenario(s) {
+    const revenue   = valT('revenue_'   + s);
+    const netIncome = valT('netIncome_' + s);
+    const ownerComp = valT('ownerComp_' + s);
+    const da        = valT('da_'        + s);
+    const interest  = valT('interest_'  + s);
+    const oneTime   = valT('oneTime_'   + s);
+    const other     = valT('other_'     + s);
+
+    const sdeMult = valN('sdeMult_' + s, 3.0);
+    const revMult = valN('revMult_' + s, 0.5);
+    const niMult  = valN('niMult_'  + s, 7.0);
+    const sdeWt   = valN('sdeWt_'   + s, 33.3);
+    const revWt   = valN('revWt_'   + s, 33.3);
+    const niWt    = valN('niWt_'    + s, 33.4);
+    const totalWt = sdeWt + revWt + niWt;
+
+    const sde       = netIncome + ownerComp + da + interest + oneTime + other;
+    const sdeMethod = sdeMult * sde;
+    const revMethod = revMult * revenue;
+    const niMethod  = niMult  * netIncome;
+    const blended   = totalWt > 0
+      ? (sdeMethod * sdeWt + revMethod * revWt + niMethod * niWt) / totalWt
+      : 0;
+
+    document.getElementById('sde_'    + s).textContent = fmtFull(sde);
+    document.getElementById('sdeVal_' + s).textContent = fmtFull(sdeMethod) + ' (' + sdeMult.toFixed(1) + '×)';
+    document.getElementById('revVal_' + s).textContent = fmtFull(revMethod) + ' (' + revMult.toFixed(1) + '×)';
+    document.getElementById('niVal_'  + s).textContent = fmtFull(niMethod)  + ' (' + niMult.toFixed(1)  + '×)';
+    document.getElementById('blended_'+ s).textContent = fmtFull(blended);
+    document.getElementById('range_'  + s).textContent =
+      'SDE ' + sdeWt.toFixed(0) + '% · Rev ' + revWt.toFixed(0) + '% · NI ' + niWt.toFixed(0) + '%';
+
+    return blended;
+  }
+
+  function calc() {
+    const a = calcScenario('a');
+    const b = calcScenario('b');
+
+    const nameA = document.getElementById('nameA').value || 'Scenario A';
+    const nameB = document.getElementById('nameB').value || 'Scenario B';
+
+    document.getElementById('compLabelA').textContent = nameA;
+    document.getElementById('compLabelB').textContent = nameB;
+    document.getElementById('compBarLabelA').textContent = nameA;
+    document.getElementById('compBarLabelB').textContent = nameB;
+    document.getElementById('compValA').textContent = fmtFull(a);
+    document.getElementById('compValB').textContent = fmtFull(b);
+
+    const diff = Math.abs(a - b);
+    const higher = a >= b ? nameA : nameB;
+    const pct = Math.min(a, b) > 0 ? ((diff / Math.min(a, b)) * 100).toFixed(1) : '—';
+
+    document.getElementById('compDiffVal').textContent = fmtFull(diff);
+    document.getElementById('compDiffPct').textContent = pct !== '—' ? pct + '% difference' : '';
+
+    document.getElementById('compBadgeA').textContent = a > b ? 'Higher ↑' : a < b ? 'Lower' : 'Equal';
+    document.getElementById('compBadgeB').textContent = b > a ? 'Higher ↑' : b < a ? 'Lower' : 'Equal';
+
+    const total = a + b;
+    const pctA = total > 0 ? (a / total) * 100 : 50;
+    const pctB = total > 0 ? (b / total) * 100 : 50;
+    document.getElementById('compBarA').style.width = pctA.toFixed(1) + '%';
+    document.getElementById('compBarB').style.width = pctB.toFixed(1) + '%';
+  }
+
+  calc();
+</script>
+</body>
+</html>
