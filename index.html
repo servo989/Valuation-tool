@@ -493,8 +493,8 @@
       <div class="result-label">Blended Business Valuation</div>
       <div class="result-value" id="blendedValue">—</div>
       <div class="result-range" id="valuationRange"></div>
-      <div class="result-formula">
-        (2.0 × SDE × ⅓) + (0.5 × Revenue × ⅓) + (5.0 × Net Income × ⅓)
+      <div class="result-formula" id="resultFormula">
+        (3.0 × SDE × 33.3%) + (0.5 × Revenue × 33.3%) + (7.0 × Net Income × 33.4%)
       </div>
     </div>
 
@@ -662,6 +662,8 @@
     document.getElementById('sdeMethodWeight').textContent  = sdeWeight.toFixed(1) + '% weight';
     document.getElementById('revMethodWeight').textContent  = revWeight.toFixed(1) + '% weight';
     document.getElementById('niMethodWeight').textContent   = niWeight.toFixed(1)  + '% weight';
+    document.getElementById('resultFormula').textContent    =
+      `(${sdeMult.toFixed(1)} × SDE × ${sdeWeight.toFixed(1)}%) + (${revMult.toFixed(1)} × Revenue × ${revWeight.toFixed(1)}%) + (${niMult.toFixed(1)} × Net Income × ${niWeight.toFixed(1)}%)`;
     document.getElementById('blendedValue').textContent = fmtFull(blended);
     document.getElementById('valuationRange').textContent =
       `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
