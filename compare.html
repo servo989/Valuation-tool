@@ -513,18 +513,40 @@
     return isNaN(v) ? def : v;
   }
 
-  const textIds = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
+  const textBases  = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
+  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'];
+
+  // Build ordered field list for Enter-key navigation: A fields then B fields
+  const orderedFields = [];
   ['a','b'].forEach(s => {
-    textIds.forEach(base => {
+    textBases.forEach(b  => orderedFields.push(b + '_' + s));
+    numberBases.forEach(b => orderedFields.push(b + '_' + s));
+  });
+
+  ['a','b'].forEach(s => {
+    textBases.forEach(base => {
       const el = document.getElementById(base + '_' + s);
       if (!el) return;
       el.addEventListener('input', calc);
       el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
       el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
     });
-    ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'].forEach(base => {
+    numberBases.forEach(base => {
       const el = document.getElementById(base + '_' + s);
       if (el) el.addEventListener('input', calc);
+    });
+  });
+
+  // Enter key advances to next field
+  orderedFields.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const next = document.getElementById(orderedFields[(i + 1) % orderedFields.length]);
+        if (next) { next.focus(); next.select(); }
+      }
     });
   });
 
@@ -625,7 +647,8 @@
       const data = JSON.parse(saved);
       Object.entries(map).forEach(([src, dest]) => {
         const el = document.getElementById(dest);
-        if (el && data[src] !== undefined) el.value = data[src];
+        if (!el || data[src] === undefined) return;
+        el.value = el.type === 'text' ? addCommas(String(data[src])) : data[src];
       });
     } catch(e) {}
   }
