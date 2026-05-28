@@ -223,6 +223,29 @@
 
     .empty-state { text-align: center; padding: 20px 0; color: #a0aec0; font-size: 0.85rem; }
 
+    /* Voice */
+    .voice-bar {
+      max-width: 1200px; margin: -12px auto 20px;
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 12px 18px;
+    }
+    .mic-btn {
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+      border: none; background: #ebf4ff; color: #2b6cb0;
+      font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .mic-btn:hover { background: #bee3f8; }
+    .mic-btn.listening { background: #fc8181; color: #fff; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .voice-status { flex: 1; font-size: 0.82rem; color: #718096; }
+    .voice-status .vs-heard  { color: #2b6cb0; font-weight: 600; }
+    .voice-status .vs-result { color: #276749; font-weight: 600; }
+    .voice-status .vs-error  { color: #c53030; font-weight: 600; }
+    .voice-hint { font-size: 0.72rem; color: #a0aec0; }
+
     .footer {
       max-width: 1200px; margin: 24px auto 0; text-align: center;
       font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
@@ -235,6 +258,14 @@
   <h1>MEP Contractor Valuation — Compare</h1>
   <p>Side-by-side comparison of two valuation scenarios</p>
   <a class="nav-link" href="index.html">← Single valuation</a>
+</div>
+
+<div class="voice-bar">
+  <button class="mic-btn" id="micBtn" title="Click to speak a command">🎤</button>
+  <div class="voice-status" id="voiceStatus">
+    <span>Click mic and speak &nbsp;—&nbsp; </span>
+    <span class="voice-hint">e.g. "scenario A revenue 1.2 million" · "B net income 150 thousand" · "both SDE multiple 3" · "reset"</span>
+  </div>
 </div>
 
 <!-- ── Two scenario columns ── -->
@@ -654,6 +685,122 @@
   }
 
   calc();
+
+  // ── Voice Commands ──────────────────────────────────────────────
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn      = document.getElementById('micBtn');
+  const voiceStatus = document.getElementById('voiceStatus');
+
+  if (!SpeechRecognition) {
+    micBtn.disabled = true;
+    voiceStatus.innerHTML = '<span class="vs-error">Voice requires Chrome or Edge.</span>';
+  } else {
+    const recog = new SpeechRecognition();
+    recog.lang = 'en-US'; recog.continuous = true; recog.interimResults = false;
+    let listening = false;
+
+    micBtn.addEventListener('click', () => { if (listening) recog.stop(); else recog.start(); });
+    recog.onstart = () => { listening = true; micBtn.classList.add('listening'); micBtn.textContent = '⏹'; voiceStatus.innerHTML = '<span class="vs-heard">Listening…</span>'; };
+    recog.onend   = () => { listening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; };
+    recog.onerror = (e) => { if (e.error !== 'no-speech') voiceStatus.innerHTML = `<span class="vs-error">Error: ${e.error}</span>`; };
+
+    recog.onresult = (e) => {
+      let transcript = '';
+      for (let i = e.resultIndex; i < e.results.length; i++)
+        if (e.results[i].isFinal) transcript += ' ' + e.results[i][0].transcript;
+      transcript = transcript.toLowerCase().trim();
+      if (!transcript) return;
+      voiceStatus.innerHTML = `<span class="vs-heard">Heard: "${transcript}"</span>`;
+      const segments = transcript.split(/\b(?:and(?:\s+also)?|then|also|plus|next)\b/i).map(s=>s.trim()).filter(Boolean);
+      const results = [];
+      segments.forEach(seg => { const r = processCompareCommand(seg); if (r) results.push(r); });
+      setTimeout(() => {
+        voiceStatus.innerHTML = results.length
+          ? `<span class="vs-result">✓ ${results.join(' · ')}</span>`
+          : `<span class="vs-error">Not recognised: "${transcript}"</span>`;
+      }, 300);
+    };
+  }
+
+  function parseAmount(str) {
+    str = str.trim().replace(/,/g,'').replace(/dollars?/g,'').replace(/\boh\b/g,'0').trim();
+    const words = {zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000};
+    str = str.replace(/(\b\w+)\s+point\s+(\w+\b)/gi, (_,a,b) => {
+      const av = words[a.toLowerCase()] ?? parseFloat(a);
+      const bv = words[b.toLowerCase()] ?? parseFloat(b);
+      return (!isNaN(av) && !isNaN(bv)) ? `${av}.${bv}` : `${a} point ${b}`;
+    });
+    let s = str;
+    Object.entries(words).forEach(([w,v]) => { s = s.replace(new RegExp('\\b'+w+'\\b','g'), v); });
+    s = s.replace(/(\d+(?:\.\d+)?)\s*million/gi,  (_,n) => n*1_000_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*thousand/gi, (_,n) => n*1_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*hundred/gi,  (_,n) => n*100);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*[km]$/gi,    (_,n,sfx) => sfx.toLowerCase()==='m' ? n*1_000_000 : n*1_000);
+    const nums = s.match(/\d+(?:\.\d+)?/g);
+    if (!nums) return null;
+    let total = 0; nums.forEach(n => { total += parseFloat(n); });
+    return isNaN(total) || total===0 ? null : total;
+  }
+
+  function setCompareField(id, value, isNumber) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.value = isNumber ? value : Math.round(value).toLocaleString('en-US');
+    calc();
+  }
+
+  function processCompareCommand(t) {
+    if (/\breset\b/.test(t)) { location.reload(); return 'Resetting…'; }
+
+    // Detect which scenario(s) to target
+    const bothMatch  = /\bboth\b/.test(t);
+    const aMatch     = /\b(scenario\s*a|left)\b/.test(t);
+    const bMatch     = /\b(scenario\s*b|right)\b/.test(t);
+    const scenarios  = bothMatch ? ['a','b'] : bMatch ? ['b'] : ['a']; // default to A
+
+    // Strip scenario prefix from command
+    const clean = t.replace(/\b(scenario\s*[ab]|both|left|right)\b/gi,'').trim();
+
+    const fields = [
+      { aliases: ['annual revenue','total revenue','revenue'],                          base: 'revenue',    isNumber: false },
+      { aliases: ['net income multiple','ni multiple','ni mult','ni x'],                base: 'niMult',     isNumber: true  },
+      { aliases: ['net income','net profit','profit'],                                  base: 'netIncome',  isNumber: false },
+      { aliases: ['owner comp','owner compensation','total compensation','owner salary'],base: 'ownerComp',  isNumber: false },
+      { aliases: ['depreciation','d&a','d and a','amortization'],                      base: 'da',         isNumber: false },
+      { aliases: ['interest expense','interest'],                                       base: 'interest',   isNumber: false },
+      { aliases: ['one time','one-time','nonrecurring'],                                base: 'oneTime',    isNumber: false },
+      { aliases: ['other add backs','other addbacks','other'],                          base: 'other',      isNumber: false },
+      { aliases: ['sde multiple','sde mult','sde x'],                                  base: 'sdeMult',    isNumber: true  },
+      { aliases: ['revenue multiple','rev multiple','rev mult','rev x'],               base: 'revMult',    isNumber: true  },
+      { aliases: ['sde weight','sde weighting'],                                       base: 'sdeWt',      isNumber: true  },
+      { aliases: ['revenue weight','rev weight'],                                      base: 'revWt',      isNumber: true  },
+      { aliases: ['net income weight','ni weight'],                                    base: 'niWt',       isNumber: true  },
+    ];
+
+    const candidates = [];
+    fields.forEach(f => f.aliases.forEach(a => candidates.push({alias:a, base:f.base, isNumber:f.isNumber})));
+    candidates.sort((a,b) => b.alias.length - a.alias.length);
+
+    for (const {alias, base, isNumber} of candidates) {
+      const patterns = [
+        new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`,'i'),
+        new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`,'i'),
+        new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`,'i'),
+      ];
+      for (const pat of patterns) {
+        const m = clean.match(pat);
+        if (m) {
+          const amount = isNumber ? (parseFloat(m[1].trim()) || parseAmount(m[1])) : parseAmount(m[1]);
+          if (amount !== null && !isNaN(amount)) {
+            scenarios.forEach(s => setCompareField(base + '_' + s, amount, isNumber));
+            const label = scenarios.length > 1 ? 'Both' : ('Scenario ' + scenarios[0].toUpperCase());
+            return `${label} ${alias} → ${isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
+          }
+        }
+      }
+    }
+    return null;
+  }
 </script>
 </body>
 </html>
