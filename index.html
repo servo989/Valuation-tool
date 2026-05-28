@@ -721,6 +721,7 @@
   } else {
     const recog = new SpeechRecognition();
     recog.lang = 'en-US';
+    recog.continuous = true;
     recog.interimResults = false;
     recog.maxAlternatives = 3;
     let listening = false;
@@ -734,7 +735,7 @@
       listening = true;
       micBtn.classList.add('listening');
       micBtn.textContent = '⏹';
-      voiceStatus.innerHTML = '<span class="vs-heard">Listening…</span>';
+      voiceStatus.innerHTML = '<span class="vs-heard">Listening… speak one or more commands, click ⏹ when done.</span>';
     };
     recog.onend = () => {
       listening = false;
@@ -742,17 +743,40 @@
       micBtn.textContent = '🎤';
     };
     recog.onerror = (e) => {
+      if (e.error === 'no-speech') return;
       voiceStatus.innerHTML = `<span class="vs-error">Error: ${e.error}. Try again.</span>`;
     };
 
     recog.onresult = (e) => {
-      const transcript = e.results[0][0].transcript.toLowerCase().trim();
+      // Collect all new results since last processed
+      let transcript = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        if (e.results[i].isFinal) transcript += ' ' + e.results[i][0].transcript;
+      }
+      transcript = transcript.toLowerCase().trim();
+      if (!transcript) return;
+
       voiceStatus.innerHTML = `<span class="vs-heard">Heard: "${transcript}"</span>`;
-      const result = processVoiceCommand(transcript);
+
+      // Split on "and", "then", "also", "plus", "next" to handle chained commands
+      const segments = transcript.split(/\b(?:and(?:\s+also)?|then|also|plus|next)\b/i)
+        .map(s => s.trim()).filter(Boolean);
+
+      const results = [];
+      let anyFailed = false;
+      segments.forEach(seg => {
+        const r = processVoiceCommand(seg);
+        if (r) results.push(r);
+        else anyFailed = true;
+      });
+
       setTimeout(() => {
-        if (result) voiceStatus.innerHTML = `<span class="vs-result">✓ ${result}</span>`;
-        else voiceStatus.innerHTML = `<span class="vs-error">Not recognised: "${transcript}"</span>`;
-      }, 600);
+        if (results.length) {
+          voiceStatus.innerHTML = `<span class="vs-result">✓ ${results.join(' &nbsp;·&nbsp; ')}</span>`;
+        } else {
+          voiceStatus.innerHTML = `<span class="vs-error">Not recognised: "${transcript}"</span>`;
+        }
+      }, 300);
     };
   }
 
