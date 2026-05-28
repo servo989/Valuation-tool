@@ -808,6 +808,13 @@
       seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000,
       'a hundred':100,'a thousand':1000
     };
+    // Handle "X point Y" → "X.Y" (e.g. "six point five" → "6.5")
+    str = str.replace(/(\b\w+)\s+point\s+(\w+\b)/gi, (_, a, b) => {
+      const av = words[a.toLowerCase()] ?? parseFloat(a);
+      const bv = words[b.toLowerCase()] ?? parseFloat(b);
+      if (!isNaN(av) && !isNaN(bv)) return `${av}.${bv}`;
+      return `${a} point ${b}`;
+    });
     let s = str;
     Object.entries(words).forEach(([w,v]) => { s = s.replace(new RegExp('\\b'+w+'\\b','g'), v); });
 
@@ -861,24 +868,29 @@
       { aliases: ['net income weight','ni weight'],                      id: 'niWeight',      isNumber: true  },
     ];
 
-    for (const field of fields) {
-      for (const alias of field.aliases) {
-        // Match "set <alias> to <amount>" or "<alias> <amount>"
-        const patterns = [
-          new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`, 'i'),
-          new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`, 'i'),
-          new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`, 'i'),
-        ];
-        for (const pattern of patterns) {
-          const m = t.match(pattern);
-          if (m) {
-            const amount = field.isNumber
-              ? parseFloat(m[1].trim()) || parseAmount(m[1])
-              : parseAmount(m[1]);
-            if (amount !== null && !isNaN(amount)) {
-              setField(field.id, amount, field.isNumber);
-              return `Set ${alias} → ${field.isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
-            }
+    // Build a flat list of {alias, id, isNumber} sorted longest alias first
+    // so "net income multiple" is always tried before "net income"
+    const candidates = [];
+    fields.forEach(field => {
+      field.aliases.forEach(alias => candidates.push({ alias, id: field.id, isNumber: field.isNumber }));
+    });
+    candidates.sort((a, b) => b.alias.length - a.alias.length);
+
+    for (const { alias, id, isNumber } of candidates) {
+      const patterns = [
+        new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`, 'i'),
+        new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`, 'i'),
+        new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`, 'i'),
+      ];
+      for (const pattern of patterns) {
+        const m = t.match(pattern);
+        if (m) {
+          const amount = isNumber
+            ? parseFloat(m[1].trim()) || parseAmount(m[1])
+            : parseAmount(m[1]);
+          if (amount !== null && !isNaN(amount)) {
+            setField(id, amount, isNumber);
+            return `Set ${alias} → ${isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
           }
         }
       }
