@@ -307,6 +307,46 @@
       color: #4a5568;
     }
 
+    /* Voice */
+    .voice-bar {
+      max-width: 860px;
+      margin: -16px auto 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 12px 18px;
+    }
+    .mic-btn {
+      flex-shrink: 0;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: #ebf4ff;
+      color: #2b6cb0;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .mic-btn:hover { background: #bee3f8; }
+    .mic-btn.listening { background: #fc8181; color: #fff; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .voice-status {
+      flex: 1;
+      font-size: 0.82rem;
+      color: #718096;
+    }
+    .voice-status .vs-heard { color: #2b6cb0; font-weight: 600; }
+    .voice-status .vs-result { color: #276749; font-weight: 600; }
+    .voice-status .vs-error  { color: #c53030; font-weight: 600; }
+    .voice-hint {
+      font-size: 0.72rem;
+      color: #a0aec0;
+    }
+
     .footer {
       max-width: 860px;
       margin: 28px auto 0;
@@ -322,6 +362,14 @@
 <div class="header">
   <h1>MEP Contractor Valuation</h1>
   <p>Blended business valuation for mechanical, electrical &amp; plumbing contractors &nbsp;·&nbsp; <a href="compare.html" style="color:#4299e1;font-weight:600;text-decoration:none;">Compare two scenarios →</a></p>
+</div>
+
+<div class="voice-bar">
+  <button class="mic-btn" id="micBtn" title="Click to speak a command">🎤</button>
+  <div class="voice-status" id="voiceStatus">
+    <span>Click the mic and speak a command &nbsp;—&nbsp; </span>
+    <span class="voice-hint">e.g. "set revenue to 1.2 million" · "SDE multiple 3" · "owner comp 200 thousand" · "reset"</span>
+  </div>
 </div>
 
 <div class="grid">
@@ -659,6 +707,147 @@
       snapshot[id] = document.getElementById(id).value;
     });
     localStorage.setItem('singleScenario', JSON.stringify(snapshot));
+  }
+
+  // ── Voice Commands ──────────────────────────────────────────────
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const micBtn     = document.getElementById('micBtn');
+  const voiceStatus = document.getElementById('voiceStatus');
+
+  if (!SpeechRecognition) {
+    micBtn.disabled = true;
+    micBtn.title = 'Voice not supported in this browser (use Chrome)';
+    voiceStatus.innerHTML = '<span class="vs-error">Voice commands require Chrome or Edge.</span>';
+  } else {
+    const recog = new SpeechRecognition();
+    recog.lang = 'en-US';
+    recog.interimResults = false;
+    recog.maxAlternatives = 3;
+    let listening = false;
+
+    micBtn.addEventListener('click', () => {
+      if (listening) { recog.stop(); return; }
+      recog.start();
+    });
+
+    recog.onstart = () => {
+      listening = true;
+      micBtn.classList.add('listening');
+      micBtn.textContent = '⏹';
+      voiceStatus.innerHTML = '<span class="vs-heard">Listening…</span>';
+    };
+    recog.onend = () => {
+      listening = false;
+      micBtn.classList.remove('listening');
+      micBtn.textContent = '🎤';
+    };
+    recog.onerror = (e) => {
+      voiceStatus.innerHTML = `<span class="vs-error">Error: ${e.error}. Try again.</span>`;
+    };
+
+    recog.onresult = (e) => {
+      const transcript = e.results[0][0].transcript.toLowerCase().trim();
+      voiceStatus.innerHTML = `<span class="vs-heard">Heard: "${transcript}"</span>`;
+      const result = processVoiceCommand(transcript);
+      setTimeout(() => {
+        if (result) voiceStatus.innerHTML = `<span class="vs-result">✓ ${result}</span>`;
+        else voiceStatus.innerHTML = `<span class="vs-error">Not recognised: "${transcript}"</span>`;
+      }, 600);
+    };
+  }
+
+  function parseAmount(str) {
+    // Normalise: "one point five million" → numeric
+    str = str.trim()
+      .replace(/,/g, '')
+      .replace(/dollars?/g, '')
+      .replace(/\boh\b/g, '0')
+      .trim();
+
+    // word-to-digit map for common amounts
+    const words = {
+      zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,
+      eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,
+      eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,
+      seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000,
+      'a hundred':100,'a thousand':1000
+    };
+    let s = str;
+    Object.entries(words).forEach(([w,v]) => { s = s.replace(new RegExp('\\b'+w+'\\b','g'), v); });
+
+    // Handle "X million / thousand / hundred" after word replacement
+    s = s.replace(/(\d+(?:\.\d+)?)\s*million/gi,  (_, n) => n * 1_000_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*thousand/gi, (_, n) => n * 1_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*hundred/gi,  (_, n) => n * 100);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*[km]$/gi,    (_, n, sfx) => sfx.toLowerCase() === 'm' ? n*1_000_000 : n*1_000);
+
+    // Try to evaluate simple addition chains like "1000000 500000" → last number
+    const nums = s.match(/\d+(?:\.\d+)?/g);
+    if (!nums) return null;
+    // If multiple numbers, multiply adjacent pairs separated by nothing (e.g. "800 1000" after replacement)
+    let total = 0;
+    nums.forEach(n => { total += parseFloat(n); });
+    return isNaN(total) || total === 0 ? null : total;
+  }
+
+  function setField(id, value, isNumber) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (isNumber) {
+      el.value = value;
+    } else {
+      el.value = Math.round(value).toLocaleString('en-US');
+    }
+    calc();
+  }
+
+  function processVoiceCommand(t) {
+    // Reset
+    if (/\breset\b/.test(t)) {
+      location.reload();
+      return 'Resetting to defaults…';
+    }
+
+    // Map of field aliases → { id, isNumber }
+    const fields = [
+      { aliases: ['revenue','annual revenue','total revenue'],            id: 'revenue',       isNumber: false },
+      { aliases: ['net income','net profit','profit'],                    id: 'netIncome',     isNumber: false },
+      { aliases: ['owner comp','owner compensation','total compensation','owner salary'], id: 'ownerComp', isNumber: false },
+      { aliases: ['depreciation','d&a','d and a','d & a','amortization'], id: 'da',           isNumber: false },
+      { aliases: ['interest','interest expense'],                         id: 'interest',      isNumber: false },
+      { aliases: ['one time','one-time','one time expenses','nonrecurring','non recurring'], id: 'oneTime', isNumber: false },
+      { aliases: ['other add backs','other addbacks','other'],            id: 'otherAddbacks', isNumber: false },
+      { aliases: ['sde multiple','sde mult','sde x'],                    id: 'sdeMultiple',   isNumber: true  },
+      { aliases: ['revenue multiple','rev multiple','rev mult','rev x'], id: 'revMultiple',   isNumber: true  },
+      { aliases: ['net income multiple','ni multiple','ni mult','ni x'], id: 'niMultiple',    isNumber: true  },
+      { aliases: ['sde weight','sde weighting'],                         id: 'sdeWeight',     isNumber: true  },
+      { aliases: ['revenue weight','rev weight'],                        id: 'revWeight',     isNumber: true  },
+      { aliases: ['net income weight','ni weight'],                      id: 'niWeight',      isNumber: true  },
+    ];
+
+    for (const field of fields) {
+      for (const alias of field.aliases) {
+        // Match "set <alias> to <amount>" or "<alias> <amount>"
+        const patterns = [
+          new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`, 'i'),
+          new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`, 'i'),
+          new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`, 'i'),
+        ];
+        for (const pattern of patterns) {
+          const m = t.match(pattern);
+          if (m) {
+            const amount = field.isNumber
+              ? parseFloat(m[1].trim()) || parseAmount(m[1])
+              : parseAmount(m[1]);
+            if (amount !== null && !isNaN(amount)) {
+              setField(field.id, amount, field.isNumber);
+              return `Set ${alias} → ${field.isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
+            }
+          }
+        }
+      }
+    }
+    return null;
   }
 </script>
 </body>
