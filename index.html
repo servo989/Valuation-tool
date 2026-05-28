@@ -563,7 +563,19 @@
 <script>
   const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
   const multipleIds = ['sdeMultiple','revMultiple','niMultiple','sdeWeight','revWeight','niWeight'];
+  const allFieldIds = [...ids, ...multipleIds];
   multipleIds.forEach(id => document.getElementById(id).addEventListener('input', calc));
+
+  // Enter key moves to next field
+  allFieldIds.forEach((id, i) => {
+    document.getElementById(id).addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const next = document.getElementById(allFieldIds[(i + 1) % allFieldIds.length]);
+        if (next) { next.focus(); next.select(); }
+      }
+    });
+  });
 
   function stripFmt(s) { return s.replace(/[^0-9.\-]/g, ''); }
   function addCommas(s) {
