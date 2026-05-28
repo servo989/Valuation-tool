@@ -339,7 +339,7 @@
       <label>Annual Revenue</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="revenue" placeholder="0" min="0" step="1000" value="800000" />
+        <input type="text" id="revenue" placeholder="0" value="800,000" />
       </div>
     </div>
 
@@ -347,7 +347,7 @@
       <label>Net Income <span class="hint">(after all expenses, pre-owner comp)</span></label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="netIncome" placeholder="0" step="1000" value="250000" />
+        <input type="text" id="netIncome" placeholder="0" value="100,000" />
       </div>
     </div>
 
@@ -355,7 +355,7 @@
       <label>Owner Total Compensation <span class="hint">(salary + benefits + perks)</span></label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="ownerComp" placeholder="0" min="0" step="1000" />
+        <input type="text" id="ownerComp" placeholder="0" value="150,000" />
       </div>
     </div>
   </div>
@@ -368,7 +368,7 @@
       <label>Depreciation &amp; Amortization</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="da" placeholder="0" min="0" step="1000" />
+        <input type="text" id="da" placeholder="0" />
       </div>
     </div>
 
@@ -376,7 +376,7 @@
       <label>Interest Expense</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="interest" placeholder="0" min="0" step="1000" />
+        <input type="text" id="interest" placeholder="0" />
       </div>
     </div>
 
@@ -384,7 +384,7 @@
       <label>One-time / Non-recurring Expenses</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="oneTime" placeholder="0" min="0" step="1000" />
+        <input type="text" id="oneTime" placeholder="0" />
       </div>
     </div>
 
@@ -392,7 +392,7 @@
       <label>Other Add-backs</label>
       <div class="input-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="otherAddbacks" placeholder="0" step="1000" />
+        <input type="text" id="otherAddbacks" placeholder="0" />
       </div>
     </div>
   </div>
@@ -475,7 +475,20 @@
 
 <script>
   const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
-  ids.forEach(id => document.getElementById(id).addEventListener('input', calc));
+
+  function stripFmt(s) { return s.replace(/[^0-9.\-]/g, ''); }
+  function addCommas(s) {
+    const n = parseFloat(stripFmt(s));
+    if (isNaN(n)) return s;
+    return Math.round(n).toLocaleString('en-US');
+  }
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', calc);
+    el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
+    el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
+  });
   calc();
 
   function fmt(n) {
@@ -495,7 +508,7 @@
   }
 
   function val(id) {
-    const v = parseFloat(document.getElementById(id).value);
+    const v = parseFloat(stripFmt(document.getElementById(id).value));
     return isNaN(v) ? 0 : v;
   }
 
