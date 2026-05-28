@@ -323,9 +323,9 @@
   <h1>MEP Contractor Valuation Tool</h1>
   <p>Blended business valuation for mechanical, electrical &amp; plumbing contractors</p>
   <div class="badge-row">
-    <span class="badge">2.0× SDE &nbsp;·&nbsp; ⅓ weight</span>
-    <span class="badge">0.5× Revenue &nbsp;·&nbsp; ⅓ weight</span>
-    <span class="badge">5.0× Net Income &nbsp;·&nbsp; ⅓ weight</span>
+    <span class="badge" id="badgeSde">3.0× SDE · 33.3% weight</span>
+    <span class="badge" id="badgeRev">0.5× Revenue · 33.3% weight</span>
+    <span class="badge" id="badgeNi">7.0× Net Income · 33.4% weight</span>
   </div>
 </div>
 
@@ -662,6 +662,9 @@
     document.getElementById('sdeMethodWeight').textContent  = sdeWeight.toFixed(1) + '% weight';
     document.getElementById('revMethodWeight').textContent  = revWeight.toFixed(1) + '% weight';
     document.getElementById('niMethodWeight').textContent   = niWeight.toFixed(1)  + '% weight';
+    document.getElementById('badgeSde').textContent = `${sdeMult.toFixed(1)}× SDE · ${sdeWeight.toFixed(1)}% weight`;
+    document.getElementById('badgeRev').textContent = `${revMult.toFixed(1)}× Revenue · ${revWeight.toFixed(1)}% weight`;
+    document.getElementById('badgeNi').textContent  = `${niMult.toFixed(1)}× Net Income · ${niWeight.toFixed(1)}% weight`;
     document.getElementById('resultFormula').textContent    =
       `(${sdeMult.toFixed(1)} × SDE × ${sdeWeight.toFixed(1)}%) + (${revMult.toFixed(1)} × Revenue × ${revWeight.toFixed(1)}%) + (${niMult.toFixed(1)} × Net Income × ${niWeight.toFixed(1)}%)`;
     document.getElementById('blendedValue').textContent = fmtFull(blended);
