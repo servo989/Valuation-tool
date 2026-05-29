@@ -543,7 +543,7 @@
 
 
     <div class="multiples-note">
-      <strong>Methodology:</strong> This blended valuation equally weights (33% each) three methods:
+      <strong>Methodology:</strong> This blended valuation weights three methods — <span id="methodWeightsNote">SDE 40%, Revenue 40%, Net Income 20%</span> —
       the <strong>SDE method</strong> (2.0× — standard for profitable MEP contractors with strong
       owner involvement), the <strong>Revenue method</strong> (0.5× — benchmarks against industry
       revenue norms), and the <strong>Net Income method</strong> (5.0× — a P/E-style earnings
@@ -720,6 +720,8 @@
     document.getElementById('resultFormula').textContent    =
       `(${sdeMult.toFixed(1)} × SDE × ${sdeWeight.toFixed(1)}%) + (${revMult.toFixed(1)} × Revenue × ${revWeight.toFixed(1)}%) + (${niMult.toFixed(1)} × Net Income × ${niWeight.toFixed(1)}%)`;
     document.getElementById('blendedValue').textContent = fmtFull(blended);
+    document.getElementById('methodWeightsNote').textContent =
+      `SDE ${Math.round(sdeWeight)}%, Revenue ${Math.round(revWeight)}%, Net Income ${Math.round(niWeight)}%`;
     document.getElementById('valuationRange').textContent =
       `Indicative range: ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
 
