@@ -245,6 +245,10 @@
     .rt-formula { margin-top: 8px; font-size: 0.68rem; opacity: 0.65; background: rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; display: inline-block; color: #fff; }
     .sde-summary-line { font-size: 0.78rem; color: #4a5568; margin-bottom: 8px; padding: 5px 10px; background: #f7fafc; border-radius: 6px; }
     .sde-summary-line span { font-weight: 700; color: #2d3748; }
+    .comp-toggle { font-size: 0.7rem; color: #4299e1; cursor: pointer; background: none; border: none; padding: 4px 0 0; font-weight: 600; display: block; }
+    .comp-toggle:hover { color: #2b6cb0; }
+    .comp-breakdown { display: none; margin-top: 6px; padding: 8px 10px; background: #ebf4ff; border: 1px solid #bee3f8; border-radius: 7px; font-size: 0.72rem; color: #2d3748; line-height: 1.9; }
+    .comp-breakdown.open { display: block; }
 
     /* Voice */
     .voice-bar {
@@ -326,6 +330,18 @@
         <label>Owner Total Compensation</label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="ownerComp_a" value="220,000" /></div>
+        <button class="comp-toggle" onclick="toggleCompBreakdown('a')">▸ What to include?</button>
+        <div class="comp-breakdown" id="compBreakdown_a">
+          <strong>What counts as Owner Total Compensation:</strong><br/>
+          · Salary / Owner Draw (W-2 wages or draws taken)<br/>
+          · Payroll Taxes (employer-side FICA on owner salary)<br/>
+          · Health, Dental &amp; Vision Insurance premiums<br/>
+          · Vehicle — lease, payments, insurance &amp; fuel<br/>
+          · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+          · Life / Disability Insurance premiums<br/>
+          · Cell phone &amp; personal technology devices<br/>
+          · Club memberships, travel, meals &amp; other perks
+        </div>
       </div>
 
       <div class="section-title">Add-backs</div>
@@ -453,6 +469,18 @@
         <label>Owner Total Compensation</label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="ownerComp_b" value="220,000" /></div>
+        <button class="comp-toggle" onclick="toggleCompBreakdown('b')">▸ What to include?</button>
+        <div class="comp-breakdown" id="compBreakdown_b">
+          <strong>What counts as Owner Total Compensation:</strong><br/>
+          · Salary / Owner Draw (W-2 wages or draws taken)<br/>
+          · Payroll Taxes (employer-side FICA on owner salary)<br/>
+          · Health, Dental &amp; Vision Insurance premiums<br/>
+          · Vehicle — lease, payments, insurance &amp; fuel<br/>
+          · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+          · Life / Disability Insurance premiums<br/>
+          · Cell phone &amp; personal technology devices<br/>
+          · Club memberships, travel, meals &amp; other perks
+        </div>
       </div>
 
       <div class="section-title">Add-backs</div>
@@ -564,6 +592,13 @@
 </div>
 
 <script>
+  function toggleCompBreakdown(s) {
+    const el = document.getElementById('compBreakdown_' + s);
+    const btn = el.previousElementSibling;
+    el.classList.toggle('open');
+    btn.textContent = el.classList.contains('open') ? '▾ What to include?' : '▸ What to include?';
+  }
+
   function stripFmt(s) { return String(s).replace(/[^0-9.\-]/g, ''); }
   function addCommas(s) {
     const n = parseFloat(stripFmt(s));

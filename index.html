@@ -286,6 +286,20 @@
       font-size: 0.9rem;
     }
 
+    /* Compensation breakdown */
+    .comp-toggle {
+      font-size: 0.73rem; color: #4299e1; cursor: pointer;
+      background: none; border: none; padding: 4px 0 0;
+      font-weight: 600; display: block;
+    }
+    .comp-toggle:hover { color: #2b6cb0; }
+    .comp-breakdown {
+      display: none; margin-top: 8px; padding: 10px 12px;
+      background: #ebf4ff; border: 1px solid #bee3f8;
+      border-radius: 8px; font-size: 0.75rem; color: #2d3748; line-height: 1.9;
+    }
+    .comp-breakdown.open { display: block; }
+
     /* Adjustments toggle */
     .toggle-row {
       display: flex;
@@ -415,6 +429,19 @@
       <div class="input-wrap">
         <span class="prefix">$</span>
         <input type="text" id="ownerComp" placeholder="0" value="220,000" />
+      </div>
+      <button class="comp-toggle" onclick="toggleCompBreakdown()">▸ What to include?</button>
+      <div class="comp-breakdown" id="compBreakdown">
+        <strong>What counts as Owner Total Compensation:</strong><br/>
+        · Salary / Owner Draw (W-2 wages or draws taken)<br/>
+        · Payroll Taxes (employer-side FICA on owner salary)<br/>
+        · Health, Dental &amp; Vision Insurance premiums<br/>
+        · Vehicle — lease, payments, insurance &amp; fuel<br/>
+        · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+        · Life / Disability Insurance premiums<br/>
+        · Cell phone &amp; personal technology devices<br/>
+        · Club memberships, travel, meals &amp; other perks<br/><br/>
+        <em>Add-backs (opposite card) cover business adjustments like depreciation, interest &amp; one-time expenses — not owner-specific.</em>
       </div>
     </div>
   </div>
@@ -577,6 +604,13 @@
 </div>
 
 <script>
+  function toggleCompBreakdown() {
+    const el = document.getElementById('compBreakdown');
+    const btn = el.previousElementSibling;
+    el.classList.toggle('open');
+    btn.textContent = el.classList.contains('open') ? '▾ What to include?' : '▸ What to include?';
+  }
+
   const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
   const multipleIds = ['sdeMultiple','revMultiple','niMultiple','sdeWeight','revWeight','niWeight'];
   const allFieldIds = [...ids, ...multipleIds];
