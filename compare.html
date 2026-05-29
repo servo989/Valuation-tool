@@ -488,27 +488,6 @@
   </div>
 </div>
 
-<!-- ── Comparison summary ── -->
-<div class="comparison-wrap">
-  <div class="comp-title">Side-by-Side Comparison</div>
-  <div class="comp-values">
-    <div class="comp-val-box a">
-      <div class="cvl" id="compLabelA">Scenario A</div>
-      <div class="cvv" id="compValA">—</div>
-      <div class="cvd" id="compBadgeA"></div>
-    </div>
-    <div class="comp-diff-box">
-      <div class="cdl">Difference</div>
-      <div class="cdv" id="compDiffVal">—</div>
-      <div class="cdp" id="compDiffPct"></div>
-    </div>
-    <div class="comp-val-box b">
-      <div class="cvl" id="compLabelB">Scenario B</div>
-      <div class="cvv" id="compValB">—</div>
-      <div class="cvd" id="compBadgeB"></div>
-    </div>
-  </div>
-</div>
 
 <div class="footer">
   For informational purposes only. Not financial, legal, or tax advice.<br/>
@@ -619,20 +598,6 @@
     const nameA = document.getElementById('nameA').value || 'Scenario A';
     const nameB = document.getElementById('nameB').value || 'Scenario B';
 
-    document.getElementById('compLabelA').textContent = nameA;
-    document.getElementById('compLabelB').textContent = nameB;
-    document.getElementById('compValA').textContent = fmtFull(a);
-    document.getElementById('compValB').textContent = fmtFull(b);
-
-    const diff = Math.abs(a - b);
-    const higher = a >= b ? nameA : nameB;
-    const pct = Math.min(a, b) > 0 ? ((diff / Math.min(a, b)) * 100).toFixed(1) : '—';
-
-    document.getElementById('compDiffVal').textContent = fmtFull(diff);
-    document.getElementById('compDiffPct').textContent = pct !== '—' ? pct + '% difference' : '';
-
-    document.getElementById('compBadgeA').textContent = a > b ? 'Higher ↑' : a < b ? 'Lower' : 'Equal';
-    document.getElementById('compBadgeB').textContent = b > a ? 'Higher ↑' : b < a ? 'Lower' : 'Equal';
 
 
     // Keep single scenario page in sync with Scenario A
