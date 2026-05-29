@@ -268,6 +268,14 @@
     .voice-status .vs-result { color: #276749; font-weight: 600; }
     .voice-status .vs-error  { color: #c53030; font-weight: 600; }
     .voice-hint { font-size: 0.72rem; color: #a0aec0; }
+    .save-default-btn {
+      flex-shrink: 0; padding: 7px 14px; border-radius: 8px;
+      border: 1.5px solid #e2e8f0; background: #f7fafc; color: #4a5568;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; white-space: nowrap;
+    }
+    .save-default-btn:hover { background: #ebf4ff; border-color: #bee3f8; color: #2b6cb0; }
+    .save-default-btn.saved { background: #f0fff4; border-color: #9ae6b4; color: #276749; }
 
     .footer {
       max-width: 1200px; margin: 24px auto 0; text-align: center;
@@ -299,6 +307,7 @@
     <div class="scenario-header">
       <span class="scenario-label">A</span>
       <input class="scenario-name-input" id="nameA" type="text" placeholder="Scenario A name…" value="Scenario A" />
+      <button class="save-default-btn" id="saveDefaultBtnA" onclick="saveAsDefault('a')">Save as Default</button>
     </div>
     <div class="scenario-body">
 
@@ -425,6 +434,7 @@
     <div class="scenario-header">
       <span class="scenario-label">B</span>
       <input class="scenario-name-input" id="nameB" type="text" placeholder="Scenario B name…" value="Scenario B" />
+      <button class="save-default-btn" id="saveDefaultBtnB" onclick="saveAsDefault('b')">Save as Default</button>
     </div>
     <div class="scenario-body">
 
@@ -700,6 +710,30 @@
   }
 
   calc();
+
+  function saveAsDefault(s) {
+    const snapshot = {};
+    textBases.forEach(b  => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
+    numberBases.forEach(b => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
+    localStorage.setItem('userDefaults' + s.toUpperCase(), JSON.stringify(snapshot));
+    // Also sync to singleScenario if saving scenario A
+    if (s === 'a') {
+      const mapBack = {
+        revenue: 'revenue', netIncome: 'netIncome', ownerComp: 'ownerComp',
+        da: 'da', interest: 'interest', oneTime: 'oneTime', other: 'otherAddbacks',
+        sdeMult: 'sdeMultiple', revMult: 'revMultiple', niMult: 'niMultiple',
+        sdeWt: 'sdeWeight', revWt: 'revWeight', niWt: 'niWeight'
+      };
+      const single = {};
+      Object.entries(mapBack).forEach(([src, dest]) => { if (snapshot[src] !== undefined) single[dest] = snapshot[src]; });
+      localStorage.setItem('userDefaults', JSON.stringify(single));
+      localStorage.setItem('singleScenario', JSON.stringify(single));
+    }
+    const btn = document.getElementById('saveDefaultBtn' + s.toUpperCase());
+    btn.textContent = '✓ Saved!';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Save as Default'; btn.classList.remove('saved'); }, 2000);
+  }
 
   // ── Voice Commands ──────────────────────────────────────────────
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;

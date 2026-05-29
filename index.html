@@ -346,6 +346,21 @@
       font-size: 0.72rem;
       color: #a0aec0;
     }
+    .save-default-btn {
+      flex-shrink: 0;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #e2e8f0;
+      background: #f7fafc;
+      color: #4a5568;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .save-default-btn:hover { background: #ebf4ff; border-color: #bee3f8; color: #2b6cb0; }
+    .save-default-btn.saved { background: #f0fff4; border-color: #9ae6b4; color: #276749; }
 
     .footer {
       max-width: 860px;
@@ -370,6 +385,7 @@
     <span>Click the mic and speak a command &nbsp;—&nbsp; </span>
     <span class="voice-hint">Say one command or chain multiple with "and" / "then" — e.g. "set revenue to 1.2 million and net income to 150 thousand then SDE multiple 3"</span>
   </div>
+  <button class="save-default-btn" id="saveDefaultBtn" onclick="saveAsDefault()">Save as Default</button>
 </div>
 
 <div class="grid">
@@ -591,7 +607,15 @@
     el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
   });
 
-  // Load from localStorage if available (keeps in sync with compare page)
+  // Load user-saved defaults first, then override with cross-page sync data
+  const userDefaults = localStorage.getItem('userDefaults');
+  if (userDefaults) {
+    try {
+      const data = JSON.parse(userDefaults);
+      ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+      multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+    } catch(e) {}
+  }
   const saved = localStorage.getItem('singleScenario');
   if (saved) {
     try {
@@ -599,6 +623,17 @@
       ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
       multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
     } catch(e) {}
+  }
+
+  function saveAsDefault() {
+    const snapshot = {};
+    [...ids, ...multipleIds].forEach(id => { snapshot[id] = document.getElementById(id).value; });
+    localStorage.setItem('userDefaults', JSON.stringify(snapshot));
+    localStorage.setItem('singleScenario', JSON.stringify(snapshot));
+    const btn = document.getElementById('saveDefaultBtn');
+    btn.textContent = '✓ Saved!';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Save as Default'; btn.classList.remove('saved'); }, 2000);
   }
 
   calc();
@@ -860,6 +895,14 @@
   function processVoiceCommand(t) {
     // Reset
     if (/\breset\b/.test(t)) {
+      const ud = localStorage.getItem('userDefaults');
+      if (ud) {
+        const data = JSON.parse(ud);
+        ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+        multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
+        calc();
+        return 'Reset to your saved defaults.';
+      }
       location.reload();
       return 'Resetting to defaults…';
     }
