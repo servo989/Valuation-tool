@@ -508,14 +508,6 @@
       <div class="cvd" id="compBadgeB"></div>
     </div>
   </div>
-  <div class="comp-bar-track">
-    <div class="comp-bar-a" id="compBarA" style="width:50%"></div>
-    <div class="comp-bar-b" id="compBarB" style="width:50%"></div>
-  </div>
-  <div class="comp-bar-labels">
-    <span id="compBarLabelA">Scenario A</span>
-    <span id="compBarLabelB">Scenario B</span>
-  </div>
 </div>
 
 <div class="footer">
@@ -629,8 +621,6 @@
 
     document.getElementById('compLabelA').textContent = nameA;
     document.getElementById('compLabelB').textContent = nameB;
-    document.getElementById('compBarLabelA').textContent = nameA;
-    document.getElementById('compBarLabelB').textContent = nameB;
     document.getElementById('compValA').textContent = fmtFull(a);
     document.getElementById('compValB').textContent = fmtFull(b);
 
@@ -644,11 +634,6 @@
     document.getElementById('compBadgeA').textContent = a > b ? 'Higher ↑' : a < b ? 'Lower' : 'Equal';
     document.getElementById('compBadgeB').textContent = b > a ? 'Higher ↑' : b < a ? 'Lower' : 'Equal';
 
-    const total = a + b;
-    const pctA = total > 0 ? (a / total) * 100 : 50;
-    const pctB = total > 0 ? (b / total) * 100 : 50;
-    document.getElementById('compBarA').style.width = pctA.toFixed(1) + '%';
-    document.getElementById('compBarB').style.width = pctB.toFixed(1) + '%';
 
     // Keep single scenario page in sync with Scenario A
     const mapBack = {
