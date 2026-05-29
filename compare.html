@@ -662,7 +662,7 @@
     document.getElementById('revWtBadge_'+ s).textContent  = revWt.toFixed(0) + '% weight';
     document.getElementById('niWtBadge_' + s).textContent  = niWt.toFixed(0)  + '% weight';
     document.getElementById('blended_'   + s).textContent = fmtFull(blended);
-    document.getElementById('range_'     + s).textContent = `Indicative range: ${fmtFull(blended * 0.85)} – ${fmtFull(blended * 1.15)}`;
+    document.getElementById('range_'     + s).textContent = `Indicative range (+/- 15%): ${fmtFull(blended * 0.85)} – ${fmtFull(blended * 1.15)}`;
     document.getElementById('formula_'   + s).textContent = `(${sdeMult.toFixed(1)} × SDE × ${sdeWt.toFixed(0)}%) + (${revMult.toFixed(1)} × Revenue × ${revWt.toFixed(0)}%) + (${niMult.toFixed(1)} × Net Income × ${niWt.toFixed(0)}%)`;
 
     return blended;
