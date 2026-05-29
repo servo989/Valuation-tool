@@ -223,6 +223,29 @@
 
     .empty-state { text-align: center; padding: 20px 0; color: #a0aec0; font-size: 0.85rem; }
 
+    /* Method summary boxes */
+    .method-grid-compare { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .method-box { border-radius: 10px; padding: 12px; }
+    .method-box.sde-box { background: #ebf4ff; border: 1.5px solid #bee3f8; }
+    .method-box.rev-box { background: #f0fff4; border: 1.5px solid #9ae6b4; }
+    .method-box.ni-box  { background: #faf5ff; border: 1.5px solid #d6bcfa; }
+    .method-box .method-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+    .method-box.sde-box .method-label { color: #2b6cb0; }
+    .method-box.rev-box .method-label { color: #276749; }
+    .method-box.ni-box  .method-label { color: #6b46c1; }
+    .method-box .method-formula { font-size: 0.68rem; color: #718096; margin-bottom: 6px; }
+    .method-box .method-value { font-size: 1rem; font-weight: 700; }
+    .method-box.sde-box .method-value { color: #2b6cb0; }
+    .method-box.rev-box .method-value { color: #276749; }
+    .method-box.ni-box  .method-value { color: #6b46c1; }
+    .method-box .method-weight { margin-top: 4px; font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 10px; display: inline-block; }
+    .method-box.sde-box .method-weight { background: #bee3f8; color: #2b6cb0; }
+    .method-box.rev-box .method-weight { background: #9ae6b4; color: #276749; }
+    .method-box.ni-box  .method-weight { background: #d6bcfa; color: #6b46c1; }
+    .rt-formula { margin-top: 8px; font-size: 0.68rem; opacity: 0.65; background: rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; display: inline-block; color: #fff; }
+    .sde-summary-line { font-size: 0.78rem; color: #4a5568; margin-bottom: 8px; padding: 5px 10px; background: #f7fafc; border-radius: 6px; }
+    .sde-summary-line span { font-weight: 700; color: #2d3748; }
+
     /* Voice */
     .voice-bar {
       max-width: 1200px; margin: -12px auto 20px;
@@ -365,14 +388,32 @@
       </div>
 
       <div class="results-section">
-        <div class="result-line"><span class="rl">SDE</span><span class="rv" id="sde_a">—</span></div>
-        <div class="result-line"><span class="rl">SDE Method</span><span class="rv" id="sdeVal_a">—</span></div>
-        <div class="result-line"><span class="rl">Revenue Method</span><span class="rv" id="revVal_a">—</span></div>
-        <div class="result-line"><span class="rl">Net Income Method</span><span class="rv" id="niVal_a">—</span></div>
+        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_a">—</span></div>
+        <div class="method-grid-compare">
+          <div class="method-box sde-box">
+            <div class="method-label">SDE Method</div>
+            <div class="method-formula" id="sdeFormula_a">2.5× SDE</div>
+            <div class="method-value" id="sdeVal_a">—</div>
+            <div class="method-weight" id="sdeWtBadge_a">40% weight</div>
+          </div>
+          <div class="method-box rev-box">
+            <div class="method-label">Revenue Method</div>
+            <div class="method-formula" id="revFormula_a">0.5× Revenue</div>
+            <div class="method-value" id="revVal_a">—</div>
+            <div class="method-weight" id="revWtBadge_a">40% weight</div>
+          </div>
+          <div class="method-box ni-box">
+            <div class="method-label">Net Income Method</div>
+            <div class="method-formula" id="niFormula_a">7.0× Net Income</div>
+            <div class="method-value" id="niVal_a">—</div>
+            <div class="method-weight" id="niWtBadge_a">20% weight</div>
+          </div>
+        </div>
         <div class="result-total">
           <div class="rt-label">Blended Valuation</div>
           <div class="rt-value" id="blended_a">—</div>
           <div class="rt-range" id="range_a"></div>
+          <div class="rt-formula" id="formula_a"></div>
         </div>
       </div>
 
@@ -473,14 +514,32 @@
       </div>
 
       <div class="results-section">
-        <div class="result-line"><span class="rl">SDE</span><span class="rv" id="sde_b">—</span></div>
-        <div class="result-line"><span class="rl">SDE Method</span><span class="rv" id="sdeVal_b">—</span></div>
-        <div class="result-line"><span class="rl">Revenue Method</span><span class="rv" id="revVal_b">—</span></div>
-        <div class="result-line"><span class="rl">Net Income Method</span><span class="rv" id="niVal_b">—</span></div>
+        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_b">—</span></div>
+        <div class="method-grid-compare">
+          <div class="method-box sde-box">
+            <div class="method-label">SDE Method</div>
+            <div class="method-formula" id="sdeFormula_b">2.5× SDE</div>
+            <div class="method-value" id="sdeVal_b">—</div>
+            <div class="method-weight" id="sdeWtBadge_b">40% weight</div>
+          </div>
+          <div class="method-box rev-box">
+            <div class="method-label">Revenue Method</div>
+            <div class="method-formula" id="revFormula_b">0.5× Revenue</div>
+            <div class="method-value" id="revVal_b">—</div>
+            <div class="method-weight" id="revWtBadge_b">40% weight</div>
+          </div>
+          <div class="method-box ni-box">
+            <div class="method-label">Net Income Method</div>
+            <div class="method-formula" id="niFormula_b">7.0× Net Income</div>
+            <div class="method-value" id="niVal_b">—</div>
+            <div class="method-weight" id="niWtBadge_b">20% weight</div>
+          </div>
+        </div>
         <div class="result-total">
           <div class="rt-label">Blended Valuation</div>
           <div class="rt-value" id="blended_b">—</div>
           <div class="rt-range" id="range_b"></div>
+          <div class="rt-formula" id="formula_b"></div>
         </div>
       </div>
 
@@ -580,13 +639,19 @@
       ? (sdeMethod * sdeWt + revMethod * revWt + niMethod * niWt) / totalWt
       : 0;
 
-    document.getElementById('sde_'    + s).textContent = fmtFull(sde);
-    document.getElementById('sdeVal_' + s).textContent = fmtFull(sdeMethod) + ' (' + sdeMult.toFixed(1) + '×)';
-    document.getElementById('revVal_' + s).textContent = fmtFull(revMethod) + ' (' + revMult.toFixed(1) + '×)';
-    document.getElementById('niVal_'  + s).textContent = fmtFull(niMethod)  + ' (' + niMult.toFixed(1)  + '×)';
-    document.getElementById('blended_'+ s).textContent = fmtFull(blended);
-    document.getElementById('range_'  + s).textContent =
-      'SDE ' + sdeWt.toFixed(0) + '% · Rev ' + revWt.toFixed(0) + '% · NI ' + niWt.toFixed(0) + '%';
+    document.getElementById('sde_'        + s).textContent = fmtFull(sde);
+    document.getElementById('sdeFormula_' + s).textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
+    document.getElementById('revFormula_' + s).textContent = revMult.toFixed(1) + '× Annual Revenue';
+    document.getElementById('niFormula_'  + s).textContent = niMult.toFixed(1)  + '× Net Income';
+    document.getElementById('sdeVal_'     + s).textContent = fmtFull(sdeMethod);
+    document.getElementById('revVal_'     + s).textContent = fmtFull(revMethod);
+    document.getElementById('niVal_'      + s).textContent = fmtFull(niMethod);
+    document.getElementById('sdeWtBadge_'+ s).textContent  = sdeWt.toFixed(0) + '% weight';
+    document.getElementById('revWtBadge_'+ s).textContent  = revWt.toFixed(0) + '% weight';
+    document.getElementById('niWtBadge_' + s).textContent  = niWt.toFixed(0)  + '% weight';
+    document.getElementById('blended_'   + s).textContent = fmtFull(blended);
+    document.getElementById('range_'     + s).textContent = `Indicative range: ${fmtFull(blended * 0.85)} – ${fmtFull(blended * 1.15)}`;
+    document.getElementById('formula_'   + s).textContent = `(${sdeMult.toFixed(1)} × SDE × ${sdeWt.toFixed(0)}%) + (${revMult.toFixed(1)} × Revenue × ${revWt.toFixed(0)}%) + (${niMult.toFixed(1)} × Net Income × ${niWt.toFixed(0)}%)`;
 
     return blended;
   }
