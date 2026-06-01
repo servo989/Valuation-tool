@@ -741,7 +741,7 @@
     });
     const descEl = document.getElementById(descId);
     if (!matched) {
-      descEl.textContent = 'Custom multiple entered below';
+      descEl.textContent = 'Custom multiple entered below: ' + val + '×';
       descEl.classList.add('custom-alert');
     } else {
       descEl.classList.remove('custom-alert');
