@@ -16,373 +16,274 @@
     }
 
     .header {
-      max-width: 860px;
-      margin: 0 auto 32px;
+      max-width: 1200px;
+      margin: 0 auto 28px;
       text-align: center;
     }
-    .header h1 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: #1a365d;
-      letter-spacing: -0.02em;
-    }
-    .header p {
-      margin-top: 8px;
-      color: #4a5568;
-      font-size: 0.95rem;
-    }
-    .badge-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      background: #ebf4ff;
-      color: #2b6cb0;
-      border: 1px solid #bee3f8;
-      border-radius: 20px;
-      padding: 4px 14px;
+    .header h1 { font-size: 1.7rem; font-weight: 700; color: #1a365d; letter-spacing: -0.02em; }
+    .header p  { margin-top: 6px; color: #4a5568; font-size: 0.9rem; }
+    .nav-link {
+      display: inline-block;
+      margin-top: 10px;
       font-size: 0.8rem;
+      color: #4299e1;
+      text-decoration: none;
       font-weight: 600;
     }
+    .nav-link:hover { text-decoration: underline; }
 
-    .grid {
-      max-width: 860px;
+    /* Two-column compare grid */
+    .compare-grid {
+      max-width: 1200px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
+      align-items: start;
     }
-    @media (max-width: 640px) {
-      .grid { grid-template-columns: 1fr; }
+    @media (max-width: 800px) {
+      .compare-grid { grid-template-columns: 1fr; }
     }
 
-    .card {
+    .scenario {
       background: #fff;
-      border-radius: 12px;
+      border-radius: 14px;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      padding: 24px;
+      overflow: hidden;
     }
-    .card.full { grid-column: 1 / -1; }
+    .scenario-header {
+      padding: 16px 20px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .scenario-a .scenario-header { background: #ebf4ff; border-bottom: 2px solid #bee3f8; }
+    .scenario-b .scenario-header { background: #f0fff4; border-bottom: 2px solid #9ae6b4; }
 
-    .card-title {
-      font-size: 0.75rem;
+    .scenario-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .scenario-a .scenario-label { color: #2b6cb0; }
+    .scenario-b .scenario-label { color: #276749; }
+
+    .scenario-name-input {
+      border: none;
+      background: transparent;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1a202c;
+      outline: none;
+      width: 100%;
+    }
+    .scenario-a .scenario-name-input::placeholder { color: #90cdf4; }
+    .scenario-b .scenario-name-input::placeholder { color: #9ae6b4; }
+
+    .scenario-body { padding: 20px; }
+
+    /* Section titles */
+    .section-title {
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: #718096;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+      margin-top: 18px;
     }
+    .section-title:first-child { margin-top: 0; }
 
-    .field { margin-bottom: 16px; }
+    /* Fields */
+    .field { margin-bottom: 10px; }
     .field:last-child { margin-bottom: 0; }
     .field label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
       color: #2d3748;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
-    .field .hint {
-      font-size: 0.74rem;
-      color: #718096;
-      font-weight: 400;
-      margin-left: 4px;
-    }
-    .input-wrap {
-      position: relative;
-    }
+    .field .hint { font-size: 0.7rem; color: #718096; font-weight: 400; margin-left: 3px; }
+    .input-wrap { position: relative; }
     .input-wrap .prefix {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #718096;
-      font-size: 0.9rem;
-      pointer-events: none;
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      color: #718096; font-size: 0.85rem; pointer-events: none;
     }
-    .input-wrap input {
-      width: 100%;
-      padding: 9px 12px 9px 26px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 0.92rem;
-      color: #1a202c;
+    .input-wrap input[type="text"] {
+      width: 100%; padding: 7px 10px 7px 22px;
+      border: 1.5px solid #e2e8f0; border-radius: 7px;
+      font-size: 0.88rem; color: #1a202c; background: #fafafa;
       transition: border-color 0.15s;
-      background: #fafafa;
     }
-    .input-wrap input:focus {
-      outline: none;
-      border-color: #4299e1;
-      background: #fff;
+    .input-wrap input[type="text"]:focus { outline: none; border-color: #4299e1; background: #fff; }
+    .input-wrap input[type="number"] {
+      width: 100%; padding: 7px 28px 7px 10px;
+      border: 1.5px solid #e2e8f0; border-radius: 7px;
+      font-size: 0.88rem; color: #1a202c; background: #fafafa;
+      transition: border-color 0.15s;
+    }
+    .input-wrap input[type="number"]:focus { outline: none; border-color: #4299e1; background: #fff; }
+    .input-wrap .suffix {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      color: #718096; font-size: 0.85rem; pointer-events: none;
     }
 
-    /* SDE breakdown */
-    .sde-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px 0;
-      border-bottom: 1px solid #f7fafc;
-      font-size: 0.87rem;
-    }
-    .sde-line:last-child { border-bottom: none; }
-    .sde-line .label { color: #4a5568; }
-    .sde-line .val { font-weight: 600; color: #2d3748; }
-    .sde-line.total {
-      margin-top: 8px;
-      padding-top: 12px;
-      border-top: 2px solid #e2e8f0;
-      border-bottom: none;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-    .sde-line.total .label { color: #1a365d; }
-    .sde-line.total .val { color: #2b6cb0; font-size: 1rem; }
+    /* Multiples row — 3 columns */
+    .mult-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
-    /* Method cards */
-    .method-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 20px;
+    /* Results */
+    .results-section { margin-top: 18px; border-top: 2px solid #e2e8f0; padding-top: 16px; }
+
+    .result-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid #f7fafc; font-size: 0.83rem;
     }
-    @media (max-width: 600px) {
-      .method-grid { grid-template-columns: 1fr; }
-    }
-    .method-box {
+    .result-line:last-child { border-bottom: none; }
+    .result-line .rl { color: #4a5568; }
+    .result-line .rv { font-weight: 600; color: #2d3748; }
+
+    .result-total {
+      margin-top: 10px;
+      padding: 14px 16px;
       border-radius: 10px;
-      padding: 16px;
+      text-align: center;
     }
+    .scenario-a .result-total { background: linear-gradient(135deg, #1a365d, #2b6cb0); }
+    .scenario-b .result-total { background: linear-gradient(135deg, #1c4532, #276749); }
+    .result-total .rt-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(255,255,255,0.7); margin-bottom: 4px;
+    }
+    .result-total .rt-value {
+      font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;
+    }
+    .result-total .rt-range {
+      font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-top: 4px;
+    }
+
+    /* Comparison bar */
+    .comparison-wrap {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      padding: 24px 28px;
+    }
+    .comp-title {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #718096; margin-bottom: 18px;
+    }
+    .comp-values {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 10px;
+    }
+    .comp-val-box { text-align: center; }
+    .comp-val-box .cvl { font-size: 0.75rem; font-weight: 700; color: #718096; margin-bottom: 2px; }
+    .comp-val-box .cvv { font-size: 1.5rem; font-weight: 800; }
+    .comp-val-box.a .cvv { color: #2b6cb0; }
+    .comp-val-box.b .cvv { color: #276749; }
+    .comp-val-box .cvd {
+      font-size: 0.72rem; font-weight: 600; margin-top: 3px;
+      padding: 2px 8px; border-radius: 10px; display: inline-block;
+    }
+    .comp-val-box.a .cvd { background: #ebf4ff; color: #2b6cb0; }
+    .comp-val-box.b .cvd { background: #f0fff4; color: #276749; }
+
+    .comp-diff-box {
+      text-align: center;
+      padding: 10px 20px;
+      background: #f7fafc;
+      border-radius: 10px;
+    }
+    .comp-diff-box .cdl { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #718096; }
+    .comp-diff-box .cdv { font-size: 1.1rem; font-weight: 800; color: #1a202c; margin-top: 2px; }
+    .comp-diff-box .cdp { font-size: 0.78rem; color: #718096; margin-top: 1px; }
+
+    .comp-bar-track {
+      position: relative; height: 14px; background: #e2e8f0;
+      border-radius: 7px; overflow: hidden; margin-top: 10px;
+    }
+    .comp-bar-a {
+      position: absolute; left: 0; top: 0; height: 100%;
+      background: #4299e1; border-radius: 7px 0 0 7px;
+      transition: width 0.4s ease;
+    }
+    .comp-bar-b {
+      position: absolute; right: 0; top: 0; height: 100%;
+      background: #48bb78; border-radius: 0 7px 7px 0;
+      transition: width 0.4s ease;
+    }
+    .comp-bar-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.72rem; color: #718096; margin-top: 6px;
+    }
+
+    .empty-state { text-align: center; padding: 20px 0; color: #a0aec0; font-size: 0.85rem; }
+
+    /* Method summary boxes */
+    .method-grid-compare { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .method-box { border-radius: 10px; padding: 12px; }
     .method-box.sde-box { background: #ebf4ff; border: 1.5px solid #bee3f8; }
     .method-box.rev-box { background: #f0fff4; border: 1.5px solid #9ae6b4; }
     .method-box.ni-box  { background: #faf5ff; border: 1.5px solid #d6bcfa; }
-    .method-box .method-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin-bottom: 4px;
-    }
+    .method-box .method-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
     .method-box.sde-box .method-label { color: #2b6cb0; }
     .method-box.rev-box .method-label { color: #276749; }
     .method-box.ni-box  .method-label { color: #6b46c1; }
-    .method-box .method-formula {
-      font-size: 0.78rem;
-      color: #718096;
-      margin-bottom: 10px;
-    }
-    .method-box .method-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
+    .method-box .method-formula { font-size: 0.68rem; color: #718096; margin-bottom: 6px; }
+    .method-box .method-value { font-size: 1rem; font-weight: 700; }
     .method-box.sde-box .method-value { color: #2b6cb0; }
     .method-box.rev-box .method-value { color: #276749; }
     .method-box.ni-box  .method-value { color: #6b46c1; }
-    .method-box .method-weight {
-      margin-top: 6px;
-      font-size: 0.73rem;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-      display: inline-block;
-    }
+    .method-box .method-weight { margin-top: 4px; font-size: 0.65rem; font-weight: 600; padding: 2px 6px; border-radius: 10px; display: inline-block; }
     .method-box.sde-box .method-weight { background: #bee3f8; color: #2b6cb0; }
     .method-box.rev-box .method-weight { background: #9ae6b4; color: #276749; }
     .method-box.ni-box  .method-weight { background: #d6bcfa; color: #6b46c1; }
-
-    /* Final valuation */
-    .valuation-result {
-      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
-      border-radius: 12px;
-      padding: 24px;
-      color: #fff;
-      text-align: center;
-    }
-    .valuation-result .result-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      opacity: 0.75;
-      margin-bottom: 6px;
-    }
-    .valuation-result .result-value {
-      font-size: 2.4rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
-    .valuation-result .result-range {
-      margin-top: 10px;
-      font-size: 0.82rem;
-      opacity: 0.7;
-    }
-    .valuation-result .result-formula {
-      margin-top: 14px;
-      font-size: 0.78rem;
-      opacity: 0.65;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 8px 12px;
-      display: inline-block;
-    }
-
-    /* Range bar */
-    .range-bar-wrap { margin-top: 20px; }
-    .range-bar-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.75rem;
-      color: #718096;
-      margin-bottom: 6px;
-    }
-    .range-bar-track {
-      position: relative;
-      height: 10px;
-      background: #e2e8f0;
-      border-radius: 5px;
-      overflow: visible;
-    }
-    .range-bar-fill {
-      height: 100%;
-      border-radius: 5px;
-      background: linear-gradient(90deg, #bee3f8, #4299e1);
-      transition: width 0.35s ease;
-    }
-    .range-bar-marker {
-      position: absolute;
-      top: -4px;
-      width: 18px;
-      height: 18px;
-      background: #2b6cb0;
-      border: 3px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-      transform: translateX(-50%);
-      transition: left 0.35s ease;
-    }
-
-    /* Multiples note */
-    .multiples-note {
-      margin-top: 18px;
-      padding: 12px 16px;
-      background: #fffbeb;
-      border: 1px solid #f6e05e;
-      border-radius: 8px;
-      font-size: 0.78rem;
-      color: #744210;
-      line-height: 1.6;
-    }
-    .multiples-note strong { color: #92400e; }
-
-    /* Empty state */
-    .empty-state {
-      text-align: center;
-      padding: 32px 0;
-      color: #a0aec0;
-      font-size: 0.9rem;
-    }
-
-    /* Compensation breakdown */
-    .comp-toggle {
-      font-size: 0.73rem; color: #4299e1; cursor: pointer;
-      background: none; border: none; padding: 4px 0 0;
-      font-weight: 600; display: block;
-    }
+    .rt-formula { margin-top: 8px; font-size: 0.68rem; opacity: 0.65; background: rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; display: inline-block; color: #fff; }
+    .sde-summary-line { font-size: 0.78rem; color: #4a5568; margin-bottom: 8px; padding: 5px 10px; background: #f7fafc; border-radius: 6px; }
+    .sde-summary-line span { font-weight: 700; color: #2d3748; }
+    .comp-toggle { font-size: 0.7rem; color: #4299e1; cursor: pointer; background: none; border: none; padding: 4px 0 0; font-weight: 600; display: block; }
     .comp-toggle:hover { color: #2b6cb0; }
-    .comp-breakdown {
-      display: none; margin-top: 8px; padding: 10px 12px;
-      background: #ebf4ff; border: 1px solid #bee3f8;
-      border-radius: 8px; font-size: 0.75rem; color: #2d3748; line-height: 1.9;
-    }
+    .comp-breakdown { display: none; margin-top: 6px; padding: 8px 10px; background: #ebf4ff; border: 1px solid #bee3f8; border-radius: 7px; font-size: 0.72rem; color: #2d3748; line-height: 1.9; }
     .comp-breakdown.open { display: block; }
-
-    /* Adjustments toggle */
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .toggle-row input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      accent-color: #4299e1;
-    }
-    .toggle-row span {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #4a5568;
-    }
 
     /* Voice */
     .voice-bar {
-      max-width: 860px;
-      margin: -16px auto 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-      padding: 12px 18px;
+      max-width: 1200px; margin: -12px auto 20px;
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: 12px 18px;
     }
     .mic-btn {
-      flex-shrink: 0;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: #ebf4ff;
-      color: #2b6cb0;
-      font-size: 1.1rem;
-      cursor: pointer;
+      flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+      border: none; background: #ebf4ff; color: #2b6cb0;
+      font-size: 1.1rem; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s, transform 0.1s;
     }
     .mic-btn:hover { background: #bee3f8; }
     .mic-btn.listening { background: #fc8181; color: #fff; animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-    .voice-status {
-      flex: 1;
-      font-size: 0.82rem;
-      color: #718096;
-    }
-    .voice-status .vs-heard { color: #2b6cb0; font-weight: 600; }
+    .voice-status { flex: 1; font-size: 0.82rem; color: #718096; }
+    .voice-status .vs-heard  { color: #2b6cb0; font-weight: 600; }
     .voice-status .vs-result { color: #276749; font-weight: 600; }
     .voice-status .vs-error  { color: #c53030; font-weight: 600; }
-    .voice-hint {
-      font-size: 0.72rem;
-      color: #a0aec0;
-    }
+    .voice-hint { font-size: 0.72rem; color: #a0aec0; }
     .save-default-btn {
-      flex-shrink: 0;
-      padding: 7px 14px;
-      border-radius: 8px;
-      border: 1.5px solid #e2e8f0;
-      background: #f7fafc;
-      color: #4a5568;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
-      white-space: nowrap;
+      flex-shrink: 0; padding: 7px 14px; border-radius: 8px;
+      border: 1.5px solid #e2e8f0; background: #f7fafc; color: #4a5568;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s; white-space: nowrap;
     }
     .save-default-btn:hover { background: #ebf4ff; border-color: #bee3f8; color: #2b6cb0; }
     .save-default-btn.saved { background: #f0fff4; border-color: #9ae6b4; color: #276749; }
 
     .footer {
-      max-width: 860px;
-      margin: 28px auto 0;
-      text-align: center;
-      font-size: 0.72rem;
-      color: #a0aec0;
-      line-height: 1.7;
+      max-width: 1200px; margin: 24px auto 0; text-align: center;
+      font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
     }
   </style>
 </head>
@@ -390,212 +291,301 @@
 
 <div class="header">
   <h1>MEP Contractor Valuation</h1>
-  <p>Blended business valuation for mechanical, electrical &amp; plumbing contractors &nbsp;·&nbsp; <a href="compare.html" style="color:#4299e1;font-weight:600;text-decoration:none;">Compare two scenarios →</a></p>
+  <p>Side-by-side scenario comparison for Canadian MEP contractors (CCPC)</p>
 </div>
 
 <div class="voice-bar">
   <button class="mic-btn" id="micBtn" title="Click to speak a command">🎤</button>
   <div class="voice-status" id="voiceStatus">
-    <span>Click the mic and speak a command &nbsp;—&nbsp; </span>
-    <span class="voice-hint">Say one command or chain multiple with "and" / "then" — e.g. "set revenue to 1.2 million and net income to 150 thousand then SDE multiple 3"</span>
+    <span>Click mic and speak &nbsp;—&nbsp; </span>
+    <span class="voice-hint">Chain commands with "and" / "then" — e.g. "scenario A revenue 1.2 million and net income 150 thousand then both SDE multiple 3"</span>
   </div>
-  <button class="save-default-btn" id="saveDefaultBtn" onclick="saveAsDefault()">Save as Default</button>
 </div>
 
-<div class="grid">
+<!-- ── Two scenario columns ── -->
+<div class="compare-grid">
 
-  <!-- ── Financials Input ── -->
-  <div class="card">
-    <div class="card-title">Annual Financials</div>
-
-    <div class="field">
-      <label>Annual Revenue</label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="revenue" placeholder="0" value="1,000,000" />
-      </div>
+  <!-- SCENARIO A -->
+  <div class="scenario scenario-a">
+    <div class="scenario-header">
+      <span class="scenario-label">A</span>
+      <input class="scenario-name-input" id="nameA" type="text" placeholder="Scenario A name…" value="Scenario A" />
+      <button class="save-default-btn" id="saveDefaultBtnA" onclick="saveAsDefault('a')">Save as Default</button>
     </div>
+    <div class="scenario-body">
 
-    <div class="field">
-      <label>Net Income <span class="hint">(corporate profit after all expenses including owner salary, before dividends)</span></label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="netIncome" placeholder="0" value="100,000" />
+      <div class="section-title">Annual Financials</div>
+      <div class="field">
+        <label>Annual Revenue</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="revenue_a" value="1,000,000" /></div>
       </div>
-    </div>
-
-    <div class="field">
-      <label>Owner Total Compensation <span class="hint">(salary + benefits + perks)</span></label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="ownerComp" placeholder="0" value="220,000" />
+      <div class="field">
+        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="netIncome_a" value="100,000" /></div>
       </div>
-      <button class="comp-toggle" onclick="toggleCompBreakdown()">▸ What to include?</button>
-      <div class="comp-breakdown" id="compBreakdown">
-        <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
-        · T4 Salary paid to the owner (deductible corporate expense)<br/>
-        · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
-        · Health, Dental &amp; Vision Insurance premiums<br/>
-        · Vehicle — lease, payments, insurance &amp; fuel<br/>
-        · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
-        · Life / Disability Insurance premiums<br/>
-        · Cell phone &amp; personal technology devices<br/>
-        · Club memberships, travel, meals &amp; other perks<br/><br/>
-        <em>Do not include dividends here — dividends are paid from after-tax corporate profit and are already reflected in Net Income above.</em>
+      <div class="field">
+        <label>Owner Total Compensation</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="ownerComp_a" value="220,000" /></div>
+        <button class="comp-toggle" onclick="toggleCompBreakdown('a')">▸ What to include?</button>
+        <div class="comp-breakdown" id="compBreakdown_a">
+          <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
+          · T4 Salary paid to the owner (deductible corporate expense)<br/>
+          · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
+          · Health, Dental &amp; Vision Insurance premiums<br/>
+          · Vehicle — lease, payments, insurance &amp; fuel<br/>
+          · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
+          · Life / Disability Insurance premiums<br/>
+          · Cell phone &amp; personal technology devices<br/>
+          · Club memberships, travel, meals &amp; other perks<br/><br/>
+          <em>Do not include dividends — they are paid from after-tax corporate profit and are reflected in Net Income.</em>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- ── Add-backs ── -->
-  <div class="card">
-    <div class="card-title">Add-backs &amp; Adjustments</div>
-
-    <div class="field">
-      <label>Depreciation &amp; Amortization</label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="da" placeholder="0" value="5,000" />
+      <div class="section-title">Add-backs</div>
+      <div class="field">
+        <label>Depreciation &amp; Amortization</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="da_a" value="5,000" /></div>
       </div>
-    </div>
-
-    <div class="field">
-      <label>Interest Expense</label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="interest" placeholder="0" value="5,000" />
+      <div class="field">
+        <label>Interest Expense</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="interest_a" value="5,000" /></div>
       </div>
-    </div>
-
-    <div class="field">
-      <label>One-time / Non-recurring Expenses</label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="oneTime" placeholder="0" value="5,000" />
+      <div class="field">
+        <label>One-time Expenses</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="oneTime_a" value="5,000" /></div>
       </div>
-    </div>
-
-    <div class="field">
-      <label>Other Add-backs</label>
-      <div class="input-wrap">
-        <span class="prefix">$</span>
-        <input type="text" id="otherAddbacks" placeholder="0" value="5,000" />
+      <div class="field">
+        <label>Other Add-backs</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="other_a" value="5,000" /></div>
       </div>
-    </div>
-  </div>
 
-  <!-- ── Valuation Multiples ── -->
-  <div class="card full">
-    <div class="card-title">Valuation Multiples &amp; Weights <span id="weightWarning" style="color:#c53030;font-weight:700;font-size:0.75rem;margin-left:8px;display:none;">⚠ Weights must total 100%</span></div>
-    <div class="method-grid">
-      <div>
-        <div class="field" style="margin-bottom:10px;">
-          <label>SDE Multiple <span class="hint">(× SDE)</span></label>
+      <div class="section-title">Multiples &amp; Weights</div>
+      <div class="mult-grid">
+        <div class="field" style="margin:0;">
+          <label>SDE ×</label>
           <div class="input-wrap">
-            <input type="number" id="sdeMultiple" value="2.5" min="0" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+            <input type="number" id="sdeMult_a" value="2.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>SDE Weight <span class="hint">(%)</span></label>
+          <label>Rev ×</label>
           <div class="input-wrap">
-            <input type="number" id="sdeWeight" value="40" min="0" max="100" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="field" style="margin-bottom:10px;">
-          <label>Revenue Multiple <span class="hint">(× Revenue)</span></label>
-          <div class="input-wrap">
-            <input type="number" id="revMultiple" value="0.5" min="0" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+            <input type="number" id="revMult_a" value="0.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>Revenue Weight <span class="hint">(%)</span></label>
+          <label>NI ×</label>
           <div class="input-wrap">
-            <input type="number" id="revWeight" value="40" min="0" max="100" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="field" style="margin-bottom:10px;">
-          <label>Net Income Multiple <span class="hint">(× Net Income)</span></label>
-          <div class="input-wrap">
-            <input type="number" id="niMultiple" value="7.0" min="0" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">×</span>
+            <input type="number" id="niMult_a" value="7.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>Net Income Weight <span class="hint">(%)</span></label>
+          <label>SDE %</label>
           <div class="input-wrap">
-            <input type="number" id="niWeight" value="20" min="0" max="100" step="0.1" style="padding-left:12px;" />
-            <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#718096;font-size:0.9rem;pointer-events:none;">%</span>
+            <input type="number" id="sdeWt_a" value="40" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev %</label>
+          <div class="input-wrap">
+            <input type="number" id="revWt_a" value="40" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI %</label>
+          <div class="input-wrap">
+            <input type="number" id="niWt_a" value="20" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
           </div>
         </div>
       </div>
+
+      <div class="results-section">
+        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_a">—</span></div>
+        <div class="method-grid-compare">
+          <div class="method-box sde-box">
+            <div class="method-label">SDE Method</div>
+            <div class="method-formula" id="sdeFormula_a">2.5× SDE</div>
+            <div class="method-value" id="sdeVal_a">—</div>
+            <div class="method-weight" id="sdeWtBadge_a">40% weight</div>
+          </div>
+          <div class="method-box rev-box">
+            <div class="method-label">Revenue Method</div>
+            <div class="method-formula" id="revFormula_a">0.5× Revenue</div>
+            <div class="method-value" id="revVal_a">—</div>
+            <div class="method-weight" id="revWtBadge_a">40% weight</div>
+          </div>
+          <div class="method-box ni-box">
+            <div class="method-label">Net Income Method</div>
+            <div class="method-formula" id="niFormula_a">7.0× Net Income</div>
+            <div class="method-value" id="niVal_a">—</div>
+            <div class="method-weight" id="niWtBadge_a">20% weight</div>
+          </div>
+        </div>
+        <div class="result-total">
+          <div class="rt-label">Blended Valuation</div>
+          <div class="rt-value" id="blended_a">—</div>
+          <div class="rt-range" id="range_a"></div>
+          <div class="rt-formula" id="formula_a"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- ── SDE Breakdown ── -->
-  <div class="card">
-    <div class="card-title">SDE Calculation</div>
-    <div id="sdeBreakdown" class="empty-state">Enter financials above to calculate SDE.</div>
-  </div>
-
-  <!-- ── Valuation Result ── -->
-  <div class="card">
-    <div class="card-title">Valuation Result</div>
-    <div id="valuationResult" class="empty-state">Enter financials above to see valuation.</div>
-  </div>
-
-  <!-- ── Full-width summary ── -->
-  <div class="card full" id="summaryCard" style="display:none;">
-    <div class="card-title">Valuation Summary</div>
-
-    <div class="method-grid">
-      <div class="method-box sde-box">
-        <div class="method-label">SDE Method</div>
-        <div class="method-formula" id="sdeMethodFormula">2.0× Seller's Discretionary Earnings</div>
-        <div class="method-value" id="sdeMethodValue">—</div>
-        <div class="method-weight" id="sdeMethodWeight">40% weight</div>
-      </div>
-      <div class="method-box rev-box">
-        <div class="method-label">Revenue Method</div>
-        <div class="method-formula" id="revMethodFormula">0.5× Annual Revenue</div>
-        <div class="method-value" id="revMethodValue">—</div>
-        <div class="method-weight" id="revMethodWeight">40% weight</div>
-      </div>
-      <div class="method-box ni-box">
-        <div class="method-label">Net Income Method</div>
-        <div class="method-formula" id="niMethodFormula">7.0× Net Income</div>
-        <div class="method-value" id="niMethodValue">—</div>
-        <div class="method-weight" id="niMethodWeight">20% weight</div>
-      </div>
+  <!-- SCENARIO B -->
+  <div class="scenario scenario-b">
+    <div class="scenario-header">
+      <span class="scenario-label">B</span>
+      <input class="scenario-name-input" id="nameB" type="text" placeholder="Scenario B name…" value="Scenario B" />
+      <button class="save-default-btn" id="saveDefaultBtnB" onclick="saveAsDefault('b')">Save as Default</button>
     </div>
+    <div class="scenario-body">
 
-    <div class="valuation-result">
-      <div class="result-label">Blended Business Valuation</div>
-      <div class="result-value" id="blendedValue">—</div>
-      <div class="result-range" id="valuationRange"></div>
-      <div class="result-formula" id="resultFormula">
-        (3.0 × SDE × 40%) + (0.5 × Revenue × 40%) + (7.0 × Net Income × 20%)
+      <div class="section-title">Annual Financials</div>
+      <div class="field">
+        <label>Annual Revenue</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="revenue_b" value="1,000,000" /></div>
       </div>
-    </div>
+      <div class="field">
+        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="netIncome_b" value="100,000" /></div>
+      </div>
+      <div class="field">
+        <label>Owner Total Compensation</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="ownerComp_b" value="220,000" /></div>
+        <button class="comp-toggle" onclick="toggleCompBreakdown('b')">▸ What to include?</button>
+        <div class="comp-breakdown" id="compBreakdown_b">
+          <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
+          · T4 Salary paid to the owner (deductible corporate expense)<br/>
+          · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
+          · Health, Dental &amp; Vision Insurance premiums<br/>
+          · Vehicle — lease, payments, insurance &amp; fuel<br/>
+          · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
+          · Life / Disability Insurance premiums<br/>
+          · Cell phone &amp; personal technology devices<br/>
+          · Club memberships, travel, meals &amp; other perks<br/><br/>
+          <em>Do not include dividends — they are paid from after-tax corporate profit and are reflected in Net Income.</em>
+        </div>
+      </div>
 
+      <div class="section-title">Add-backs</div>
+      <div class="field">
+        <label>Depreciation &amp; Amortization</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="da_b" value="5,000" /></div>
+      </div>
+      <div class="field">
+        <label>Interest Expense</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="interest_b" value="5,000" /></div>
+      </div>
+      <div class="field">
+        <label>One-time Expenses</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="oneTime_b" value="5,000" /></div>
+      </div>
+      <div class="field">
+        <label>Other Add-backs</label>
+        <div class="input-wrap"><span class="prefix">$</span>
+          <input type="text" id="other_b" value="5,000" /></div>
+      </div>
 
-    <div class="multiples-note">
-      <strong>Methodology:</strong> This blended valuation weights three methods — <span id="methodWeightsNote">SDE 40%, Revenue 40%, Net Income 20%</span> —
-      the <strong>SDE method</strong> (typical for Canadian CCPCs; adds back owner T4 salary, CPP/EI, benefits &amp; perks to normalize earnings regardless of how the owner structures compensation),
-      the <strong>Revenue method</strong> (benchmarks the business against industry revenue norms — useful when comparing companies of different sizes),
-      and the <strong>Net Income method</strong> (corporate profit retained after owner salary &amp; all expenses, before dividends — rewards operational efficiency and capacity to service acquisition financing).
-      Dividends paid to the owner are not an expense and do not reduce net income in a CCPC.
-      Actual market value varies based on customer concentration, backlog, crew depth, geographic market, and current Canadian M&amp;A conditions.
+      <div class="section-title">Multiples &amp; Weights</div>
+      <div class="mult-grid">
+        <div class="field" style="margin:0;">
+          <label>SDE ×</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeMult_b" value="2.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev ×</label>
+          <div class="input-wrap">
+            <input type="number" id="revMult_b" value="0.5" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI ×</label>
+          <div class="input-wrap">
+            <input type="number" id="niMult_b" value="7.0" min="0" step="0.1" />
+            <span class="suffix">×</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>SDE %</label>
+          <div class="input-wrap">
+            <input type="number" id="sdeWt_b" value="40" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>Rev %</label>
+          <div class="input-wrap">
+            <input type="number" id="revWt_b" value="40" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+        <div class="field" style="margin:0;">
+          <label>NI %</label>
+          <div class="input-wrap">
+            <input type="number" id="niWt_b" value="20" min="0" max="100" step="0.1" />
+            <span class="suffix">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_b">—</span></div>
+        <div class="method-grid-compare">
+          <div class="method-box sde-box">
+            <div class="method-label">SDE Method</div>
+            <div class="method-formula" id="sdeFormula_b">2.5× SDE</div>
+            <div class="method-value" id="sdeVal_b">—</div>
+            <div class="method-weight" id="sdeWtBadge_b">40% weight</div>
+          </div>
+          <div class="method-box rev-box">
+            <div class="method-label">Revenue Method</div>
+            <div class="method-formula" id="revFormula_b">0.5× Revenue</div>
+            <div class="method-value" id="revVal_b">—</div>
+            <div class="method-weight" id="revWtBadge_b">40% weight</div>
+          </div>
+          <div class="method-box ni-box">
+            <div class="method-label">Net Income Method</div>
+            <div class="method-formula" id="niFormula_b">7.0× Net Income</div>
+            <div class="method-value" id="niVal_b">—</div>
+            <div class="method-weight" id="niWtBadge_b">20% weight</div>
+          </div>
+        </div>
+        <div class="result-total">
+          <div class="rt-label">Blended Valuation</div>
+          <div class="rt-value" id="blended_b">—</div>
+          <div class="rt-range" id="range_b"></div>
+          <div class="rt-formula" id="formula_b"></div>
+        </div>
+      </div>
+
     </div>
   </div>
-
 </div>
+
 
 <div class="footer">
   For informational purposes only. Not financial, legal, or tax advice under Canadian law.<br/>
@@ -603,383 +593,293 @@
 </div>
 
 <script>
-  function toggleCompBreakdown() {
-    const el = document.getElementById('compBreakdown');
+  function toggleCompBreakdown(s) {
+    const el = document.getElementById('compBreakdown_' + s);
     const btn = el.previousElementSibling;
     el.classList.toggle('open');
     btn.textContent = el.classList.contains('open') ? '▾ What to include?' : '▸ What to include?';
   }
 
-  const ids = ['revenue','netIncome','ownerComp','da','interest','oneTime','otherAddbacks'];
-  const multipleIds = ['sdeMultiple','revMultiple','niMultiple','sdeWeight','revWeight','niWeight'];
-  const allFieldIds = [...ids, ...multipleIds];
-  multipleIds.forEach(id => document.getElementById(id).addEventListener('input', calc));
-
-  // Enter key moves to next field
-  allFieldIds.forEach((id, i) => {
-    document.getElementById(id).addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const next = document.getElementById(allFieldIds[(i + 1) % allFieldIds.length]);
-        if (next) { next.focus(); next.select(); }
-      }
-    });
-  });
-
-  function stripFmt(s) { return s.replace(/[^0-9.\-]/g, ''); }
+  function stripFmt(s) { return String(s).replace(/[^0-9.\-]/g, ''); }
   function addCommas(s) {
     const n = parseFloat(stripFmt(s));
     if (isNaN(n)) return s;
     return Math.round(n).toLocaleString('en-US');
   }
-
-  ids.forEach(id => {
-    const el = document.getElementById(id);
-    el.addEventListener('input', calc);
-    el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
-    el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
-  });
-
-  // Load user-saved defaults first, then override with cross-page sync data
-  const userDefaults = localStorage.getItem('userDefaults');
-  if (userDefaults) {
-    try {
-      const data = JSON.parse(userDefaults);
-      ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-      multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    } catch(e) {}
-  }
-  const saved = localStorage.getItem('singleScenario');
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-      multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-    } catch(e) {}
-  }
-
-  function saveAsDefault() {
-    const snapshot = {};
-    [...ids, ...multipleIds].forEach(id => { snapshot[id] = document.getElementById(id).value; });
-    localStorage.setItem('userDefaults', JSON.stringify(snapshot));
-    localStorage.setItem('singleScenario', JSON.stringify(snapshot));
-    const btn = document.getElementById('saveDefaultBtn');
-    btn.textContent = '✓ Saved!';
-    btn.classList.add('saved');
-    setTimeout(() => { btn.textContent = 'Save as Default'; btn.classList.remove('saved'); }, 2000);
-  }
-
-  calc();
-
-  function fmt(n) {
-    if (n === null || isNaN(n)) return '—';
-    const abs = Math.abs(n);
-    let s;
-    if (abs >= 1_000_000) s = '$' + (n / 1_000_000).toFixed(2) + 'M';
-    else if (abs >= 1_000) s = '$' + (n / 1_000).toFixed(1) + 'K';
-    else s = '$' + n.toFixed(0);
-    return n < 0 ? '−' + s.slice(1) : s;
-  }
-
   function fmtFull(n) {
     if (n === null || isNaN(n)) return '—';
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.abs(Math.round(n)).toLocaleString();
   }
-
-  function val(id) {
+  function valT(id) {
     const v = parseFloat(stripFmt(document.getElementById(id).value));
     return isNaN(v) ? 0 : v;
   }
+  function valN(id, def) {
+    const v = parseFloat(document.getElementById(id).value);
+    return isNaN(v) ? def : v;
+  }
 
-  function calc() {
-    const revenue      = val('revenue');
-    const netIncome    = val('netIncome');
-    const ownerComp    = val('ownerComp');
-    const da           = val('da');
-    const interest     = val('interest');
-    const oneTime      = val('oneTime');
-    const other        = val('otherAddbacks');
+  const textBases  = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
+  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'];
 
-    const hasData = revenue > 0 || netIncome !== 0 || ownerComp > 0;
+  // Build ordered field list for Enter-key navigation: A fields then B fields
+  const orderedFields = [];
+  ['a','b'].forEach(s => {
+    textBases.forEach(b  => orderedFields.push(b + '_' + s));
+    numberBases.forEach(b => orderedFields.push(b + '_' + s));
+  });
 
-    if (!hasData) {
-      document.getElementById('sdeBreakdown').innerHTML = '<div class="empty-state">Enter financials above to calculate SDE.</div>';
-      document.getElementById('valuationResult').innerHTML = '<div class="empty-state">Enter financials above to see valuation.</div>';
-      document.getElementById('summaryCard').style.display = 'none';
-      return;
-    }
+  ['a','b'].forEach(s => {
+    textBases.forEach(base => {
+      const el = document.getElementById(base + '_' + s);
+      if (!el) return;
+      el.addEventListener('input', calc);
+      el.addEventListener('focus', function() { this.value = stripFmt(this.value); });
+      el.addEventListener('blur',  function() { if (this.value !== '') this.value = addCommas(this.value); });
+    });
+    numberBases.forEach(base => {
+      const el = document.getElementById(base + '_' + s);
+      if (el) el.addEventListener('input', calc);
+    });
+  });
 
-    const totalAddbacks = ownerComp + da + interest + oneTime + other;
-    const sde = netIncome + totalAddbacks;
+  // Enter key advances to next field
+  orderedFields.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const next = document.getElementById(orderedFields[(i + 1) % orderedFields.length]);
+        if (next) { next.focus(); next.select(); }
+      }
+    });
+  });
 
-    const sdeMult   = parseFloat(document.getElementById('sdeMultiple').value) || 2.5;
-    const revMult   = parseFloat(document.getElementById('revMultiple').value) || 0.5;
-    const niMult    = parseFloat(document.getElementById('niMultiple').value)  || 7.0;
-    const sdeWeight = parseFloat(document.getElementById('sdeWeight').value)   || 40;
-    const revWeight = parseFloat(document.getElementById('revWeight').value)   || 40;
-    const niWeight  = parseFloat(document.getElementById('niWeight').value)    || 20;
-    const totalWeight = sdeWeight + revWeight + niWeight;
+  document.getElementById('nameA').addEventListener('input', calc);
+  document.getElementById('nameB').addEventListener('input', calc);
 
-    const warn = document.getElementById('weightWarning');
-    warn.style.display = Math.abs(totalWeight - 100) > 0.5 ? '' : 'none';
+  function calcScenario(s) {
+    const revenue   = valT('revenue_'   + s);
+    const netIncome = valT('netIncome_' + s);
+    const ownerComp = valT('ownerComp_' + s);
+    const da        = valT('da_'        + s);
+    const interest  = valT('interest_'  + s);
+    const oneTime   = valT('oneTime_'   + s);
+    const other     = valT('other_'     + s);
 
+    const sdeMult = valN('sdeMult_' + s, 3.0);
+    const revMult = valN('revMult_' + s, 0.5);
+    const niMult  = valN('niMult_'  + s, 7.0);
+    const sdeWt   = valN('sdeWt_'   + s, 33.3);
+    const revWt   = valN('revWt_'   + s, 33.3);
+    const niWt    = valN('niWt_'    + s, 33.4);
+    const totalWt = sdeWt + revWt + niWt;
+
+    const sde       = netIncome + ownerComp + da + interest + oneTime + other;
     const sdeMethod = sdeMult * sde;
     const revMethod = revMult * revenue;
     const niMethod  = niMult  * netIncome;
-    const blended   = totalWeight > 0
-      ? (sdeMethod * sdeWeight + revMethod * revWeight + niMethod * niWeight) / totalWeight
+    const blended   = totalWt > 0
+      ? (sdeMethod * sdeWt + revMethod * revWt + niMethod * niWt) / totalWt
       : 0;
 
-    const rangeLow  = blended * 0.85;
-    const rangeHigh = blended * 1.15;
+    document.getElementById('sde_'        + s).textContent = fmtFull(sde);
+    document.getElementById('sdeFormula_' + s).textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
+    document.getElementById('revFormula_' + s).textContent = revMult.toFixed(1) + '× Annual Revenue';
+    document.getElementById('niFormula_'  + s).textContent = niMult.toFixed(1)  + '× Net Income';
+    document.getElementById('sdeVal_'     + s).textContent = fmtFull(sdeMethod);
+    document.getElementById('revVal_'     + s).textContent = fmtFull(revMethod);
+    document.getElementById('niVal_'      + s).textContent = fmtFull(niMethod);
+    document.getElementById('sdeWtBadge_'+ s).textContent  = sdeWt.toFixed(0) + '% weight';
+    document.getElementById('revWtBadge_'+ s).textContent  = revWt.toFixed(0) + '% weight';
+    document.getElementById('niWtBadge_' + s).textContent  = niWt.toFixed(0)  + '% weight';
+    document.getElementById('blended_'   + s).textContent = fmtFull(blended);
+    document.getElementById('range_'     + s).textContent = `Indicative range (±15%): ${fmtFull(blended * 0.85)} – ${fmtFull(blended * 1.15)}`;
+    document.getElementById('formula_'   + s).textContent = `(${sdeMult.toFixed(1)} × SDE × ${sdeWt.toFixed(0)}%) + (${revMult.toFixed(1)} × Revenue × ${revWt.toFixed(0)}%) + (${niMult.toFixed(1)} × Net Income × ${niWt.toFixed(0)}%)`;
 
-    // SDE Breakdown
-    const sdeRows = [
-      ['Net Income',               netIncome],
-      ['+ Owner Compensation',     ownerComp],
-      ['+ D&A',                    da],
-      ['+ Interest Expense',       interest],
-      ['+ One-time Expenses',      oneTime],
-      ['+ Other Add-backs',        other],
-    ];
-    let html = '';
-    sdeRows.forEach(([label, v]) => {
-      if (v !== 0) {
-        html += `<div class="sde-line">
-          <span class="label">${label}</span>
-          <span class="val">${fmtFull(v)}</span>
-        </div>`;
-      }
-    });
-    html += `<div class="sde-line total">
-      <span class="label">Seller's Discretionary Earnings</span>
-      <span class="val">${fmtFull(sde)}</span>
-    </div>`;
-    document.getElementById('sdeBreakdown').innerHTML = html;
+    return blended;
+  }
 
-    // Valuation mini-result
-    const sdeMargin = revenue > 0 ? ((sde / revenue) * 100).toFixed(1) : null;
-    let valHtml = `
-      <div class="sde-line"><span class="label">SDE</span><span class="val">${fmtFull(sde)}</span></div>
-      <div class="sde-line"><span class="label">Revenue</span><span class="val">${fmtFull(revenue)}</span></div>
-      ${sdeMargin !== null ? `<div class="sde-line"><span class="label">SDE Margin</span><span class="val">${sdeMargin}%</span></div>` : ''}
-      <div class="sde-line"><span class="label">SDE Method (${sdeMult.toFixed(1)}×)</span><span class="val">${fmtFull(sdeMethod)}</span></div>
-      <div class="sde-line"><span class="label">Revenue Method (${revMult.toFixed(1)}×)</span><span class="val">${fmtFull(revMethod)}</span></div>
-      <div class="sde-line"><span class="label">Net Income Method (${niMult.toFixed(1)}×)</span><span class="val">${fmtFull(niMethod)}</span></div>
-      <div class="sde-line total">
-        <span class="label">Blended Valuation</span>
-        <span class="val" style="color:#2b6cb0;">${fmtFull(blended)}</span>
-      </div>
-    `;
-    document.getElementById('valuationResult').innerHTML = valHtml;
+  function calc() {
+    const a = calcScenario('a');
+    const b = calcScenario('b');
 
-    // Summary card
-    document.getElementById('summaryCard').style.display = '';
-    document.getElementById('sdeMethodValue').textContent   = fmtFull(sdeMethod);
-    document.getElementById('revMethodValue').textContent   = fmtFull(revMethod);
-    document.getElementById('niMethodValue').textContent    = fmtFull(niMethod);
-    document.getElementById('sdeMethodFormula').textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
-    document.getElementById('revMethodFormula').textContent = revMult.toFixed(1) + '× Annual Revenue';
-    document.getElementById('niMethodFormula').textContent  = niMult.toFixed(1)  + '× Net Income';
-    document.getElementById('sdeMethodWeight').textContent  = sdeWeight.toFixed(1) + '% weight';
-    document.getElementById('revMethodWeight').textContent  = revWeight.toFixed(1) + '% weight';
-    document.getElementById('niMethodWeight').textContent   = niWeight.toFixed(1)  + '% weight';
-    document.getElementById('resultFormula').textContent    =
-      `(${sdeMult.toFixed(1)} × SDE × ${sdeWeight.toFixed(1)}%) + (${revMult.toFixed(1)} × Revenue × ${revWeight.toFixed(1)}%) + (${niMult.toFixed(1)} × Net Income × ${niWeight.toFixed(1)}%)`;
-    document.getElementById('blendedValue').textContent = fmtFull(blended);
-    document.getElementById('methodWeightsNote').textContent =
-      `SDE ${Math.round(sdeWeight)}%, Revenue ${Math.round(revWeight)}%, Net Income ${Math.round(niWeight)}%`;
-    document.getElementById('valuationRange').textContent =
-      `Indicative range (±15%): ${fmtFull(rangeLow)} – ${fmtFull(rangeHigh)}`;
+    const nameA = document.getElementById('nameA').value || 'Scenario A';
+    const nameB = document.getElementById('nameB').value || 'Scenario B';
 
 
-    // Save to localStorage for compare tool sync
+
+    // Keep single scenario page in sync with Scenario A
+    const mapBack = {
+      revenue_a: 'revenue', netIncome_a: 'netIncome', ownerComp_a: 'ownerComp',
+      da_a: 'da', interest_a: 'interest', oneTime_a: 'oneTime', other_a: 'otherAddbacks',
+      sdeMult_a: 'sdeMultiple', revMult_a: 'revMultiple', niMult_a: 'niMultiple',
+      sdeWt_a: 'sdeWeight', revWt_a: 'revWeight', niWt_a: 'niWeight'
+    };
     const snapshot = {};
-    [...ids, ...multipleIds].forEach(id => {
-      snapshot[id] = document.getElementById(id).value;
+    Object.entries(mapBack).forEach(([src, dest]) => {
+      const el = document.getElementById(src);
+      if (el) snapshot[dest] = el.value;
     });
     localStorage.setItem('singleScenario', JSON.stringify(snapshot));
   }
 
+  // Load single scenario data into Scenario A if available
+  const saved = localStorage.getItem('singleScenario');
+  if (saved) {
+    try {
+      const map = {
+        revenue: 'revenue_a', netIncome: 'netIncome_a', ownerComp: 'ownerComp_a',
+        da: 'da_a', interest: 'interest_a', oneTime: 'oneTime_a', otherAddbacks: 'other_a',
+        sdeMultiple: 'sdeMult_a', revMultiple: 'revMult_a', niMultiple: 'niMult_a',
+        sdeWeight: 'sdeWt_a', revWeight: 'revWt_a', niWeight: 'niWt_a'
+      };
+      const data = JSON.parse(saved);
+      Object.entries(map).forEach(([src, dest]) => {
+        const el = document.getElementById(dest);
+        if (!el || data[src] === undefined) return;
+        el.value = el.type === 'text' ? addCommas(String(data[src])) : data[src];
+      });
+    } catch(e) {}
+  }
+
+  calc();
+
+  function saveAsDefault(s) {
+    const snapshot = {};
+    textBases.forEach(b  => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
+    numberBases.forEach(b => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
+    localStorage.setItem('userDefaults' + s.toUpperCase(), JSON.stringify(snapshot));
+    // Also sync to singleScenario if saving scenario A
+    if (s === 'a') {
+      const mapBack = {
+        revenue: 'revenue', netIncome: 'netIncome', ownerComp: 'ownerComp',
+        da: 'da', interest: 'interest', oneTime: 'oneTime', other: 'otherAddbacks',
+        sdeMult: 'sdeMultiple', revMult: 'revMultiple', niMult: 'niMultiple',
+        sdeWt: 'sdeWeight', revWt: 'revWeight', niWt: 'niWeight'
+      };
+      const single = {};
+      Object.entries(mapBack).forEach(([src, dest]) => { if (snapshot[src] !== undefined) single[dest] = snapshot[src]; });
+      localStorage.setItem('userDefaults', JSON.stringify(single));
+      localStorage.setItem('singleScenario', JSON.stringify(single));
+    }
+    const btn = document.getElementById('saveDefaultBtn' + s.toUpperCase());
+    btn.textContent = '✓ Saved!';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Save as Default'; btn.classList.remove('saved'); }, 2000);
+  }
+
   // ── Voice Commands ──────────────────────────────────────────────
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const micBtn     = document.getElementById('micBtn');
+  const micBtn      = document.getElementById('micBtn');
   const voiceStatus = document.getElementById('voiceStatus');
 
   if (!SpeechRecognition) {
     micBtn.disabled = true;
-    micBtn.title = 'Voice not supported in this browser (use Chrome)';
-    voiceStatus.innerHTML = '<span class="vs-error">Voice commands require Chrome or Edge.</span>';
+    voiceStatus.innerHTML = '<span class="vs-error">Voice requires Chrome or Edge.</span>';
   } else {
     const recog = new SpeechRecognition();
-    recog.lang = 'en-US';
-    recog.continuous = true;
-    recog.interimResults = false;
-    recog.maxAlternatives = 3;
+    recog.lang = 'en-US'; recog.continuous = true; recog.interimResults = false;
     let listening = false;
 
-    micBtn.addEventListener('click', () => {
-      if (listening) { recog.stop(); return; }
-      recog.start();
-    });
-
-    recog.onstart = () => {
-      listening = true;
-      micBtn.classList.add('listening');
-      micBtn.textContent = '⏹';
-      voiceStatus.innerHTML = '<span class="vs-heard">Listening… speak one or more commands, click ⏹ when done.</span>';
-    };
-    recog.onend = () => {
-      listening = false;
-      micBtn.classList.remove('listening');
-      micBtn.textContent = '🎤';
-    };
-    recog.onerror = (e) => {
-      if (e.error === 'no-speech') return;
-      voiceStatus.innerHTML = `<span class="vs-error">Error: ${e.error}. Try again.</span>`;
-    };
+    micBtn.addEventListener('click', () => { if (listening) recog.stop(); else recog.start(); });
+    recog.onstart = () => { listening = true; micBtn.classList.add('listening'); micBtn.textContent = '⏹'; voiceStatus.innerHTML = '<span class="vs-heard">Listening…</span>'; };
+    recog.onend   = () => { listening = false; micBtn.classList.remove('listening'); micBtn.textContent = '🎤'; };
+    recog.onerror = (e) => { if (e.error !== 'no-speech') voiceStatus.innerHTML = `<span class="vs-error">Error: ${e.error}</span>`; };
 
     recog.onresult = (e) => {
-      // Collect all new results since last processed
       let transcript = '';
-      for (let i = e.resultIndex; i < e.results.length; i++) {
+      for (let i = e.resultIndex; i < e.results.length; i++)
         if (e.results[i].isFinal) transcript += ' ' + e.results[i][0].transcript;
-      }
       transcript = transcript.toLowerCase().trim();
       if (!transcript) return;
-
       voiceStatus.innerHTML = `<span class="vs-heard">Heard: "${transcript}"</span>`;
-
-      // Split on "and", "then", "also", "plus", "next" to handle chained commands
-      const segments = transcript.split(/\b(?:and(?:\s+also)?|then|also|plus|next)\b/i)
-        .map(s => s.trim()).filter(Boolean);
-
+      const segments = transcript.split(/\b(?:and(?:\s+also)?|then|also|plus|next)\b/i).map(s=>s.trim()).filter(Boolean);
       const results = [];
-      let anyFailed = false;
-      segments.forEach(seg => {
-        const r = processVoiceCommand(seg);
-        if (r) results.push(r);
-        else anyFailed = true;
-      });
-
+      segments.forEach(seg => { const r = processCompareCommand(seg); if (r) results.push(r); });
       setTimeout(() => {
-        if (results.length) {
-          voiceStatus.innerHTML = `<span class="vs-result">✓ ${results.join(' &nbsp;·&nbsp; ')}</span>`;
-        } else {
-          voiceStatus.innerHTML = `<span class="vs-error">Not recognised: "${transcript}"</span>`;
-        }
+        voiceStatus.innerHTML = results.length
+          ? `<span class="vs-result">✓ ${results.join(' · ')}</span>`
+          : `<span class="vs-error">Not recognised: "${transcript}"</span>`;
       }, 300);
     };
   }
 
   function parseAmount(str) {
-    // Normalise: "one point five million" → numeric
-    str = str.trim()
-      .replace(/,/g, '')
-      .replace(/dollars?/g, '')
-      .replace(/\boh\b/g, '0')
-      .trim();
-
-    // word-to-digit map for common amounts
-    const words = {
-      zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,
-      eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,
-      eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,
-      seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000,
-      'a hundred':100,'a thousand':1000
-    };
-    // Handle "X point Y" → "X.Y" (e.g. "six point five" → "6.5")
-    str = str.replace(/(\b\w+)\s+point\s+(\w+\b)/gi, (_, a, b) => {
+    str = str.trim().replace(/,/g,'').replace(/dollars?/g,'').replace(/\boh\b/g,'0').trim();
+    const words = {zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90,hundred:100,thousand:1000};
+    str = str.replace(/(\b\w+)\s+point\s+(\w+\b)/gi, (_,a,b) => {
       const av = words[a.toLowerCase()] ?? parseFloat(a);
       const bv = words[b.toLowerCase()] ?? parseFloat(b);
-      if (!isNaN(av) && !isNaN(bv)) return `${av}.${bv}`;
-      return `${a} point ${b}`;
+      return (!isNaN(av) && !isNaN(bv)) ? `${av}.${bv}` : `${a} point ${b}`;
     });
     let s = str;
     Object.entries(words).forEach(([w,v]) => { s = s.replace(new RegExp('\\b'+w+'\\b','g'), v); });
-
-    // Handle "X million / thousand / hundred" after word replacement
-    s = s.replace(/(\d+(?:\.\d+)?)\s*million/gi,  (_, n) => n * 1_000_000);
-    s = s.replace(/(\d+(?:\.\d+)?)\s*thousand/gi, (_, n) => n * 1_000);
-    s = s.replace(/(\d+(?:\.\d+)?)\s*hundred/gi,  (_, n) => n * 100);
-    s = s.replace(/(\d+(?:\.\d+)?)\s*[km]$/gi,    (_, n, sfx) => sfx.toLowerCase() === 'm' ? n*1_000_000 : n*1_000);
-
-    // Try to evaluate simple addition chains like "1000000 500000" → last number
+    s = s.replace(/(\d+(?:\.\d+)?)\s*million/gi,  (_,n) => n*1_000_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*thousand/gi, (_,n) => n*1_000);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*hundred/gi,  (_,n) => n*100);
+    s = s.replace(/(\d+(?:\.\d+)?)\s*[km]$/gi,    (_,n,sfx) => sfx.toLowerCase()==='m' ? n*1_000_000 : n*1_000);
     const nums = s.match(/\d+(?:\.\d+)?/g);
     if (!nums) return null;
-    // If multiple numbers, multiply adjacent pairs separated by nothing (e.g. "800 1000" after replacement)
-    let total = 0;
-    nums.forEach(n => { total += parseFloat(n); });
-    return isNaN(total) || total === 0 ? null : total;
+    let total = 0; nums.forEach(n => { total += parseFloat(n); });
+    return isNaN(total) || total===0 ? null : total;
   }
 
-  function setField(id, value, isNumber) {
+  function setCompareField(id, value, isNumber) {
     const el = document.getElementById(id);
     if (!el) return;
-    if (isNumber) {
-      el.value = value;
-    } else {
-      el.value = Math.round(value).toLocaleString('en-US');
-    }
+    el.value = isNumber ? value : Math.round(value).toLocaleString('en-US');
     calc();
   }
 
-  function processVoiceCommand(t) {
-    // Reset
-    if (/\breset\b/.test(t)) {
-      const ud = localStorage.getItem('userDefaults');
-      if (ud) {
-        const data = JSON.parse(ud);
-        ids.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-        multipleIds.forEach(id => { if (data[id] !== undefined) document.getElementById(id).value = data[id]; });
-        calc();
-        return 'Reset to your saved defaults.';
-      }
-      location.reload();
-      return 'Resetting to defaults…';
-    }
+  function processCompareCommand(t) {
+    if (/\breset\b/.test(t)) { location.reload(); return 'Resetting…'; }
 
-    // Map of field aliases → { id, isNumber }
+    // Detect which scenario(s) to target
+    const bothMatch  = /\bboth\b/.test(t);
+    const aMatch     = /\b(scenario\s*a|left)\b/.test(t);
+    const bMatch     = /\b(scenario\s*b|right)\b/.test(t);
+    const scenarios  = bothMatch ? ['a','b'] : bMatch ? ['b'] : ['a']; // default to A
+
+    // Strip scenario prefix from command
+    const clean = t.replace(/\b(scenario\s*[ab]|both|left|right)\b/gi,'').trim();
+
     const fields = [
-      { aliases: ['revenue','annual revenue','total revenue'],            id: 'revenue',       isNumber: false },
-      { aliases: ['net income','net profit','profit'],                    id: 'netIncome',     isNumber: false },
-      { aliases: ['owner comp','owner compensation','total compensation','owner salary'], id: 'ownerComp', isNumber: false },
-      { aliases: ['depreciation','d&a','d and a','d & a','amortization'], id: 'da',           isNumber: false },
-      { aliases: ['interest','interest expense'],                         id: 'interest',      isNumber: false },
-      { aliases: ['one time','one-time','one time expenses','nonrecurring','non recurring'], id: 'oneTime', isNumber: false },
-      { aliases: ['other add backs','other addbacks','other'],            id: 'otherAddbacks', isNumber: false },
-      { aliases: ['sde multiple','sde mult','sde x'],                    id: 'sdeMultiple',   isNumber: true  },
-      { aliases: ['revenue multiple','rev multiple','rev mult','rev x'], id: 'revMultiple',   isNumber: true  },
-      { aliases: ['net income multiple','ni multiple','ni mult','ni x'], id: 'niMultiple',    isNumber: true  },
-      { aliases: ['sde weight','sde weighting'],                         id: 'sdeWeight',     isNumber: true  },
-      { aliases: ['revenue weight','rev weight'],                        id: 'revWeight',     isNumber: true  },
-      { aliases: ['net income weight','ni weight'],                      id: 'niWeight',      isNumber: true  },
+      { aliases: ['annual revenue','total revenue','revenue'],                          base: 'revenue',    isNumber: false },
+      { aliases: ['net income multiple','ni multiple','ni mult','ni x'],                base: 'niMult',     isNumber: true  },
+      { aliases: ['net income','net profit','profit'],                                  base: 'netIncome',  isNumber: false },
+      { aliases: ['owner comp','owner compensation','total compensation','owner salary'],base: 'ownerComp',  isNumber: false },
+      { aliases: ['depreciation','d&a','d and a','amortization'],                      base: 'da',         isNumber: false },
+      { aliases: ['interest expense','interest'],                                       base: 'interest',   isNumber: false },
+      { aliases: ['one time','one-time','nonrecurring'],                                base: 'oneTime',    isNumber: false },
+      { aliases: ['other add backs','other addbacks','other'],                          base: 'other',      isNumber: false },
+      { aliases: ['sde multiple','sde mult','sde x'],                                  base: 'sdeMult',    isNumber: true  },
+      { aliases: ['revenue multiple','rev multiple','rev mult','rev x'],               base: 'revMult',    isNumber: true  },
+      { aliases: ['sde weight','sde weighting'],                                       base: 'sdeWt',      isNumber: true  },
+      { aliases: ['revenue weight','rev weight'],                                      base: 'revWt',      isNumber: true  },
+      { aliases: ['net income weight','ni weight'],                                    base: 'niWt',       isNumber: true  },
     ];
 
-    // Build a flat list of {alias, id, isNumber} sorted longest alias first
-    // so "net income multiple" is always tried before "net income"
     const candidates = [];
-    fields.forEach(field => {
-      field.aliases.forEach(alias => candidates.push({ alias, id: field.id, isNumber: field.isNumber }));
-    });
-    candidates.sort((a, b) => b.alias.length - a.alias.length);
+    fields.forEach(f => f.aliases.forEach(a => candidates.push({alias:a, base:f.base, isNumber:f.isNumber})));
+    candidates.sort((a,b) => b.alias.length - a.alias.length);
 
-    for (const { alias, id, isNumber } of candidates) {
+    for (const {alias, base, isNumber} of candidates) {
       const patterns = [
-        new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`, 'i'),
-        new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`, 'i'),
-        new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`, 'i'),
+        new RegExp(`set\\s+${alias}\\s+(?:to|at|is)?\\s*(.+)`,'i'),
+        new RegExp(`${alias}\\s+(?:to|is|equals?)?\\s*(.+)`,'i'),
+        new RegExp(`change\\s+${alias}\\s+to\\s*(.+)`,'i'),
       ];
-      for (const pattern of patterns) {
-        const m = t.match(pattern);
+      for (const pat of patterns) {
+        const m = clean.match(pat);
         if (m) {
-          const amount = isNumber
-            ? parseFloat(m[1].trim()) || parseAmount(m[1])
-            : parseAmount(m[1]);
+          const amount = isNumber ? (parseFloat(m[1].trim()) || parseAmount(m[1])) : parseAmount(m[1]);
           if (amount !== null && !isNaN(amount)) {
-            setField(id, amount, isNumber);
-            return `Set ${alias} → ${isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
+            scenarios.forEach(s => setCompareField(base + '_' + s, amount, isNumber));
+            const label = scenarios.length > 1 ? 'Both' : ('Scenario ' + scenarios[0].toUpperCase());
+            return `${label} ${alias} → ${isNumber ? amount : '$'+Math.round(amount).toLocaleString()}`;
           }
         }
       }
