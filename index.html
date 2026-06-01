@@ -837,6 +837,14 @@
   localStorage.removeItem('singleScenario');
   localStorage.removeItem('userDefaults');
 
+  // Version check — bump this string whenever defaults change
+  const TOOL_VERSION = '3';
+  if (localStorage.getItem('toolVersion') !== TOOL_VERSION) {
+    localStorage.removeItem('userDefaultsA');
+    localStorage.removeItem('userDefaultsB');
+    localStorage.setItem('toolVersion', TOOL_VERSION);
+  }
+
   // Load user-saved defaults if available
   ['a','b'].forEach(s => {
     const saved = localStorage.getItem('userDefaults' + s.toUpperCase());
