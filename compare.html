@@ -322,7 +322,7 @@
           <input type="text" id="revenue_a" value="1,000,000" /></div>
       </div>
       <div class="field">
-        <label>Net Income <span class="hint">(pre-owner comp)</span></label>
+        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="netIncome_a" value="100,000" /></div>
       </div>
@@ -332,15 +332,16 @@
           <input type="text" id="ownerComp_a" value="220,000" /></div>
         <button class="comp-toggle" onclick="toggleCompBreakdown('a')">▸ What to include?</button>
         <div class="comp-breakdown" id="compBreakdown_a">
-          <strong>What counts as Owner Total Compensation:</strong><br/>
-          · Salary / Owner Draw (W-2 wages or draws taken)<br/>
-          · Payroll Taxes (employer-side FICA on owner salary)<br/>
+          <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
+          · T4 Salary paid to the owner (deductible corporate expense)<br/>
+          · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
           · Health, Dental &amp; Vision Insurance premiums<br/>
           · Vehicle — lease, payments, insurance &amp; fuel<br/>
-          · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+          · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
           · Life / Disability Insurance premiums<br/>
           · Cell phone &amp; personal technology devices<br/>
-          · Club memberships, travel, meals &amp; other perks
+          · Club memberships, travel, meals &amp; other perks<br/><br/>
+          <em>Do not include dividends — they are paid from after-tax corporate profit and are reflected in Net Income.</em>
         </div>
       </div>
 
@@ -461,7 +462,7 @@
           <input type="text" id="revenue_b" value="1,000,000" /></div>
       </div>
       <div class="field">
-        <label>Net Income <span class="hint">(pre-owner comp)</span></label>
+        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="netIncome_b" value="100,000" /></div>
       </div>
@@ -471,15 +472,16 @@
           <input type="text" id="ownerComp_b" value="220,000" /></div>
         <button class="comp-toggle" onclick="toggleCompBreakdown('b')">▸ What to include?</button>
         <div class="comp-breakdown" id="compBreakdown_b">
-          <strong>What counts as Owner Total Compensation:</strong><br/>
-          · Salary / Owner Draw (W-2 wages or draws taken)<br/>
-          · Payroll Taxes (employer-side FICA on owner salary)<br/>
+          <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
+          · T4 Salary paid to the owner (deductible corporate expense)<br/>
+          · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
           · Health, Dental &amp; Vision Insurance premiums<br/>
           · Vehicle — lease, payments, insurance &amp; fuel<br/>
-          · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+          · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
           · Life / Disability Insurance premiums<br/>
           · Cell phone &amp; personal technology devices<br/>
-          · Club memberships, travel, meals &amp; other perks
+          · Club memberships, travel, meals &amp; other perks<br/><br/>
+          <em>Do not include dividends — they are paid from after-tax corporate profit and are reflected in Net Income.</em>
         </div>
       </div>
 
@@ -587,8 +589,8 @@
 
 
 <div class="footer">
-  For informational purposes only. Not financial, legal, or tax advice.<br/>
-  Consult a qualified M&amp;A advisor or business broker for a formal valuation.
+  For informational purposes only. Not financial, legal, or tax advice under Canadian law.<br/>
+  Consult a qualified Canadian M&amp;A advisor, CBV (Chartered Business Valuator), or business broker for a formal valuation.
 </div>
 
 <script>

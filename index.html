@@ -417,7 +417,7 @@
     </div>
 
     <div class="field">
-      <label>Net Income <span class="hint">(after all expenses, pre-owner comp)</span></label>
+      <label>Net Income <span class="hint">(corporate profit after all expenses including owner salary, before dividends)</span></label>
       <div class="input-wrap">
         <span class="prefix">$</span>
         <input type="text" id="netIncome" placeholder="0" value="100,000" />
@@ -432,16 +432,16 @@
       </div>
       <button class="comp-toggle" onclick="toggleCompBreakdown()">▸ What to include?</button>
       <div class="comp-breakdown" id="compBreakdown">
-        <strong>What counts as Owner Total Compensation:</strong><br/>
-        · Salary / Owner Draw (W-2 wages or draws taken)<br/>
-        · Payroll Taxes (employer-side FICA on owner salary)<br/>
+        <strong>What counts as Owner Total Compensation (CCPC):</strong><br/>
+        · T4 Salary paid to the owner (deductible corporate expense)<br/>
+        · Payroll taxes — employer CPP contributions &amp; EI premiums<br/>
         · Health, Dental &amp; Vision Insurance premiums<br/>
         · Vehicle — lease, payments, insurance &amp; fuel<br/>
-        · Retirement contributions (401k, SEP-IRA, profit sharing)<br/>
+        · Retirement contributions (RRSP, Group RRSP, DPSP)<br/>
         · Life / Disability Insurance premiums<br/>
         · Cell phone &amp; personal technology devices<br/>
         · Club memberships, travel, meals &amp; other perks<br/><br/>
-        <em>Add-backs (opposite card) cover business adjustments like depreciation, interest &amp; one-time expenses — not owner-specific.</em>
+        <em>Do not include dividends here — dividends are paid from after-tax corporate profit and are already reflected in Net Income above.</em>
       </div>
     </div>
   </div>
@@ -587,20 +587,19 @@
 
     <div class="multiples-note">
       <strong>Methodology:</strong> This blended valuation weights three methods — <span id="methodWeightsNote">SDE 40%, Revenue 40%, Net Income 20%</span> —
-      the <strong>SDE method</strong> (2.0× — standard for profitable MEP contractors with strong
-      owner involvement), the <strong>Revenue method</strong> (0.5× — benchmarks against industry
-      revenue norms), and the <strong>Net Income method</strong> (5.0× — a P/E-style earnings
-      multiple reflecting true bottom-line profitability). Final value is the simple average of
-      all three. Actual market value varies based on customer concentration, backlog, technician
-      bench strength, geographic market, and current M&amp;A conditions.
+      the <strong>SDE method</strong> (typical for Canadian CCPCs; adds back owner T4 salary, CPP/EI, benefits &amp; perks to normalize earnings regardless of how the owner structures compensation),
+      the <strong>Revenue method</strong> (benchmarks the business against industry revenue norms — useful when comparing companies of different sizes),
+      and the <strong>Net Income method</strong> (corporate profit retained after owner salary &amp; all expenses, before dividends — rewards operational efficiency and capacity to service acquisition financing).
+      Dividends paid to the owner are not an expense and do not reduce net income in a CCPC.
+      Actual market value varies based on customer concentration, backlog, crew depth, geographic market, and current Canadian M&amp;A conditions.
     </div>
   </div>
 
 </div>
 
 <div class="footer">
-  For informational purposes only. Not financial, legal, or tax advice.<br/>
-  Consult a qualified M&amp;A advisor or business broker for a formal valuation.
+  For informational purposes only. Not financial, legal, or tax advice under Canadian law.<br/>
+  Consult a qualified Canadian M&amp;A advisor, CBV (Chartered Business Valuator), or business broker for a formal valuation.
 </div>
 
 <script>
