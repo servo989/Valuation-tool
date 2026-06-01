@@ -308,6 +308,20 @@
       padding: 4px 8px; background: #f7fafc; border-radius: 5px; font-style: italic;
     }
 
+    /* Color coding: SDE=blue, Rev=green, EBITDA=purple */
+    #sdeMult_a, #sdeMult_b, #sdeWt_a, #sdeWt_b {
+      border-left: 3px solid #90cdf4 !important; background: #ebf8ff !important;
+    }
+    #revMult_a, #revMult_b, #revWt_a, #revWt_b {
+      border-left: 3px solid #9ae6b4 !important; background: #f0fff4 !important;
+    }
+    #niMult_a, #niMult_b, #niWt_a, #niWt_b {
+      border-left: 3px solid #d6bcfa !important; background: #faf5ff !important;
+    }
+    /* Revenue toggle active = green to match Rev fields */
+    #revTypeToggle_a .rev-type-btn.active,
+    #revTypeToggle_b .rev-type-btn.active { background: #276749; }
+
     .footer {
       max-width: 1200px; margin: 24px auto 0; text-align: center;
       font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
