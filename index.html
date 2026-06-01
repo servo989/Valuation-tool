@@ -412,11 +412,11 @@
       <div class="rev-type-wrap">
         <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Business Type <span class="hint">(sets SDE ×)</span></label>
         <div class="rev-type-toggle" id="sdeTypeToggle_a">
-          <button class="rev-type-btn" data-mult="2.2" data-desc="Business depends heavily on the owner — key-person risk for a buyer" onclick="setSdeType('a',2.2,this)">Owner-reliant<br/><span class="rtb-mult">2.2×</span></button>
-          <button class="rev-type-btn active" data-mult="2.5" data-desc="Solid team, some processes and recurring work in place" onclick="setSdeType('a',2.5,this)">Established<br/><span class="rtb-mult">2.5×</span></button>
+          <button class="rev-type-btn active" data-mult="2.2" data-desc="Business depends heavily on the owner — key-person risk for a buyer" onclick="setSdeType('a',2.2,this)">Owner-reliant<br/><span class="rtb-mult">2.2×</span></button>
+          <button class="rev-type-btn" data-mult="2.5" data-desc="Solid team, some processes and recurring work in place" onclick="setSdeType('a',2.5,this)">Established<br/><span class="rtb-mult">2.5×</span></button>
           <button class="rev-type-btn" data-mult="2.8" data-desc="Strong systems and team — can operate with less owner involvement" onclick="setSdeType('a',2.8,this)">Scalable<br/><span class="rtb-mult">2.8×</span></button>
         </div>
-        <div class="rev-type-desc" id="sdeTypeDesc_a">Solid team, some processes and recurring work in place</div>
+        <div class="rev-type-desc" id="sdeTypeDesc_a">Business depends heavily on the owner — key-person risk for a buyer</div>
       </div>
 
       <div class="rev-type-wrap">
@@ -433,7 +433,7 @@
         <div class="field" style="margin:0;">
           <label>SDE ×</label>
           <div class="input-wrap">
-            <input type="number" id="sdeMult_a" value="2.5" min="0" step="0.1" />
+            <input type="number" id="sdeMult_a" value="2.2" min="0" step="0.1" />
             <span class="suffix">×</span>
           </div>
         </div>
@@ -602,10 +602,10 @@
         <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Revenue Type <span class="hint">(sets Rev ×)</span></label>
         <div class="rev-type-toggle" id="revTypeToggle_b">
           <button class="rev-type-btn" data-mult="0.3" data-desc="Mostly quoted jobs — each contract won fresh, lower odds of repeat revenue" onclick="setRevType('b',0.3,this)">Project only<br/><span class="rtb-mult">0.3×</span></button>
-          <button class="rev-type-btn active" data-mult="0.4" data-desc="Mix of maintenance contracts + project work — most MEP shops" onclick="setRevType('b',0.4,this)">Mixed<br/><span class="rtb-mult">0.4×</span></button>
-          <button class="rev-type-btn" data-mult="0.5" data-desc="Recurring service contracts dominant (>50%) — predictable revenue" onclick="setRevType('b',0.5,this)">Recurring<br/><span class="rtb-mult">0.5×</span></button>
+          <button class="rev-type-btn" data-mult="0.4" data-desc="Mix of maintenance contracts + project work — most MEP shops" onclick="setRevType('b',0.4,this)">Mixed<br/><span class="rtb-mult">0.4×</span></button>
+          <button class="rev-type-btn active" data-mult="0.5" data-desc="Recurring service contracts dominant (>50%) — predictable revenue" onclick="setRevType('b',0.5,this)">Recurring<br/><span class="rtb-mult">0.5×</span></button>
         </div>
-        <div class="rev-type-desc" id="revTypeDesc_b">Mix of maintenance contracts + project work — most MEP shops</div>
+        <div class="rev-type-desc" id="revTypeDesc_b">Recurring service contracts dominant (>50%) — predictable revenue</div>
       </div>
 
       <div class="mult-grid">
@@ -619,7 +619,7 @@
         <div class="field" style="margin:0;">
           <label>Rev ×</label>
           <div class="input-wrap">
-            <input type="number" id="revMult_b" value="0.4" min="0" step="0.1" />
+            <input type="number" id="revMult_b" value="0.5" min="0" step="0.1" />
             <span class="suffix">×</span>
           </div>
         </div>
@@ -904,7 +904,7 @@
   localStorage.removeItem('userDefaults');
 
   // Version check — bump this string whenever defaults change
-  const TOOL_VERSION = '7';
+  const TOOL_VERSION = '8';
   if (localStorage.getItem('toolVersion') !== TOOL_VERSION) {
     localStorage.removeItem('userDefaultsA');
     localStorage.removeItem('userDefaultsB');
