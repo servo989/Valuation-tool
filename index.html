@@ -945,6 +945,7 @@
   });
 
   calc();
+  ['a','b'].forEach(s => { syncToggle('sde', s); syncToggle('rev', s); });
 
   function saveAsDefault(s) {
     const snapshot = {};
