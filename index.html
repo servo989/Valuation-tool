@@ -243,8 +243,15 @@
     .method-box.rev-box .method-weight { background: #9ae6b4; color: #276749; }
     .method-box.ni-box  .method-weight { background: #d6bcfa; color: #6b46c1; }
     .rt-formula { margin-top: 8px; font-size: 0.68rem; opacity: 0.65; background: rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 10px; display: inline-block; color: #fff; }
-    .sde-summary-line { font-size: 0.78rem; color: #4a5568; margin-bottom: 8px; padding: 5px 10px; background: #f7fafc; border-radius: 6px; }
+    .sde-summary-line { font-size: 0.78rem; color: #4a5568; margin-bottom: 4px; padding: 5px 10px; background: #f7fafc; border-radius: 6px; }
     .sde-summary-line span { font-weight: 700; color: #2d3748; }
+    .sde-toggle { font-size: 0.7rem; color: #4299e1; cursor: pointer; background: none; border: none; padding: 2px 0 8px; font-weight: 600; display: block; }
+    .sde-toggle:hover { color: #2b6cb0; }
+    .sde-breakdown { display: none; margin-bottom: 10px; padding: 8px 10px; background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 7px; font-size: 0.72rem; color: #2d3748; line-height: 2; }
+    .sde-breakdown.open { display: block; }
+    .sde-breakdown .sde-row { display: flex; justify-content: space-between; border-bottom: 1px solid #edf2f7; }
+    .sde-breakdown .sde-row:last-child { border-bottom: none; font-weight: 700; color: #1a365d; padding-top: 4px; }
+    .sde-breakdown .sde-row span:last-child { font-weight: 600; }
     .comp-toggle { font-size: 0.7rem; color: #4299e1; cursor: pointer; background: none; border: none; padding: 4px 0 0; font-weight: 600; display: block; }
     .comp-toggle:hover { color: #2b6cb0; }
     .comp-breakdown { display: none; margin-top: 6px; padding: 8px 10px; background: #ebf4ff; border: 1px solid #bee3f8; border-radius: 7px; font-size: 0.72rem; color: #2d3748; line-height: 1.9; }
@@ -413,7 +420,17 @@
       </div>
 
       <div class="results-section">
-        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_a">—</span></div>
+        <div class="sde-summary-line">Seller's Discretionary Earnings (SDE): <span id="sde_a">—</span></div>
+        <button class="sde-toggle" onclick="toggleSdeBreakdown('a')">▸ What's included in SDE?</button>
+        <div class="sde-breakdown" id="sdeBreakdown_a">
+          <div class="sde-row"><span>Net Income (after T4 salary, before dividends)</span><span id="sdeBrNI_a">—</span></div>
+          <div class="sde-row"><span>+ Owner T4 Salary &amp; payroll taxes (CPP/EI)</span><span id="sdeBrComp_a">—</span></div>
+          <div class="sde-row"><span>+ Depreciation &amp; Amortization (non-cash)</span><span id="sdeBrDA_a">—</span></div>
+          <div class="sde-row"><span>+ Interest Expense (buyer financing differs)</span><span id="sdeBrInt_a">—</span></div>
+          <div class="sde-row"><span>+ One-time / Non-recurring Expenses</span><span id="sdeBrOT_a">—</span></div>
+          <div class="sde-row"><span>+ Other Add-backs</span><span id="sdeBrOther_a">—</span></div>
+          <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_a">—</span></div>
+        </div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -553,7 +570,17 @@
       </div>
 
       <div class="results-section">
-        <div class="sde-summary-line">SDE (Seller's Discretionary Earnings): <span id="sde_b">—</span></div>
+        <div class="sde-summary-line">Seller's Discretionary Earnings (SDE): <span id="sde_b">—</span></div>
+        <button class="sde-toggle" onclick="toggleSdeBreakdown('b')">▸ What's included in SDE?</button>
+        <div class="sde-breakdown" id="sdeBreakdown_b">
+          <div class="sde-row"><span>Net Income (after T4 salary, before dividends)</span><span id="sdeBrNI_b">—</span></div>
+          <div class="sde-row"><span>+ Owner T4 Salary &amp; payroll taxes (CPP/EI)</span><span id="sdeBrComp_b">—</span></div>
+          <div class="sde-row"><span>+ Depreciation &amp; Amortization (non-cash)</span><span id="sdeBrDA_b">—</span></div>
+          <div class="sde-row"><span>+ Interest Expense (buyer financing differs)</span><span id="sdeBrInt_b">—</span></div>
+          <div class="sde-row"><span>+ One-time / Non-recurring Expenses</span><span id="sdeBrOT_b">—</span></div>
+          <div class="sde-row"><span>+ Other Add-backs</span><span id="sdeBrOther_b">—</span></div>
+          <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_b">—</span></div>
+        </div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -593,6 +620,13 @@
 </div>
 
 <script>
+  function toggleSdeBreakdown(s) {
+    const el = document.getElementById('sdeBreakdown_' + s);
+    const btn = el.previousElementSibling;
+    el.classList.toggle('open');
+    btn.textContent = el.classList.contains('open') ? '▾ What's included in SDE?' : '▸ What's included in SDE?';
+  }
+
   function toggleCompBreakdown(s) {
     const el = document.getElementById('compBreakdown_' + s);
     const btn = el.previousElementSibling;
@@ -686,6 +720,13 @@
       : 0;
 
     document.getElementById('sde_'        + s).textContent = fmtFull(sde);
+    document.getElementById('sdeBrNI_'   + s).textContent = fmtFull(netIncome);
+    document.getElementById('sdeBrComp_' + s).textContent = fmtFull(ownerComp);
+    document.getElementById('sdeBrDA_'   + s).textContent = fmtFull(da);
+    document.getElementById('sdeBrInt_'  + s).textContent = fmtFull(interest);
+    document.getElementById('sdeBrOT_'   + s).textContent = fmtFull(oneTime);
+    document.getElementById('sdeBrOther_'+ s).textContent = fmtFull(other);
+    document.getElementById('sdeBrTotal_'+ s).textContent = fmtFull(sde);
     document.getElementById('sdeFormula_' + s).textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
     document.getElementById('revFormula_' + s).textContent = revMult.toFixed(1) + '× Annual Revenue';
     document.getElementById('niFormula_'  + s).textContent = niMult.toFixed(1)  + '× Net Income';
