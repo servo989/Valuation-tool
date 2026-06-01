@@ -396,6 +396,16 @@
       <div class="section-title">Multiples &amp; Weights</div>
 
       <div class="rev-type-wrap">
+        <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Business Type <span class="hint">(sets SDE ×)</span></label>
+        <div class="rev-type-toggle">
+          <button class="rev-type-btn" data-mult="2.2" data-desc="Business depends heavily on the owner — key-person risk for a buyer" onclick="setSdeType('a',2.2,this)">Owner-reliant<br/><span class="rtb-mult">2.2×</span></button>
+          <button class="rev-type-btn active" data-mult="2.5" data-desc="Solid team, some processes and recurring work in place" onclick="setSdeType('a',2.5,this)">Established<br/><span class="rtb-mult">2.5×</span></button>
+          <button class="rev-type-btn" data-mult="2.8" data-desc="Strong systems and team — can operate with less owner involvement" onclick="setSdeType('a',2.8,this)">Scalable<br/><span class="rtb-mult">2.8×</span></button>
+        </div>
+        <div class="rev-type-desc" id="sdeTypeDesc_a">Solid team, some processes and recurring work in place</div>
+      </div>
+
+      <div class="rev-type-wrap">
         <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Revenue Type <span class="hint">(sets Rev ×)</span></label>
         <div class="rev-type-toggle">
           <button class="rev-type-btn" data-mult="0.3" data-desc="Mostly quoted jobs — each contract won fresh, lower odds of repeat revenue" onclick="setRevType('a',0.3,this)">Project only<br/><span class="rtb-mult">0.3×</span></button>
@@ -565,6 +575,16 @@
       <div class="section-title">Multiples &amp; Weights</div>
 
       <div class="rev-type-wrap">
+        <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Business Type <span class="hint">(sets SDE ×)</span></label>
+        <div class="rev-type-toggle">
+          <button class="rev-type-btn" data-mult="2.2" data-desc="Business depends heavily on the owner — key-person risk for a buyer" onclick="setSdeType('b',2.2,this)">Owner-reliant<br/><span class="rtb-mult">2.2×</span></button>
+          <button class="rev-type-btn active" data-mult="2.5" data-desc="Solid team, some processes and recurring work in place" onclick="setSdeType('b',2.5,this)">Established<br/><span class="rtb-mult">2.5×</span></button>
+          <button class="rev-type-btn" data-mult="2.8" data-desc="Strong systems and team — can operate with less owner involvement" onclick="setSdeType('b',2.8,this)">Scalable<br/><span class="rtb-mult">2.8×</span></button>
+        </div>
+        <div class="rev-type-desc" id="sdeTypeDesc_b">Solid team, some processes and recurring work in place</div>
+      </div>
+
+      <div class="rev-type-wrap">
         <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Revenue Type <span class="hint">(sets Rev ×)</span></label>
         <div class="rev-type-toggle">
           <button class="rev-type-btn" data-mult="0.3" data-desc="Mostly quoted jobs — each contract won fresh, lower odds of repeat revenue" onclick="setRevType('b',0.3,this)">Project only<br/><span class="rtb-mult">0.3×</span></button>
@@ -678,6 +698,14 @@
 </div>
 
 <script>
+  function setSdeType(s, mult, btn) {
+    document.getElementById('sdeMult_' + s).value = mult;
+    btn.closest('.rev-type-toggle').querySelectorAll('.rev-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sdeTypeDesc_' + s).textContent = btn.dataset.desc;
+    calc();
+  }
+
   function setRevType(s, mult, btn) {
     document.getElementById('revMult_' + s).value = mult;
     btn.closest('.rev-type-toggle').querySelectorAll('.rev-type-btn').forEach(b => b.classList.remove('active'));
@@ -838,7 +866,7 @@
   localStorage.removeItem('userDefaults');
 
   // Version check — bump this string whenever defaults change
-  const TOOL_VERSION = '3';
+  const TOOL_VERSION = '4';
   if (localStorage.getItem('toolVersion') !== TOOL_VERSION) {
     localStorage.removeItem('userDefaultsA');
     localStorage.removeItem('userDefaultsB');
