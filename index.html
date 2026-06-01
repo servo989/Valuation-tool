@@ -752,39 +752,28 @@
 
 
 
-    // Keep single scenario page in sync with Scenario A
-    const mapBack = {
-      revenue_a: 'revenue', netIncome_a: 'netIncome', ownerComp_a: 'ownerComp',
-      da_a: 'da', interest_a: 'interest', oneTime_a: 'oneTime', other_a: 'otherAddbacks',
-      sdeMult_a: 'sdeMultiple', revMult_a: 'revMultiple', niMult_a: 'niMultiple',
-      sdeWt_a: 'sdeWeight', revWt_a: 'revWeight', niWt_a: 'niWeight'
-    };
-    const snapshot = {};
-    Object.entries(mapBack).forEach(([src, dest]) => {
-      const el = document.getElementById(src);
-      if (el) snapshot[dest] = el.value;
-    });
-    localStorage.setItem('singleScenario', JSON.stringify(snapshot));
   }
 
-  // Load single scenario data into Scenario A if available
-  const saved = localStorage.getItem('singleScenario');
-  if (saved) {
+  // Clear stale localStorage from old single-page tool
+  localStorage.removeItem('singleScenario');
+  localStorage.removeItem('userDefaults');
+
+  // Load user-saved defaults if available
+  ['a','b'].forEach(s => {
+    const saved = localStorage.getItem('userDefaults' + s.toUpperCase());
+    if (!saved) return;
     try {
-      const map = {
-        revenue: 'revenue_a', netIncome: 'netIncome_a', ownerComp: 'ownerComp_a',
-        da: 'da_a', interest: 'interest_a', oneTime: 'oneTime_a', otherAddbacks: 'other_a',
-        sdeMultiple: 'sdeMult_a', revMultiple: 'revMult_a', niMultiple: 'niMult_a',
-        sdeWeight: 'sdeWt_a', revWeight: 'revWt_a', niWeight: 'niWt_a'
-      };
       const data = JSON.parse(saved);
-      Object.entries(map).forEach(([src, dest]) => {
-        const el = document.getElementById(dest);
-        if (!el || data[src] === undefined) return;
-        el.value = el.type === 'text' ? addCommas(String(data[src])) : data[src];
+      textBases.forEach(b => {
+        const el = document.getElementById(b + '_' + s);
+        if (el && data[b] !== undefined) el.value = addCommas(String(data[b]));
+      });
+      numberBases.forEach(b => {
+        const el = document.getElementById(b + '_' + s);
+        if (el && data[b] !== undefined) el.value = data[b];
       });
     } catch(e) {}
-  }
+  });
 
   calc();
 
@@ -793,19 +782,6 @@
     textBases.forEach(b  => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
     numberBases.forEach(b => { const el = document.getElementById(b + '_' + s); if (el) snapshot[b] = el.value; });
     localStorage.setItem('userDefaults' + s.toUpperCase(), JSON.stringify(snapshot));
-    // Also sync to singleScenario if saving scenario A
-    if (s === 'a') {
-      const mapBack = {
-        revenue: 'revenue', netIncome: 'netIncome', ownerComp: 'ownerComp',
-        da: 'da', interest: 'interest', oneTime: 'oneTime', other: 'otherAddbacks',
-        sdeMult: 'sdeMultiple', revMult: 'revMultiple', niMult: 'niMultiple',
-        sdeWt: 'sdeWeight', revWt: 'revWeight', niWt: 'niWeight'
-      };
-      const single = {};
-      Object.entries(mapBack).forEach(([src, dest]) => { if (snapshot[src] !== undefined) single[dest] = snapshot[src]; });
-      localStorage.setItem('userDefaults', JSON.stringify(single));
-      localStorage.setItem('singleScenario', JSON.stringify(single));
-    }
     const btn = document.getElementById('saveDefaultBtn' + s.toUpperCase());
     btn.textContent = '✓ Saved!';
     btn.classList.add('saved');
