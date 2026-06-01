@@ -288,6 +288,26 @@
     .save-default-btn:hover { background: #ebf4ff; border-color: #bee3f8; color: #2b6cb0; }
     .save-default-btn.saved { background: #f0fff4; border-color: #9ae6b4; color: #276749; }
 
+    .rev-type-wrap { margin-bottom: 10px; }
+    .rev-type-toggle {
+      display: flex; border: 1.5px solid #e2e8f0;
+      border-radius: 7px; overflow: hidden; margin-top: 4px;
+    }
+    .rev-type-btn {
+      flex: 1; padding: 7px 4px; border: none;
+      border-right: 1px solid #e2e8f0; background: #fafafa;
+      color: #4a5568; font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, color 0.15s; line-height: 1.3; text-align: center;
+    }
+    .rev-type-btn:last-child { border-right: none; }
+    .rev-type-btn:hover { background: #ebf4ff; color: #2b6cb0; }
+    .rev-type-btn.active { background: #2b6cb0; color: #fff; }
+    .rev-type-btn .rtb-mult { font-size: 0.65rem; font-weight: 400; opacity: 0.8; }
+    .rev-type-desc {
+      font-size: 0.68rem; color: #718096; margin-top: 5px;
+      padding: 4px 8px; background: #f7fafc; border-radius: 5px; font-style: italic;
+    }
+
     .footer {
       max-width: 1200px; margin: 24px auto 0; text-align: center;
       font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
@@ -374,6 +394,17 @@
       </div>
 
       <div class="section-title">Multiples &amp; Weights</div>
+
+      <div class="rev-type-wrap">
+        <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Revenue Type <span class="hint">(sets Rev ×)</span></label>
+        <div class="rev-type-toggle">
+          <button class="rev-type-btn" data-mult="0.3" data-desc="Mostly quoted jobs — revenue is lumpy, not guaranteed to repeat" onclick="setRevType('a',0.3,this)">Project only<br/><span class="rtb-mult">0.3×</span></button>
+          <button class="rev-type-btn active" data-mult="0.4" data-desc="Mix of maintenance contracts + project work — most MEP shops" onclick="setRevType('a',0.4,this)">Mixed<br/><span class="rtb-mult">0.4×</span></button>
+          <button class="rev-type-btn" data-mult="0.5" data-desc="Recurring service contracts dominant (>50%) — predictable revenue" onclick="setRevType('a',0.5,this)">Recurring<br/><span class="rtb-mult">0.5×</span></button>
+        </div>
+        <div class="rev-type-desc" id="revTypeDesc_a">Mix of maintenance contracts + project work — most MEP shops</div>
+      </div>
+
       <div class="mult-grid">
         <div class="field" style="margin:0;">
           <label>SDE ×</label>
@@ -385,7 +416,7 @@
         <div class="field" style="margin:0;">
           <label>Rev ×</label>
           <div class="input-wrap">
-            <input type="number" id="revMult_a" value="0.5" min="0" step="0.1" />
+            <input type="number" id="revMult_a" value="0.4" min="0" step="0.1" />
             <span class="suffix">×</span>
           </div>
         </div>
@@ -532,6 +563,17 @@
       </div>
 
       <div class="section-title">Multiples &amp; Weights</div>
+
+      <div class="rev-type-wrap">
+        <label style="font-size:0.78rem;font-weight:600;color:#2d3748;display:block;margin-bottom:4px;">Revenue Type <span class="hint">(sets Rev ×)</span></label>
+        <div class="rev-type-toggle">
+          <button class="rev-type-btn" data-mult="0.3" data-desc="Mostly quoted jobs — revenue is lumpy, not guaranteed to repeat" onclick="setRevType('b',0.3,this)">Project only<br/><span class="rtb-mult">0.3×</span></button>
+          <button class="rev-type-btn active" data-mult="0.4" data-desc="Mix of maintenance contracts + project work — most MEP shops" onclick="setRevType('b',0.4,this)">Mixed<br/><span class="rtb-mult">0.4×</span></button>
+          <button class="rev-type-btn" data-mult="0.5" data-desc="Recurring service contracts dominant (>50%) — predictable revenue" onclick="setRevType('b',0.5,this)">Recurring<br/><span class="rtb-mult">0.5×</span></button>
+        </div>
+        <div class="rev-type-desc" id="revTypeDesc_b">Mix of maintenance contracts + project work — most MEP shops</div>
+      </div>
+
       <div class="mult-grid">
         <div class="field" style="margin:0;">
           <label>SDE ×</label>
@@ -543,7 +585,7 @@
         <div class="field" style="margin:0;">
           <label>Rev ×</label>
           <div class="input-wrap">
-            <input type="number" id="revMult_b" value="0.5" min="0" step="0.1" />
+            <input type="number" id="revMult_b" value="0.4" min="0" step="0.1" />
             <span class="suffix">×</span>
           </div>
         </div>
@@ -636,6 +678,14 @@
 </div>
 
 <script>
+  function setRevType(s, mult, btn) {
+    document.getElementById('revMult_' + s).value = mult;
+    btn.closest('.rev-type-toggle').querySelectorAll('.rev-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('revTypeDesc_' + s).textContent = btn.dataset.desc;
+    calc();
+  }
+
   function toggleEbitdaBreakdown(s) {
     const el = document.getElementById('ebitdaBreakdown_' + s);
     const btn = el.previousElementSibling;
