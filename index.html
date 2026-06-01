@@ -379,7 +379,7 @@
       <div class="field">
         <label>Owner Total Compensation</label>
         <div class="input-wrap"><span class="prefix">$</span>
-          <input type="text" id="ownerComp_a" value="300,000" /></div>
+          <input type="text" id="ownerComp_a" value="250,000" /></div>
         <button class="comp-toggle" onclick="toggleCompBreakdown('a')">▸ What to include?</button>
         <div class="comp-breakdown" id="compBreakdown_a">
           <strong>What counts as Owner Total Compensation:</strong><br/>
@@ -553,7 +553,7 @@
       <div class="field">
         <label>Net Income <span class="hint">(pre-tax, after all expenses incl. owner salary)</span></label>
         <div class="input-wrap"><span class="prefix">$</span>
-          <input type="text" id="netIncome_b" value="100,000" /></div>
+          <input type="text" id="netIncome_b" value="50,000" /></div>
       </div>
       <div class="field">
         <label>Owner Total Compensation</label>
@@ -920,7 +920,7 @@
   localStorage.removeItem('userDefaults');
 
   // Version check — bump this string whenever defaults change
-  const TOOL_VERSION = '8';
+  const TOOL_VERSION = '9';
   if (localStorage.getItem('toolVersion') !== TOOL_VERSION) {
     localStorage.removeItem('userDefaultsA');
     localStorage.removeItem('userDefaultsB');
