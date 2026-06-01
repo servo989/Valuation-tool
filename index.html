@@ -328,7 +328,7 @@
           <input type="text" id="revenue_a" value="1,000,000" /></div>
       </div>
       <div class="field">
-        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
+        <label>Net Income <span class="hint">(pre-tax, after all expenses incl. owner salary)</span></label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="netIncome_a" value="0" /></div>
       </div>
@@ -352,13 +352,6 @@
       </div>
 
       <div class="section-title">Add-backs</div>
-      <div class="field">
-        <label>Corporate Tax Rate <span class="hint">(CCPC Small Business Deduction — federal 9% + provincial)</span></label>
-        <div class="input-wrap">
-          <input type="number" id="taxRate_a" value="12.2" min="0" max="100" step="0.1" style="padding: 7px 28px 7px 10px;" />
-          <span class="suffix">%</span>
-        </div>
-      </div>
       <div class="field">
         <label>Depreciation &amp; Amortization</label>
         <div class="input-wrap"><span class="prefix">$</span>
@@ -430,7 +423,7 @@
         <div class="sde-summary-line">Seller's Discretionary Earnings (SDE): <span id="sde_a">—</span></div>
         <button class="sde-toggle" onclick="toggleSdeBreakdown('a')">▸ What's included in SDE?</button>
         <div class="sde-breakdown" id="sdeBreakdown_a">
-          <div class="sde-row"><span>Net Income (after T4 salary, before dividends)</span><span id="sdeBrNI_a">—</span></div>
+          <div class="sde-row"><span>Pre-Tax Net Income (after owner salary, before corporate tax)</span><span id="sdeBrNI_a">—</span></div>
           <div class="sde-row"><span>+ Owner T4 Salary &amp; payroll taxes (CPP/EI)</span><span id="sdeBrComp_a">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization (non-cash)</span><span id="sdeBrDA_a">—</span></div>
           <div class="sde-row"><span>+ Interest Expense (buyer financing differs)</span><span id="sdeBrInt_a">—</span></div>
@@ -441,8 +434,7 @@
         <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_a">—</span></div>
         <button class="sde-toggle" onclick="toggleEbitdaBreakdown('a')">▸ What's included in EBITDA?</button>
         <div class="sde-breakdown" id="ebitdaBreakdown_a">
-          <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_a">—</span></div>
-          <div class="sde-row"><span>+ Corporate Tax Paid <em style="color:#718096;">(added back — tax on profits, not an operating cost)</em></span><span id="ebrTax_a">—</span></div>
+          <div class="sde-row"><span>Pre-Tax Net Income (after owner salary, before corporate tax)</span><span id="ebrNI_a">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_a">—</span></div>
           <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_a">—</span></div>
           <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_a">—</span></div>
@@ -494,7 +486,7 @@
           <input type="text" id="revenue_b" value="1,000,000" /></div>
       </div>
       <div class="field">
-        <label>Net Income <span class="hint">(after all expenses incl. owner salary, before dividends)</span></label>
+        <label>Net Income <span class="hint">(pre-tax, after all expenses incl. owner salary)</span></label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="netIncome_b" value="100,000" /></div>
       </div>
@@ -518,13 +510,6 @@
       </div>
 
       <div class="section-title">Add-backs</div>
-      <div class="field">
-        <label>Corporate Tax Rate <span class="hint">(CCPC Small Business Deduction — federal 9% + provincial)</span></label>
-        <div class="input-wrap">
-          <input type="number" id="taxRate_b" value="12.2" min="0" max="100" step="0.1" style="padding: 7px 28px 7px 10px;" />
-          <span class="suffix">%</span>
-        </div>
-      </div>
       <div class="field">
         <label>Depreciation &amp; Amortization</label>
         <div class="input-wrap"><span class="prefix">$</span>
@@ -596,7 +581,7 @@
         <div class="sde-summary-line">Seller's Discretionary Earnings (SDE): <span id="sde_b">—</span></div>
         <button class="sde-toggle" onclick="toggleSdeBreakdown('b')">▸ What's included in SDE?</button>
         <div class="sde-breakdown" id="sdeBreakdown_b">
-          <div class="sde-row"><span>Net Income (after T4 salary, before dividends)</span><span id="sdeBrNI_b">—</span></div>
+          <div class="sde-row"><span>Pre-Tax Net Income (after owner salary, before corporate tax)</span><span id="sdeBrNI_b">—</span></div>
           <div class="sde-row"><span>+ Owner T4 Salary &amp; payroll taxes (CPP/EI)</span><span id="sdeBrComp_b">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization (non-cash)</span><span id="sdeBrDA_b">—</span></div>
           <div class="sde-row"><span>+ Interest Expense (buyer financing differs)</span><span id="sdeBrInt_b">—</span></div>
@@ -607,8 +592,7 @@
         <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_b">—</span></div>
         <button class="sde-toggle" onclick="toggleEbitdaBreakdown('b')">▸ What's included in EBITDA?</button>
         <div class="sde-breakdown" id="ebitdaBreakdown_b">
-          <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_b">—</span></div>
-          <div class="sde-row"><span>+ Corporate Tax Paid <em style="color:#718096;">(added back — tax on profits, not an operating cost)</em></span><span id="ebrTax_b">—</span></div>
+          <div class="sde-row"><span>Pre-Tax Net Income (after owner salary, before corporate tax)</span><span id="ebrNI_b">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_b">—</span></div>
           <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_b">—</span></div>
           <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_b">—</span></div>
@@ -694,7 +678,7 @@
   }
 
   const textBases  = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
-  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt','taxRate'];
+  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'];
 
   // Build ordered field list for Enter-key navigation: A fields then B fields
   const orderedFields = [];
@@ -750,10 +734,8 @@
     const niWt    = valN('niWt_'    + s, 33.4);
     const totalWt = sdeWt + revWt + niWt;
 
-    const taxRate   = valN('taxRate_' + s, 12.2) / 100;
-    const taxPaid   = taxRate < 1 ? netIncome * taxRate / (1 - taxRate) : 0;
     const sde       = netIncome + ownerComp + da + interest + oneTime + other;
-    const ebitda    = netIncome + taxPaid + da + interest;
+    const ebitda    = netIncome + da + interest;
     const sdeMethod = sdeMult * sde;
     const revMethod = revMult * revenue;
     const niMethod  = niMult  * ebitda;
@@ -764,7 +746,6 @@
     document.getElementById('sde_'        + s).textContent = fmtFull(sde);
     document.getElementById('ebitda_'     + s).textContent = fmtFull(ebitda);
     document.getElementById('ebrNI_'      + s).textContent = fmtFull(netIncome);
-    document.getElementById('ebrTax_'     + s).textContent = fmtFull(taxPaid);
     document.getElementById('ebrDA_'      + s).textContent = fmtFull(da);
     document.getElementById('ebrInt_'     + s).textContent = fmtFull(interest);
     document.getElementById('ebrTotal_'   + s).textContent = fmtFull(ebitda);
