@@ -390,7 +390,7 @@
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>NI ×</label>
+          <label>EBITDA ×</label>
           <div class="input-wrap">
             <input type="number" id="niMult_a" value="7.0" min="0" step="0.1" />
             <span class="suffix">×</span>
@@ -411,7 +411,7 @@
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>NI %</label>
+          <label>EBITDA %</label>
           <div class="input-wrap">
             <input type="number" id="niWt_a" value="20" min="0" max="100" step="0.1" />
             <span class="suffix">%</span>
@@ -431,6 +431,7 @@
           <div class="sde-row"><span>+ Other Add-backs</span><span id="sdeBrOther_a">—</span></div>
           <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_a">—</span></div>
         </div>
+        <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_a">—</span></div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -445,7 +446,7 @@
             <div class="method-weight" id="revWtBadge_a">40% weight</div>
           </div>
           <div class="method-box ni-box">
-            <div class="method-label">Net Income Method</div>
+            <div class="method-label">EBITDA Method</div>
             <div class="method-formula" id="niFormula_a">7.0× Net Income</div>
             <div class="method-value" id="niVal_a">—</div>
             <div class="method-weight" id="niWtBadge_a">20% weight</div>
@@ -540,7 +541,7 @@
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>NI ×</label>
+          <label>EBITDA ×</label>
           <div class="input-wrap">
             <input type="number" id="niMult_b" value="7.0" min="0" step="0.1" />
             <span class="suffix">×</span>
@@ -561,7 +562,7 @@
           </div>
         </div>
         <div class="field" style="margin:0;">
-          <label>NI %</label>
+          <label>EBITDA %</label>
           <div class="input-wrap">
             <input type="number" id="niWt_b" value="20" min="0" max="100" step="0.1" />
             <span class="suffix">%</span>
@@ -581,6 +582,7 @@
           <div class="sde-row"><span>+ Other Add-backs</span><span id="sdeBrOther_b">—</span></div>
           <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_b">—</span></div>
         </div>
+        <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_b">—</span></div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -595,7 +597,7 @@
             <div class="method-weight" id="revWtBadge_b">40% weight</div>
           </div>
           <div class="method-box ni-box">
-            <div class="method-label">Net Income Method</div>
+            <div class="method-label">EBITDA Method</div>
             <div class="method-formula" id="niFormula_b">7.0× Net Income</div>
             <div class="method-value" id="niVal_b">—</div>
             <div class="method-weight" id="niWtBadge_b">20% weight</div>
@@ -712,14 +714,16 @@
     const totalWt = sdeWt + revWt + niWt;
 
     const sde       = netIncome + ownerComp + da + interest + oneTime + other;
+    const ebitda    = netIncome + da + interest;
     const sdeMethod = sdeMult * sde;
     const revMethod = revMult * revenue;
-    const niMethod  = niMult  * netIncome;
+    const niMethod  = niMult  * ebitda;
     const blended   = totalWt > 0
       ? (sdeMethod * sdeWt + revMethod * revWt + niMethod * niWt) / totalWt
       : 0;
 
     document.getElementById('sde_'        + s).textContent = fmtFull(sde);
+    document.getElementById('ebitda_'     + s).textContent = fmtFull(ebitda);
     document.getElementById('sdeBrNI_'   + s).textContent = fmtFull(netIncome);
     document.getElementById('sdeBrComp_' + s).textContent = fmtFull(ownerComp);
     document.getElementById('sdeBrDA_'   + s).textContent = fmtFull(da);
@@ -729,7 +733,7 @@
     document.getElementById('sdeBrTotal_'+ s).textContent = fmtFull(sde);
     document.getElementById('sdeFormula_' + s).textContent = sdeMult.toFixed(1) + '× Seller\'s Discretionary Earnings';
     document.getElementById('revFormula_' + s).textContent = revMult.toFixed(1) + '× Annual Revenue';
-    document.getElementById('niFormula_'  + s).textContent = niMult.toFixed(1)  + '× Net Income';
+    document.getElementById('niFormula_'  + s).textContent = niMult.toFixed(1)  + '× EBITDA';
     document.getElementById('sdeVal_'     + s).textContent = fmtFull(sdeMethod);
     document.getElementById('revVal_'     + s).textContent = fmtFull(revMethod);
     document.getElementById('niVal_'      + s).textContent = fmtFull(niMethod);
@@ -738,7 +742,7 @@
     document.getElementById('niWtBadge_' + s).textContent  = niWt.toFixed(0)  + '% weight';
     document.getElementById('blended_'   + s).textContent = fmtFull(blended);
     document.getElementById('range_'     + s).textContent = `Indicative range (±15%): ${fmtFull(blended * 0.85)} – ${fmtFull(blended * 1.15)}`;
-    document.getElementById('formula_'   + s).textContent = `(${sdeMult.toFixed(1)} × SDE × ${sdeWt.toFixed(0)}%) + (${revMult.toFixed(1)} × Revenue × ${revWt.toFixed(0)}%) + (${niMult.toFixed(1)} × Net Income × ${niWt.toFixed(0)}%)`;
+    document.getElementById('formula_'   + s).textContent = `(${sdeMult.toFixed(1)} × SDE × ${sdeWt.toFixed(0)}%) + (${revMult.toFixed(1)} × Revenue × ${revWt.toFixed(0)}%) + (${niMult.toFixed(1)} × EBITDA × ${niWt.toFixed(0)}%)`;
 
     return blended;
   }
@@ -865,7 +869,7 @@
 
     const fields = [
       { aliases: ['annual revenue','total revenue','revenue'],                          base: 'revenue',    isNumber: false },
-      { aliases: ['net income multiple','ni multiple','ni mult','ni x'],                base: 'niMult',     isNumber: true  },
+      { aliases: ['ebitda multiple','ebitda mult','ebitda x','net income multiple','ni multiple','ni mult','ni x'], base: 'niMult', isNumber: true  },
       { aliases: ['net income','net profit','profit'],                                  base: 'netIncome',  isNumber: false },
       { aliases: ['owner comp','owner compensation','total compensation','owner salary'],base: 'ownerComp',  isNumber: false },
       { aliases: ['depreciation','d&a','d and a','amortization'],                      base: 'da',         isNumber: false },
@@ -876,7 +880,7 @@
       { aliases: ['revenue multiple','rev multiple','rev mult','rev x'],               base: 'revMult',    isNumber: true  },
       { aliases: ['sde weight','sde weighting'],                                       base: 'sdeWt',      isNumber: true  },
       { aliases: ['revenue weight','rev weight'],                                      base: 'revWt',      isNumber: true  },
-      { aliases: ['net income weight','ni weight'],                                    base: 'niWt',       isNumber: true  },
+      { aliases: ['ebitda weight','ebitda weighting','net income weight','ni weight'],  base: 'niWt',       isNumber: true  },
     ];
 
     const candidates = [];
