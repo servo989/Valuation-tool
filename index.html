@@ -345,7 +345,7 @@
       <div class="field">
         <label>Annual Revenue</label>
         <div class="input-wrap"><span class="prefix">$</span>
-          <input type="text" id="revenue_a" value="1,000,000" /></div>
+          <input type="text" id="revenue_a" value="800,000" /></div>
       </div>
       <div class="field">
         <label>Net Income <span class="hint">(pre-tax, after all expenses incl. owner salary)</span></label>
@@ -524,7 +524,7 @@
       <div class="field">
         <label>Annual Revenue</label>
         <div class="input-wrap"><span class="prefix">$</span>
-          <input type="text" id="revenue_b" value="1,000,000" /></div>
+          <input type="text" id="revenue_b" value="1,500,000" /></div>
       </div>
       <div class="field">
         <label>Net Income <span class="hint">(pre-tax, after all expenses incl. owner salary)</span></label>
@@ -866,7 +866,7 @@
   localStorage.removeItem('userDefaults');
 
   // Version check — bump this string whenever defaults change
-  const TOOL_VERSION = '4';
+  const TOOL_VERSION = '5';
   if (localStorage.getItem('toolVersion') !== TOOL_VERSION) {
     localStorage.removeItem('userDefaultsA');
     localStorage.removeItem('userDefaultsB');
