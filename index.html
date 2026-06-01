@@ -308,6 +308,16 @@
       padding: 4px 8px; background: #f7fafc; border-radius: 5px; font-style: italic;
     }
 
+    /* Custom multiple alert highlighting */
+    #sdeTypeDesc_a.custom-alert, #sdeTypeDesc_b.custom-alert {
+      background: #ebf4ff; color: #2b6cb0; font-style: normal;
+      font-weight: 600; border: 1px solid #bee3f8;
+    }
+    #revTypeDesc_a.custom-alert, #revTypeDesc_b.custom-alert {
+      background: #f0fff4; color: #276749; font-style: normal;
+      font-weight: 600; border: 1px solid #9ae6b4;
+    }
+
     /* Color coding: SDE=blue, Rev=green, EBITDA=purple */
     #sdeMult_a, #sdeMult_b, #sdeWt_a, #sdeWt_b {
       border-left: 3px solid #90cdf4 !important; background: #ebf8ff !important;
@@ -729,7 +739,13 @@
         btn.classList.remove('active');
       }
     });
-    if (!matched) document.getElementById(descId).textContent = 'Custom multiple entered below';
+    const descEl = document.getElementById(descId);
+    if (!matched) {
+      descEl.textContent = 'Custom multiple entered below';
+      descEl.classList.add('custom-alert');
+    } else {
+      descEl.classList.remove('custom-alert');
+    }
   }
 
   function setSdeType(s, mult, btn) {
