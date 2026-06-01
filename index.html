@@ -353,6 +353,13 @@
 
       <div class="section-title">Add-backs</div>
       <div class="field">
+        <label>Corporate Tax Rate <span class="hint">(CCPC Small Business Deduction — federal 9% + provincial)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="taxRate_a" value="12.2" min="0" max="100" step="0.1" style="padding: 7px 28px 7px 10px;" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
+      <div class="field">
         <label>Depreciation &amp; Amortization</label>
         <div class="input-wrap"><span class="prefix">$</span>
           <input type="text" id="da_a" value="5,000" /></div>
@@ -435,6 +442,7 @@
         <button class="sde-toggle" onclick="toggleEbitdaBreakdown('a')">▸ What's included in EBITDA?</button>
         <div class="sde-breakdown" id="ebitdaBreakdown_a">
           <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_a">—</span></div>
+          <div class="sde-row"><span>+ Corporate Tax Paid <em style="color:#718096;">(added back — tax on profits, not an operating cost)</em></span><span id="ebrTax_a">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_a">—</span></div>
           <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_a">—</span></div>
           <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_a">—</span></div>
@@ -510,6 +518,13 @@
       </div>
 
       <div class="section-title">Add-backs</div>
+      <div class="field">
+        <label>Corporate Tax Rate <span class="hint">(CCPC Small Business Deduction — federal 9% + provincial)</span></label>
+        <div class="input-wrap">
+          <input type="number" id="taxRate_b" value="12.2" min="0" max="100" step="0.1" style="padding: 7px 28px 7px 10px;" />
+          <span class="suffix">%</span>
+        </div>
+      </div>
       <div class="field">
         <label>Depreciation &amp; Amortization</label>
         <div class="input-wrap"><span class="prefix">$</span>
@@ -593,6 +608,7 @@
         <button class="sde-toggle" onclick="toggleEbitdaBreakdown('b')">▸ What's included in EBITDA?</button>
         <div class="sde-breakdown" id="ebitdaBreakdown_b">
           <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_b">—</span></div>
+          <div class="sde-row"><span>+ Corporate Tax Paid <em style="color:#718096;">(added back — tax on profits, not an operating cost)</em></span><span id="ebrTax_b">—</span></div>
           <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_b">—</span></div>
           <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_b">—</span></div>
           <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_b">—</span></div>
@@ -678,7 +694,7 @@
   }
 
   const textBases  = ['revenue','netIncome','ownerComp','da','interest','oneTime','other'];
-  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt'];
+  const numberBases = ['sdeMult','revMult','niMult','sdeWt','revWt','niWt','taxRate'];
 
   // Build ordered field list for Enter-key navigation: A fields then B fields
   const orderedFields = [];
@@ -734,8 +750,10 @@
     const niWt    = valN('niWt_'    + s, 33.4);
     const totalWt = sdeWt + revWt + niWt;
 
+    const taxRate   = valN('taxRate_' + s, 12.2) / 100;
+    const taxPaid   = taxRate < 1 ? netIncome * taxRate / (1 - taxRate) : 0;
     const sde       = netIncome + ownerComp + da + interest + oneTime + other;
-    const ebitda    = netIncome + da + interest;
+    const ebitda    = netIncome + taxPaid + da + interest;
     const sdeMethod = sdeMult * sde;
     const revMethod = revMult * revenue;
     const niMethod  = niMult  * ebitda;
@@ -746,6 +764,7 @@
     document.getElementById('sde_'        + s).textContent = fmtFull(sde);
     document.getElementById('ebitda_'     + s).textContent = fmtFull(ebitda);
     document.getElementById('ebrNI_'      + s).textContent = fmtFull(netIncome);
+    document.getElementById('ebrTax_'     + s).textContent = fmtFull(taxPaid);
     document.getElementById('ebrDA_'      + s).textContent = fmtFull(da);
     document.getElementById('ebrInt_'     + s).textContent = fmtFull(interest);
     document.getElementById('ebrTotal_'   + s).textContent = fmtFull(ebitda);
