@@ -432,6 +432,13 @@
           <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_a">—</span></div>
         </div>
         <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_a">—</span></div>
+        <button class="sde-toggle" onclick="toggleEbitdaBreakdown('a')">▸ What's included in EBITDA?</button>
+        <div class="sde-breakdown" id="ebitdaBreakdown_a">
+          <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_a">—</span></div>
+          <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_a">—</span></div>
+          <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_a">—</span></div>
+          <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_a">—</span></div>
+        </div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -583,6 +590,13 @@
           <div class="sde-row"><span>= Seller's Discretionary Earnings</span><span id="sdeBrTotal_b">—</span></div>
         </div>
         <div class="sde-summary-line" style="margin-top:4px;">EBITDA (Net Income + D&amp;A + Interest): <span id="ebitda_b">—</span></div>
+        <button class="sde-toggle" onclick="toggleEbitdaBreakdown('b')">▸ What's included in EBITDA?</button>
+        <div class="sde-breakdown" id="ebitdaBreakdown_b">
+          <div class="sde-row"><span>Net Income (after T4 salary &amp; corporate tax, before dividends)</span><span id="ebrNI_b">—</span></div>
+          <div class="sde-row"><span>+ Depreciation &amp; Amortization <em style="color:#718096;">(non-cash — asset wear recorded as expense)</em></span><span id="ebrDA_b">—</span></div>
+          <div class="sde-row"><span>+ Interest Expense <em style="color:#718096;">(buyer will have their own financing)</em></span><span id="ebrInt_b">—</span></div>
+          <div class="sde-row"><span>= EBITDA</span><span id="ebrTotal_b">—</span></div>
+        </div>
         <div class="method-grid-compare">
           <div class="method-box sde-box">
             <div class="method-label">SDE Method</div>
@@ -622,6 +636,13 @@
 </div>
 
 <script>
+  function toggleEbitdaBreakdown(s) {
+    const el = document.getElementById('ebitdaBreakdown_' + s);
+    const btn = el.previousElementSibling;
+    el.classList.toggle('open');
+    btn.textContent = el.classList.contains('open') ? '▾ What\'s included in EBITDA?' : '▸ What\'s included in EBITDA?';
+  }
+
   function toggleSdeBreakdown(s) {
     const el = document.getElementById('sdeBreakdown_' + s);
     const btn = el.previousElementSibling;
@@ -724,6 +745,10 @@
 
     document.getElementById('sde_'        + s).textContent = fmtFull(sde);
     document.getElementById('ebitda_'     + s).textContent = fmtFull(ebitda);
+    document.getElementById('ebrNI_'      + s).textContent = fmtFull(netIncome);
+    document.getElementById('ebrDA_'      + s).textContent = fmtFull(da);
+    document.getElementById('ebrInt_'     + s).textContent = fmtFull(interest);
+    document.getElementById('ebrTotal_'   + s).textContent = fmtFull(ebitda);
     document.getElementById('sdeBrNI_'   + s).textContent = fmtFull(netIncome);
     document.getElementById('sdeBrComp_' + s).textContent = fmtFull(ownerComp);
     document.getElementById('sdeBrDA_'   + s).textContent = fmtFull(da);
