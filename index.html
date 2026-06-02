@@ -225,7 +225,7 @@
 
     /* Method summary boxes */
     .method-grid-compare { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .method-box { border-radius: 10px; padding: 12px; }
+    .method-box { border-radius: 10px; padding: 12px; display: flex; flex-direction: column; }
     .method-box.sde-box { background: #ebf4ff; border: 1.5px solid #bee3f8; }
     .method-box.rev-box { background: #f0fff4; border: 1.5px solid #9ae6b4; }
     .method-box.ni-box  { background: #faf5ff; border: 1.5px solid #d6bcfa; }
@@ -234,7 +234,7 @@
     .method-box.rev-box .method-label { color: #276749; }
     .method-box.ni-box  .method-label { color: #6b46c1; }
     .method-box .method-formula { font-size: 0.68rem; color: #718096; margin-bottom: 6px; }
-    .method-box .method-value { font-size: 1rem; font-weight: 700; }
+    .method-box .method-value { font-size: 1rem; font-weight: 700; margin-top: auto; padding-top: 6px; }
     .method-box.sde-box .method-value { color: #2b6cb0; }
     .method-box.rev-box .method-value { color: #276749; }
     .method-box.ni-box  .method-value { color: #6b46c1; }
@@ -311,7 +311,6 @@
     #revTypeToggle_b .rev-type-btn.active { background: #276749; }
 
     @media (max-width: 600px) {
-      .method-grid-compare { grid-template-columns: 1fr; }
       .mult-grid { grid-template-columns: 1fr 1fr; }
       .scenario-body { padding: 14px; }
       .result-total .rt-value { font-size: 1.6rem; }
