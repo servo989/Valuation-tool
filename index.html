@@ -310,6 +310,15 @@
     #revTypeToggle_a .rev-type-btn.active,
     #revTypeToggle_b .rev-type-btn.active { background: #276749; }
 
+    @media (max-width: 600px) {
+      .method-grid-compare { grid-template-columns: 1fr; }
+      .mult-grid { grid-template-columns: 1fr 1fr; }
+      .scenario-body { padding: 14px; }
+      .result-total .rt-value { font-size: 1.6rem; }
+      .rt-formula { font-size: 0.62rem; }
+      .rev-type-btn { font-size: 0.68rem; padding: 6px 2px; }
+    }
+
     .footer {
       max-width: 1200px; margin: 24px auto 0; text-align: center;
       font-size: 0.7rem; color: #a0aec0; line-height: 1.7;
